@@ -24,8 +24,10 @@
 
   nix.settings.auto-optimise-store = true;
 
+  nixpkgs.config.allowUnfree = true;
+
   # Use latest kernel.
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Nvidia Driver
   hardware.graphics.enable = true;
@@ -34,7 +36,7 @@
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
   
   services.xserver = {
@@ -73,15 +75,16 @@
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      rime-data
-      fcitx5-mozc
-      fcitx5-gtk
-      fcitx5-nord
-      fcitx5-rime
-      # libsForQt5.fcitx5-qt
-      kdePackages.fcitx5-qt
-    ];
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-configtool
+        fcitx5-mozc
+        fcitx5-gtk
+        fcitx5-nord
+        fcitx5-rime
+      ];
+    };
   };
 
   # Enable the KDE Plasma Desktop Environment.
@@ -116,7 +119,21 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit =
+        # fish
+        ''
+          fish_vi_key_bindings
+          set fish_cursor_default block blink # normal mode
+          set fish_cursor_insert line blink # insert mode
+          set fish_cursor_replace_one underscore blink # replace mode
+          set fish_cursor_replace underscore blink # replace mode
+          set fish_cursor_visual block # visual mode
+
+          set fish_cursor_external line # in commands
+        '';
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rea = {
@@ -125,7 +142,6 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
     ];
     shell = pkgs.fish;
   };
@@ -153,9 +169,6 @@
   # Install firefox.
   programs.firefox.enable = true;
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # enable flakes and nix command
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -165,6 +178,7 @@
     git
     neovim
     wget
+    nixfmt-rfc-style
   ];
 
   environment.variables.EDITOR = "neovim";

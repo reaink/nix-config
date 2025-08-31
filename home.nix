@@ -46,16 +46,13 @@
     userName = "Rea";
     userEmail = "hi@rea.ink";
   };
+  
   programs.fzf.enable = true;
 
-  programs.starship = {
+  programs.direnv = {
     enable = true;
-    settings = {
-      add_newLine = false;
-      aws.disabled = true;
-      gcloud.disabled = true;
-      line_break.disabled = true;
-    };
+    enableBashIntegration = true;
+    enableFishIntegration = true;
   };
 
   home.stateVersion = "25.05";

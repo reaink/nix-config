@@ -36,6 +36,7 @@
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
+    powerManagement.enable = true;
     package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
 
@@ -187,6 +188,14 @@
     "flakes"
   ];
 
+  nix.settings.substituters = [
+    "https://mirror.nju.edu.cn/nix-channels/store"
+    "https://nix-community.cachix.org"
+  ];
+  nix.settings.trusted-public-keys = [
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -211,8 +220,17 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.postgresql = {
+    enable = true;
+    enableTCPIP = true;
+    authentication = pkgs.lib.mkOverride 10 ''
+      local   all         all                           peer
+      host    all         all     127.0.0.1/32          scram-sha-256
+      host    all         all     ::1/128               scram-sha-256
+    '';
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

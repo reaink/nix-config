@@ -26,7 +26,8 @@
     warp-terminal
     google-chrome
     vscode
-    wechat
+    # wechat
+    wechat-uos
     qq
     cherry-studio
     telegram-desktop

@@ -61,5 +61,36 @@
     enableFishIntegration = true;
   };
 
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+
+    shellAliases = {
+      update = "sudo nixos-rebuild switch";
+    };
+
+    history.size = 10000;
+    history.ignoreAllDups = true;
+    history.path = "$HOME/.zsh_history";
+    history.ignorePatterns = [
+      "rm *"
+      "pkill *"
+      "cp *"
+    ];
+
+    antidote = {
+      enable = true;
+      plugins = [
+        ''
+          zsh-users/zsh-autosuggestions
+          ohmyzsh/ohmyzsh path:lib/git.zsh
+          sindresorhus/pure
+        ''
+      ];
+    };
+  };
+
   home.stateVersion = "25.05";
 }

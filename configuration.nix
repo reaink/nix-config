@@ -119,21 +119,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  programs.fish = {
-    enable = true;
-    interactiveShellInit =
-      # fish
-      ''
-        fish_vi_key_bindings
-        set fish_cursor_default block blink # normal mode
-        set fish_cursor_insert line blink # insert mode
-        set fish_cursor_replace_one underscore blink # replace mode
-        set fish_cursor_replace underscore blink # replace mode
-        set fish_cursor_visual block # visual mode
-
-        set fish_cursor_external line # in commands
-      '';
-  };
+  programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rea = {
@@ -146,7 +132,7 @@
     packages = with pkgs; [
       kdePackages.kate
     ];
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
   };
 
   fonts = {

@@ -84,7 +84,10 @@
       enable = true;
       plugins = [
         ''
+          mattmc3/zfunctions
           zsh-users/zsh-autosuggestions
+          zdharma-continuum/fast-syntax-highlighting kind:defer
+          zsh-users/zsh-history-substring-search
           ohmyzsh/ohmyzsh path:lib/git.zsh
           sindresorhus/pure
         ''

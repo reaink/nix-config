@@ -29,6 +29,9 @@
       lazygit
       lazydocker
 
+      # kdePackages
+      kdePackages.kamoso
+
       warp-terminal
       google-chrome
       vscode

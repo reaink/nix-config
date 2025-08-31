@@ -22,6 +22,12 @@
       eza
 
       rustup
+      protobuf
+      clang
+      libclang.lib
+      lld
+      gnumake
+
       uv
       fnm
       pnpm
@@ -48,6 +54,11 @@
     ])
     ++ [
     ];
+
+  home.sessionVariables = {
+    LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+    BINDGEN_EXTRA_CLANG_ARGS = "-isystem ${pkgs.clang}/lib/clang/${pkgs.lib.getVersion pkgs.clang}/include";
+  };
 
   programs.git = {
     enable = true;

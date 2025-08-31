@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  r3playx,
   ...
 }:
 
@@ -35,7 +34,6 @@
       warp-terminal
       google-chrome
       vscode
-      # wechat
       wechat-uos
       qq
       cherry-studio
@@ -45,9 +43,10 @@
       postman
       dbeaver-bin
       xemu
+      splayer
+      gparted
     ])
     ++ [
-      r3playx.packages."${pkgs.system}".r3playx
     ];
 
   programs.git = {

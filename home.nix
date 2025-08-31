@@ -20,6 +20,8 @@
     uv
     fnm
     pnpm
+    lazygit
+    lazydocker
 
     warp-terminal
     google-chrome

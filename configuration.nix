@@ -11,13 +11,37 @@
     ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/vda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.systemd-boot.configurationLimit = 10;
+  
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 1w";
+  };
+
+  nix.settings.auto-optimise-store = true;
 
   # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Nvidia Driver
+  hardware.graphics.enable = true;
+  
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = true;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+  
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
+  };
+  
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -46,9 +70,19 @@
     LC_TIME = "zh_CN.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      rime-data
+      fcitx5-mozc
+      fcitx5-gtk
+      fcitx5-nord
+      fcitx5-rime
+      # libsForQt5.fcitx5-qt
+      kdePackages.fcitx5-qt
+    ];
+  };
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -91,8 +125,29 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
+    #  thunderbird
     ];
     shell = pkgs.fish;
+  };
+
+  fonts = {
+    fontDir.enable = true;
+    enableGhostscriptFonts = true;
+    packages = with pkgs; [
+      hack-font
+      inter
+      jetbrains-mono
+      liberation_ttf
+      monaspace
+      noto-fonts
+      noto-fonts-extra
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      nerd-fonts.fira-code
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.caskaydia-mono
+    ];
   };
 
   # Install firefox.
@@ -107,10 +162,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
     git
+    neovim
     wget
-    spice-vdagent
   ];
 
   environment.variables.EDITOR = "neovim";

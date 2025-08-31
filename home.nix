@@ -1,52 +1,58 @@
-{ config, pkgs, r3playx, ...}:
+{
+  config,
+  pkgs,
+  r3playx,
+  ...
+}:
 
 {
   home.username = "rea";
   home.homeDirectory = "/home/rea";
 
-  home.packages = (with pkgs; [
-    neofetch
+  home.packages =
+    (with pkgs; [
+      neofetch
 
-    zip
-    xz
-    unzip
-    p7zip
+      zip
+      xz
+      unzip
+      p7zip
 
-    ripgrep
-    jq
-    eza
+      ripgrep
+      jq
+      eza
 
-    rustup
-    uv
-    fnm
-    pnpm
-    lazygit
-    lazydocker
+      rustup
+      uv
+      fnm
+      pnpm
+      lazygit
+      lazydocker
 
-    warp-terminal
-    google-chrome
-    vscode
-    # wechat
-    wechat-uos
-    qq
-    cherry-studio
-    telegram-desktop
-    steam
-    lutris
-    postman
-    dbeaver-bin
-    xemu
-  ]) ++ [
-    r3playx.packages."${pkgs.system}".r3playx
-  ];
-
+      warp-terminal
+      google-chrome
+      vscode
+      # wechat
+      wechat-uos
+      qq
+      cherry-studio
+      telegram-desktop
+      steam
+      lutris
+      postman
+      dbeaver-bin
+      xemu
+    ])
+    ++ [
+      r3playx.packages."${pkgs.system}".r3playx
+    ];
 
   programs.git = {
     enable = true;
     userName = "Rea";
     userEmail = "hi@rea.ink";
   };
-  
+
   programs.fzf.enable = true;
 
   programs.direnv = {

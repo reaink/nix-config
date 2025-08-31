@@ -5,17 +5,17 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.loader.systemd-boot.configurationLimit = 10;
-  
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -31,19 +31,19 @@
 
   # Nvidia Driver
   hardware.graphics.enable = true;
-  
+
   hardware.nvidia = {
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
-  
+
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
   };
-  
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -122,24 +122,27 @@
   programs.fish = {
     enable = true;
     interactiveShellInit =
-        # fish
-        ''
-          fish_vi_key_bindings
-          set fish_cursor_default block blink # normal mode
-          set fish_cursor_insert line blink # insert mode
-          set fish_cursor_replace_one underscore blink # replace mode
-          set fish_cursor_replace underscore blink # replace mode
-          set fish_cursor_visual block # visual mode
+      # fish
+      ''
+        fish_vi_key_bindings
+        set fish_cursor_default block blink # normal mode
+        set fish_cursor_insert line blink # insert mode
+        set fish_cursor_replace_one underscore blink # replace mode
+        set fish_cursor_replace underscore blink # replace mode
+        set fish_cursor_visual block # visual mode
 
-          set fish_cursor_external line # in commands
-        '';
+        set fish_cursor_external line # in commands
+      '';
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rea = {
     isNormalUser = true;
     description = "Rea";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
       kdePackages.kate
     ];
@@ -170,7 +173,10 @@
   programs.firefox.enable = true;
 
   # enable flakes and nix command
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

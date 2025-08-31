@@ -27,6 +27,7 @@
       libclang.lib
       lld
       gnumake
+      pkg-config
 
       uv
       fnm
@@ -58,6 +59,10 @@
   home.sessionVariables = {
     LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
     BINDGEN_EXTRA_CLANG_ARGS = "-isystem ${pkgs.clang}/lib/clang/${pkgs.lib.getVersion pkgs.clang}/include";
+
+    OPENSSL_DIR = "${pkgs.openssl.dev}";
+    OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
   };
 
   programs.git = {

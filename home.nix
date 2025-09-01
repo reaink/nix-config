@@ -34,6 +34,8 @@
       pnpm
       lazygit
       lazydocker
+      google-cloud-sdk
+      gparted
 
       # kdePackages
       kdePackages.kamoso
@@ -51,7 +53,7 @@
       dbeaver-bin
       xemu
       splayer
-      gparted
+      discord
     ])
     ++ [
     ];

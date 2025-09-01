@@ -10,6 +10,26 @@
     ./hardware-configuration.nix
   ];
 
+  # sops secrets configuration
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/rea/.config/sops/age/keys.txt";
+    
+    secrets = {
+      postgres-password = {
+        owner = "postgres";
+        group = "postgres";
+        mode = "0400";
+      };
+      rea-password = {
+        owner = "postgres"; 
+        group = "postgres";
+        mode = "0400";
+      };
+    };
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -203,6 +223,8 @@
     neovim
     wget
     nixfmt-rfc-style
+    sops
+    age
   ];
 
   environment.variables.EDITOR = "neovim";
@@ -225,11 +247,53 @@
   services.postgresql = {
     enable = true;
     enableTCPIP = true;
+    package = pkgs.postgresql_16;
     authentication = pkgs.lib.mkOverride 10 ''
-      local   all         all                           peer
-      host    all         all     127.0.0.1/32          scram-sha-256
-      host    all         all     ::1/128               scram-sha-256
+      local   postgres    postgres             peer
+      local   all         rea                  scram-sha-256
+      host    all         all     127.0.0.1/32 scram-sha-256
+      host    all         all     ::1/128      scram-sha-256
     '';
+
+    ensureDatabases = [ "postgres" "rea" ];
+    ensureUsers = [
+      {
+        name = "rea";
+        ensureDBOwnership = true;
+      }
+    ];
+
+  };
+
+  systemd.services.postgresql-setup-passwords = {
+    description = "Setup PostgreSQL user passwords";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "postgresql.service" ];
+    requires = [ "postgresql.service" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = "postgres";
+      Group = "postgres";
+      RemainAfterExit = true;
+
+      ExecStart = pkgs.writeShellScript "setup-postgres-passwords" ''
+        set -euo pipefail
+
+        # Wait for PostgreSQL to start
+        ${pkgs.postgresql}/bin/pg_isready -q
+
+        # Read passwords from sops secrets files
+        POSTGRES_PASS=$(cat ${config.sops.secrets.postgres-password.path})
+        REA_PASS=$(cat ${config.sops.secrets.rea-password.path})
+
+        ${pkgs.postgresql}/bin/psql -c "ALTER USER postgres PASSWORD '$POSTGRES_PASS';" 2>/dev/null || true
+        ${pkgs.postgresql}/bin/psql -c "ALTER USER rea PASSWORD '$REA_PASS';" 2>/dev/null || true
+        ${pkgs.postgresql}/bin/psql -c "ALTER USER rea CREATEDB;" 2>/dev/null || true
+
+        echo "PostgreSQL passwords setup completed"
+      '';
+    };
   };
 
   # Open ports in the firewall.

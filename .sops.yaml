@@ -1,0 +1,7 @@
+keys:
+  - &rea age1hx85ryylzc7vdckfg452phfm4z4c57y69hthvpz2v0ydc3030qcqrxfftu
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *rea

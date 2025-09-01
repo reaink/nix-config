@@ -65,6 +65,10 @@
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
   };
 
+  programs.zsh.initContent = ''
+    eval "$(fnm env --use-on-cd)"
+  '';
+
   programs.git = {
     enable = true;
     userName = "Rea";
@@ -86,7 +90,7 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch";
+      update = "sudo nixos-rebuild switch --recreate-lock-file --flake .";
     };
 
     history.size = 10000;

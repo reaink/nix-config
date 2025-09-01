@@ -36,6 +36,19 @@
 
   boot.loader.systemd-boot.configurationLimit = 10;
 
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+  ];
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+  ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -49,20 +62,61 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Nvidia Driver
-  hardware.graphics.enable = true;
+  # Graphics configuration
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      # NVIDIA
+      nvidia-vaapi-driver
+      vaapiVdpau
+      libvdpau-va-gl
 
+      # Vulkan
+      vulkan-validation-layers
+      vulkan-tools
+
+      # AMD
+      amdvlk
+    ];
+
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      nvidia-vaapi-driver
+      amdvlk
+    ];
+  };
+
+  # Nvidia Driver
   hardware.nvidia = {
     modesetting.enable = true;
     open = true;
     nvidiaSettings = true;
-    powerManagement.enable = true;
+
+    powerManagement = {
+      enable = true;
+      finegrained = false;
+    };
+
     package = config.boot.kernelPackages.nvidiaPackages.latest;
+    # PRIME
+    prime = {
+      sync.enable = false;
+
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+
+      nvidiaBusId = "PCI:1:0:0";
+      amdgpuBusId = "PCI:13:0:0";
+    };
   };
 
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = [
+      "amdgpu"
+      "nvidia"
+    ];
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -226,9 +280,29 @@
     openssl
     sops
     age
+
+    # CUDA
+    cudatoolkit
+
+    # GPU info
+    nvtopPackages.full
+    nvidia-system-monitor-qt
+    glxinfo
+    vulkan-tools
+    glmark2
+
+    # Performance testing
+    mangohud
+    gamemode
   ];
 
-  environment.variables.EDITOR = "neovim";
+  environment.variables = {
+    EDITOR = "nvim";
+    "__GL_SHADER_DISK_CACHE" = "1";
+    "__GL_THREADED_OPTIMIZATION" = "1";
+
+    "WLR_NO_HARDWARE_CURSORS" = "1";
+  };
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
@@ -243,6 +317,9 @@
     libgcc
     glibc
   ];
+
+  programs.steam.enable = true;
+  programs.gamemode.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

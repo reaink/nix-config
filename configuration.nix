@@ -310,6 +310,14 @@
     };
   };
 
+  services.redis.servers.my-redis = {
+    enable = true;
+    port = 6379;
+    bind = "0.0.0.0";
+    # For example, to set a password:
+    # passwordFile = "/path/to/your/redis_password_file";
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

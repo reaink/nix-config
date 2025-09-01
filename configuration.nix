@@ -223,6 +223,7 @@
     neovim
     wget
     nixfmt-rfc-style
+    openssl
     sops
     age
   ];

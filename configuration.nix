@@ -232,6 +232,17 @@
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
 
+  programs.nix-ld.enable = true;
+
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    stdenv.cc.libc
+    zlib
+    openssl
+    libgcc
+    glibc
+  ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

@@ -63,10 +63,15 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    PNPM_HOME = "$HOME/.local/share/pnpm";
   };
 
+  home.sessionPath = [
+    "$HOME/.local/share/pnpm"
+  ];
+
   programs.zsh.initContent = ''
-    eval "$(fnm env --use-on-cd)"
+    eval "$(fnm env --use-on-cd --shell zsh)"
   '';
 
   programs.git = {
@@ -90,7 +95,7 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch --recreate-lock-file --flake .";
+      update = "sudo nixos-rebuild switch";
     };
 
     history.size = 10000;

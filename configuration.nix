@@ -15,7 +15,7 @@
     defaultSopsFile = ./secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/rea/.config/sops/age/keys.txt";
-    
+
     secrets = {
       postgres-password = {
         owner = "postgres";
@@ -23,7 +23,7 @@
         mode = "0400";
       };
       rea-password = {
-        owner = "postgres"; 
+        owner = "postgres";
         group = "postgres";
         mode = "0400";
       };
@@ -255,7 +255,10 @@
       host    all         all     ::1/128      scram-sha-256
     '';
 
-    ensureDatabases = [ "postgres" "rea" ];
+    ensureDatabases = [
+      "postgres"
+      "rea"
+    ];
     ensureUsers = [
       {
         name = "rea";

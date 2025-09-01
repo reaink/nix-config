@@ -1,0 +1,18 @@
+# Sops private keys - NEVER commit these!
+keys.txt
+age/keys.txt
+.config/sops/age/keys.txt
+
+# Temporary sops files
+secrets_temp.yaml
+*.yaml.dec
+
+# Editor files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build results
+result
+result-*

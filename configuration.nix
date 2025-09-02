@@ -31,10 +31,21 @@
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 5;
 
-  boot.loader.systemd-boot.configurationLimit = 10;
+    extraEntries = {
+      "windows.conf" = ''
+        title Windows 11
+        efi /EFI/Microsoft/Boot/bootmgfw.efi
+      '';
+    };
+  };
+  boot.loader.efi = {
+    canTouchEfiVariables = true;
+    efiSysMountPoint = "/boot";
+  };
 
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
@@ -49,6 +60,9 @@
   ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -59,12 +73,10 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # Graphics configuration
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
     extraPackages = with pkgs; [
       # NVIDIA
       nvidia-vaapi-driver
@@ -270,9 +282,10 @@
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    efibootmgr
+    ntfs3g
     git
     neovim
     wget
@@ -318,7 +331,12 @@
     glibc
   ];
 
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
   programs.gamemode.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are

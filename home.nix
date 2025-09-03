@@ -52,6 +52,7 @@
       postman
       dbeaver-bin
       splayer
+      spotify
       discord
     ])
     ++ [
@@ -86,8 +87,10 @@
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
-    enableFishIntegration = true;
+    enableZshIntegration = true;
   };
+
+  services.kdeconnect.enable = true;
 
   programs.zsh = {
     enable = true;

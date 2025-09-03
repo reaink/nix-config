@@ -38,7 +38,18 @@
       gparted
 
       # kdePackages
+      kdePackages.akonadi
+      kdePackages.akonadi-import-wizard
+      kdePackages.dragon
+      kdePackages.kcalc
       kdePackages.kamoso
+      kdePackages.kdepim-addons
+      kdePackages.kdenlive
+      kdePackages.kontact
+      kdePackages.libkdepim
+      kdePackages.pimcommon
+      kdePackages.pim-data-exporter
+      kdePackages.yakuake
 
       warp-terminal
       google-chrome
@@ -54,6 +65,8 @@
       splayer
       spotify
       discord
+      libreoffice
+      shotcut
     ])
     ++ [
     ];

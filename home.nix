@@ -120,6 +120,8 @@
           zdharma-continuum/fast-syntax-highlighting kind:defer
           zsh-users/zsh-history-substring-search
           ohmyzsh/ohmyzsh path:lib/git.zsh
+          ohmyzsh/ohmyzsh path:plugins/git
+          ohmyzsh/ohmyzsh path:plugins/colored-man-pages
           sindresorhus/pure
         ''
       ];

@@ -51,7 +51,6 @@
       lutris
       postman
       dbeaver-bin
-      xemu
       splayer
       discord
     ])

@@ -49,7 +49,7 @@
       kdePackages.libkdepim
       kdePackages.pimcommon
       kdePackages.pim-data-exporter
-      kdePackages.yakuake
+      kdePackages.korganizer
 
       warp-terminal
       google-chrome

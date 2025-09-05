@@ -97,6 +97,8 @@
     ];
   };
 
+  hardware.opengl.enable = true;
+
   # Nvidia Driver
   hardware.nvidia = {
     modesetting.enable = true;
@@ -125,10 +127,7 @@
 
   services.xserver = {
     enable = true;
-    videoDrivers = [
-      "amdgpu"
-      "nvidia"
-    ];
+    videoDrivers = [ "nvidia" ];
   };
 
   networking.hostName = "nixos"; # Define your hostname.

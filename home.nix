@@ -59,7 +59,11 @@
       cherry-studio
       telegram-desktop
       steam
-      lutris
+      (lutris.override {
+        extraPkgs = pkgs: [
+          pkgs.wineWowPackages.stable
+        ];
+      })
       postman
       dbeaver-bin
       splayer

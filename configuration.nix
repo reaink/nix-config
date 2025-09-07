@@ -97,8 +97,6 @@
     ];
   };
 
-  hardware.opengl.enable = true;
-
   # Nvidia Driver
   hardware.nvidia = {
     modesetting.enable = true;

@@ -87,6 +87,7 @@
 
   home.sessionPath = [
     "$HOME/.local/share/pnpm"
+    "$HOME/.cargo/bin"
   ];
 
   programs.zsh.initContent = ''

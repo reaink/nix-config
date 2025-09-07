@@ -113,12 +113,9 @@
     package = config.boot.kernelPackages.nvidiaPackages.latest;
     # PRIME
     prime = {
-      sync.enable = false;
+      sync.enable = true;
 
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
+      offload.enable = false;
 
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:13:0:0";
@@ -128,6 +125,9 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
+    deviceSection = ''
+      Option "PrimaryGPU" "yes"
+    '';
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -313,8 +313,6 @@
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
     "__GL_THREADED_OPTIMIZATION" = "1";
-
-    "WLR_NO_HARDWARE_CURSORS" = "1";
   };
 
   virtualisation.libvirtd.enable = true;

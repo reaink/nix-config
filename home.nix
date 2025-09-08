@@ -54,7 +54,7 @@
       lazydocker
       google-cloud-sdk
       gparted
-      fuse
+      appimage-run
 
       # kdePackages
       kdePackages.akonadi

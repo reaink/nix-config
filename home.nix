@@ -29,13 +29,23 @@
       gnumake
       pkg-config
       glib
+      glib.dev
       gtk3
-      gdk-pixbuf
-      pango
-      cairo
-      atk
+      gtk3.dev
       webkitgtk_4_1
+      webkitgtk_4_1.dev
+      pango
+      pango.dev
+      cairo
+      cairo.dev
+      atk
+      atk.dev
       libsoup_3
+      libsoup_3.dev
+      openssl
+      openssl.dev
+      dbus
+      dbus.dev
 
       uv
       fnm
@@ -44,6 +54,7 @@
       lazydocker
       google-cloud-sdk
       gparted
+      fuse
 
       # kdePackages
       kdePackages.akonadi
@@ -90,6 +101,19 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    PKG_CONFIG_PATH = "${pkgs.lib.makeSearchPath "lib/pkgconfig" [
+      pkgs.glib.dev
+      pkgs.gtk3.dev
+      pkgs.webkitgtk_4_1.dev
+      pkgs.pango.dev
+      pkgs.cairo.dev
+      pkgs.atk.dev
+      pkgs.libsoup_3.dev
+      pkgs.openssl.dev
+      pkgs.dbus.dev
+    ]}";
+    PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
+    PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
     PNPM_HOME = "$HOME/.local/share/pnpm";
   };
 

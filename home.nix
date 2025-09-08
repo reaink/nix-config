@@ -28,6 +28,14 @@
       lld
       gnumake
       pkg-config
+      glib
+      gtk3
+      gdk-pixbuf
+      pango
+      cairo
+      atk
+      webkitgtk_4_1
+      libsoup_3
 
       uv
       fnm

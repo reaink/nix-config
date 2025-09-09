@@ -214,6 +214,8 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "kvm"
+      "adbusers"
     ];
     packages = with pkgs; [
       kdePackages.kate

@@ -56,6 +56,7 @@
       google-cloud-sdk
       gparted
       appimage-run
+      android-tools
 
       # kdePackages
       kdePackages.akonadi
@@ -91,6 +92,7 @@
       discord
       libreoffice
       shotcut
+      android-studio
     ])
     ++ [
     ];

@@ -46,6 +46,7 @@
       openssl.dev
       dbus
       dbus.dev
+      gdk-pixbuf
 
       uv
       fnm

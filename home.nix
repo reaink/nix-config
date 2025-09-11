@@ -57,6 +57,7 @@
       gparted
       appimage-run
       android-tools
+      imagemagick
 
       # kdePackages
       kdePackages.akonadi

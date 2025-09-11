@@ -93,6 +93,7 @@
       libreoffice
       shotcut
       android-studio
+      prismlauncher
     ])
     ++ [
     ];

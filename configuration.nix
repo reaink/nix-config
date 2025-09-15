@@ -216,6 +216,7 @@
       "wheel"
       "kvm"
       "adbusers"
+      "docker"
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -317,6 +318,23 @@
 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
+
+  virtualisation.docker = {
+    enable = true;
+    daemon.settings = {
+      dns = [
+        "1.1.1.1"
+        "8.8.8.8"
+      ];
+      log-driver = "journald";
+      registry-mirrors = [ "https://mirror.gcr.io" ];
+      storage-driver = "overlay2";
+    };
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
   programs.nix-ld.enable = true;
 

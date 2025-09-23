@@ -294,6 +294,8 @@
     openssl
     sops
     age
+    inetutils
+    dnsutils
 
     # CUDA
     cudatoolkit

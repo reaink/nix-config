@@ -11,19 +11,27 @@
     };
 
     sops-nix.url = "github:Mic92/sops-nix";
+
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     inputs@{
       nixpkgs,
       home-manager,
+      winapps,
       ...
     }:
     {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
-          specialArgs = inputs;
+          specialArgs = {
+            inherit inputs system;
+          };
           modules = [
             ./configuration.nix
             inputs.sops-nix.nixosModules.sops
@@ -39,6 +47,20 @@
                 imports = [ ./home.nix ];
               };
             }
+
+            (
+              {
+                pkgs,
+                system ? pkgs.system,
+                ...
+              }:
+              {
+                environment.systemPackages = [
+                  winapps.packages."${system}".winapps
+                  winapps.packages."${system}".winapps-launcher # optional
+                ];
+              }
+            )
           ];
         };
       };

@@ -318,7 +318,18 @@
     "__GL_THREADED_OPTIMIZATION" = "1";
   };
 
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+    qemu = {
+      package = pkgs.qemu_kvm;
+      swtpm.enable = true;
+      ovmf.packages = [
+        (pkgs.OVMF.override {
+          secureBoot = true;
+          tpmSupport = true;
+        }).fd
+      ];
+    };
+  };
   programs.virt-manager.enable = true;
 
   virtualisation.docker = {

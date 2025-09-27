@@ -217,6 +217,7 @@
       "kvm"
       "adbusers"
       "docker"
+      "libvirtd"
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -310,6 +311,11 @@
     # Performance testing
     mangohud
     gamemode
+
+    # Libraries for Electron apps
+    stdenv.cc.cc.lib
+    libgcc
+    glibc
   ];
 
   environment.variables = {
@@ -319,6 +325,7 @@
   };
 
   virtualisation.libvirtd = {
+    enable = true;
     qemu = {
       package = pkgs.qemu_kvm;
       swtpm.enable = true;

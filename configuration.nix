@@ -322,6 +322,7 @@
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
     "__GL_THREADED_OPTIMIZATION" = "1";
+    LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
   };
 
   virtualisation.libvirtd = {
@@ -365,6 +366,23 @@
     openssl
     libgcc
     glibc
+    gcc.cc.lib
+    xorg.libX11
+    xorg.libXext
+    xorg.libXi
+    xorg.libXrandr
+    xorg.libXrender
+    libGL
+    freetype
+    fontconfig
+    dbus
+    at-spi2-atk
+    at-spi2-core
+    atk
+    cairo
+    gdk-pixbuf
+    gtk3
+    pango
   ];
 
   programs.steam = {

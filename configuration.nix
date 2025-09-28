@@ -372,6 +372,7 @@
     gamescopeSession.enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+    fontPackages = with pkgs; [ source-han-sans ];
   };
   programs.gamemode.enable = true;
 

@@ -78,22 +78,20 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
+      # AMD (RADV is included in Mesa by default)
+      mesa
+
       # NVIDIA
       nvidia-vaapi-driver
-      vaapiVdpau
-      libvdpau-va-gl
 
       # Vulkan
       vulkan-validation-layers
       vulkan-tools
-
-      # AMD
-      amdvlk
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
+      mesa
       nvidia-vaapi-driver
-      amdvlk
     ];
   };
 
@@ -330,12 +328,6 @@
     qemu = {
       package = pkgs.qemu_kvm;
       swtpm.enable = true;
-      ovmf.packages = [
-        (pkgs.OVMF.override {
-          secureBoot = true;
-          tpmSupport = true;
-        }).fd
-      ];
     };
   };
   programs.virt-manager.enable = true;

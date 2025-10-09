@@ -91,8 +91,8 @@
       splayer
       spotify
       discord
-      libreoffice
-      shotcut
+      libreoffice-fresh
+      # shotcut  # Temporarily disabled: CMake version compatibility issue
       android-studio
       prismlauncher
     ])

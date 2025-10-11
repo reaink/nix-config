@@ -51,6 +51,7 @@
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+    "nvidia.NVreg_EnableMPO=0"
   ];
   boot.initrd.kernelModules = [
     "nvidia"
@@ -105,6 +106,8 @@
       enable = true;
       finegrained = false;
     };
+
+    forceFullCompositionPipeline = true;
 
     package = config.boot.kernelPackages.nvidiaPackages.latest;
     # PRIME

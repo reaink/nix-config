@@ -378,6 +378,7 @@
     gdk-pixbuf
     gtk3
     pango
+    freerdp
   ];
 
   programs.steam = {
@@ -472,6 +473,9 @@
         from = 1714;
         to = 1764;
       }
+    ];
+    allowedTCPPorts = [
+      3389
     ];
     allowedUDPPortRanges = [
       {

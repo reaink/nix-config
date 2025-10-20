@@ -95,6 +95,7 @@
       # shotcut  # Temporarily disabled: CMake version compatibility issue
       android-studio
       prismlauncher
+      vlc
     ])
     ++ [
     ];

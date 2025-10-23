@@ -174,13 +174,13 @@
   #   };
   # };
 
-  # Enable HIME input method for Chinese input.
-  # HIME is an extremely easy-to-use input method framework for Asian languages.
-  # We keep the fcitx5 block above commented so you can easily switch back
-  # once the upstream fix lands in nixpkgs-unstable.
   i18n.inputMethod = {
     enable = true;
-    type = "hime";
+    type = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      libpinyin # Intelligent Pinyin input method
+      rime # Rime input method engine
+    ];
   };
 
   # Enable the KDE Plasma Desktop Environment.

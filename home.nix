@@ -92,10 +92,11 @@
       spotify
       discord
       libreoffice-fresh
-      # shotcut  # Temporarily disabled: CMake version compatibility issue
+      shotcut
       android-studio
       prismlauncher
       vlc
+      obsidian
     ])
     ++ [
     ];

@@ -157,19 +157,33 @@
     LC_TIME = "zh_CN.UTF-8";
   };
 
+  # Temporarily disabled due to fcitx5-qt6 build failure in nixos-unstable
+  # Will be re-enabled once the fix reaches unstable branch (PR #454184)
+  # i18n.inputMethod = {
+  #   enable = true;
+  #   type = "fcitx5";
+  #   fcitx5 = {
+  #     waylandFrontend = true;
+  #     addons = with pkgs; [
+  #       fcitx5-configtool
+  #       fcitx5-mozc
+  #       fcitx5-gtk
+  #       fcitx5-nord
+  #       fcitx5-rime
+  #     ];
+  #   };
+  # };
+
+  # Enable IBus as a fallback/supplemental input method for Chinese input.
+  # We keep the fcitx5 block above commented so you can easily switch back
+  # once the upstream fix lands in nixpkgs-unstable.
   i18n.inputMethod = {
     enable = true;
-    type = "fcitx5";
-    fcitx5 = {
-      waylandFrontend = true;
-      addons = with pkgs; [
-        fcitx5-configtool
-        fcitx5-mozc
-        fcitx5-gtk
-        fcitx5-nord
-        fcitx5-rime
-      ];
-    };
+    type = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      libpinyin
+      rime
+    ];
   };
 
   # Enable the KDE Plasma Desktop Environment.

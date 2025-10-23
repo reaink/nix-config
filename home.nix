@@ -135,8 +135,12 @@
 
   programs.git = {
     enable = true;
-    userName = "Rea";
-    userEmail = "hi@rea.ink";
+    settings = {
+      user = {
+        name = "Rea";
+        email = "hi@rea.ink";
+      };
+    };
   };
 
   programs.fzf.enable = true;

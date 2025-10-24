@@ -157,30 +157,19 @@
     LC_TIME = "zh_CN.UTF-8";
   };
 
-  # Temporarily disabled due to fcitx5-qt6 build failure in nixos-unstable
-  # Will be re-enabled once the fix reaches unstable branch (PR #454184)
-  # i18n.inputMethod = {
-  #   enable = true;
-  #   type = "fcitx5";
-  #   fcitx5 = {
-  #     waylandFrontend = true;
-  #     addons = with pkgs; [
-  #       fcitx5-configtool
-  #       fcitx5-mozc
-  #       fcitx5-gtk
-  #       fcitx5-nord
-  #       fcitx5-rime
-  #     ];
-  #   };
-  # };
-
   i18n.inputMethod = {
     enable = true;
-    type = "ibus";
-    ibus.engines = with pkgs.ibus-engines; [
-      libpinyin # Intelligent Pinyin input method
-      rime # Rime input method engine
-    ];
+    type = "fcitx5";
+    fcitx5 = {
+      waylandFrontend = true;
+      addons = with pkgs; [
+        fcitx5-configtool
+        fcitx5-mozc
+        fcitx5-gtk
+        fcitx5-nord
+        fcitx5-rime
+      ];
+    };
   };
 
   # Enable the KDE Plasma Desktop Environment.

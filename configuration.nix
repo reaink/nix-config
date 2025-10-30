@@ -163,7 +163,7 @@
     fcitx5 = {
       waylandFrontend = true;
       addons = with pkgs; [
-        fcitx5-configtool
+        qt6Packages.fcitx5-configtool
         fcitx5-mozc
         fcitx5-gtk
         fcitx5-nord
@@ -299,13 +299,10 @@
     inetutils
     dnsutils
 
-    # CUDA
-    cudatoolkit
-
     # GPU info
-    nvtopPackages.full
+    # nvtopPackages.full  # temporarily disabled due to broken CUDA dependency
     nvidia-system-monitor-qt
-    glxinfo
+    mesa-demos
     vulkan-tools
     glmark2
 

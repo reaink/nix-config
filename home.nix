@@ -97,6 +97,7 @@
       prismlauncher
       vlc
       obsidian
+      wpsoffice
     ])
     ++ [
     ];

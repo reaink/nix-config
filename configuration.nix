@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -460,6 +465,10 @@
       '';
     };
   };
+
+  # https://github.com/NixOS/nixpkgs/issues/462935
+  # nixos/orca: Screen reader on by default on non-GNOME desktops, cannot be disabled
+  systemd.user.services.orca.wantedBy = lib.mkForce [ ];
 
   services.redis.servers.my-redis = {
     enable = true;

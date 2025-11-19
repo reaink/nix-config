@@ -99,6 +99,7 @@
       mpv
       obsidian
       wpsoffice
+      gdu
     ])
     ++ [
     ];

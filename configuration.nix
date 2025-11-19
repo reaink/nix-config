@@ -69,6 +69,8 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  nix.optimise.automatic = true;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
@@ -288,6 +290,7 @@
   ];
 
   nix.settings.substituters = [
+    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
     "https://mirror.nju.edu.cn/nix-channels/store"
     "https://nix-community.cachix.org"
   ];

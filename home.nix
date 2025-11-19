@@ -96,6 +96,7 @@
       android-studio
       prismlauncher
       vlc
+      mpv
       obsidian
       wpsoffice
     ])

@@ -245,6 +245,10 @@
       nerd-fonts.fira-code
       nerd-fonts.droid-sans-mono
       nerd-fonts.caskaydia-mono
+      source-han-mono
+      source-han-sans
+      source-han-serif
+      wqy_zenhei
     ];
     fontconfig = {
       defaultFonts = {
@@ -265,6 +269,7 @@
           "DejaVu Serif"
         ];
       };
+      cache32Bit = true;
     };
   };
 

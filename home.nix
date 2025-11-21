@@ -67,11 +67,18 @@
       kdePackages.kamoso
       kdePackages.kdepim-addons
       kdePackages.kdenlive
+      kdePackages.sddm-kcm
+      kdePackages.ksystemlog
       kdePackages.kontact
+      kdePackages.kmail
+      kdePackages.kmail-account-wizard
       kdePackages.libkdepim
       kdePackages.pimcommon
       kdePackages.pim-data-exporter
       kdePackages.korganizer
+      kdePackages.kaccounts-integration
+      kdePackages.kaccounts-providers
+      kdePackages.kio-gdrive
 
       warp-terminal
       google-chrome

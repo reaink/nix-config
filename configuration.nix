@@ -311,6 +311,10 @@
     age
     inetutils
     dnsutils
+    hardinfo2
+    wayland-utils
+    wl-clipboard
+    xclip
 
     # GPU info
     # nvtopPackages.full  # temporarily disabled due to broken CUDA dependency

@@ -500,9 +500,15 @@
         from = 1714;
         to = 1764;
       }
+      {
+        from = 8000;
+        to = 9000;
+      }
     ];
     allowedTCPPorts = [
+      3000
       3389
+      5000
     ];
     allowedUDPPortRanges = [
       {

@@ -52,6 +52,15 @@
     efiSysMountPoint = "/boot";
   };
 
+  boot.loader.timeout = 5;
+
+  boot.loader.systemd-boot.extraInstallCommands = ''
+    # Set default to @saved to remember the last selected entry
+    # Remove any existing 'default' lines first to avoid duplicates
+    sed -i '/^default /d' /boot/loader/loader.conf
+    echo "default @saved" >> /boot/loader/loader.conf
+  '';
+
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"

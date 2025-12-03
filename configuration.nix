@@ -325,6 +325,10 @@
     wl-clipboard
     xclip
 
+    # Docker tools
+    docker-compose
+    docker-buildx
+
     # GPU info
     # nvtopPackages.full  # temporarily disabled due to broken CUDA dependency
     nvidia-system-monitor-qt

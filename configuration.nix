@@ -267,22 +267,18 @@
     ];
     fontconfig = {
       defaultFonts = {
-        emoji = [ "Noto Color Emoji" ];
-        monospace = [
-          "Noto Sans Mono CJK SC"
-          "Sarasa Mono SC"
-          "DejaVu Sans Mono"
-        ];
-        sansSerif = [
-          "Noto Sans CJK SC"
-          "Source Han Sans SC"
-          "DejaVu Sans"
-        ];
-        serif = [
-          "Noto Serif CJK SC"
+        emoji = [
           "Source Han Serif SC"
-          "DejaVu Serif"
+          "JetBrainsMono Nerd Font"
+          "Noto Color Emoji"
         ];
+        monospace = [
+          "Source Han Serif SC"
+          "Sarasa Mono SC"
+          "JetBrainsMono Nerd Font Mono"
+        ];
+        sansSerif = [ "Source Han Serif SC" ];
+        serif = [ "Source Han Serif SC" ];
       };
       cache32Bit = true;
     };
@@ -412,7 +408,6 @@
     gamescopeSession.enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-    fontPackages = with pkgs; [ source-han-sans ];
   };
   programs.gamemode.enable = true;
 

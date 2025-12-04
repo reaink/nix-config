@@ -279,11 +279,9 @@
         ];
         sansSerif = [
           "Source Han Serif SC"
-          "WenQuanYi Zen Hei"
         ];
         serif = [
           "Source Han Serif SC"
-          "WenQuanYi Zen Hei"
         ];
       };
       cache32Bit = true;

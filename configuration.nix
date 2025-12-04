@@ -277,8 +277,14 @@
           "Sarasa Mono SC"
           "JetBrainsMono Nerd Font Mono"
         ];
-        sansSerif = [ "Source Han Serif SC" ];
-        serif = [ "Source Han Serif SC" ];
+        sansSerif = [
+          "Source Han Serif SC"
+          "WenQuanYi Zen Hei"
+        ];
+        serif = [
+          "Source Han Serif SC"
+          "WenQuanYi Zen Hei"
+        ];
       };
       cache32Bit = true;
     };

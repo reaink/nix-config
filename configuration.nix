@@ -265,27 +265,7 @@
       source-han-serif
       wqy_zenhei
     ];
-    fontconfig = {
-      defaultFonts = {
-        emoji = [
-          "Source Han Serif SC"
-          "JetBrainsMono Nerd Font"
-          "Noto Color Emoji"
-        ];
-        monospace = [
-          "Source Han Serif SC"
-          "Sarasa Mono SC"
-          "JetBrainsMono Nerd Font Mono"
-        ];
-        sansSerif = [
-          "Source Han Serif SC"
-        ];
-        serif = [
-          "Source Han Serif SC"
-        ];
-      };
-      cache32Bit = true;
-    };
+    fontconfig.enable = true;
   };
 
   # Install firefox.

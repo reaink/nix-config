@@ -265,7 +265,12 @@
       source-han-serif
       wqy_zenhei
     ];
-    fontconfig.enable = true;
+    fontconfig = {
+      defaultFonts = {
+        sansSerif = [ "Noto Sans CJK SC" ];
+        serif = [ "Noto Serif CJK SC" ];
+      };
+    };
   };
 
   # Install firefox.

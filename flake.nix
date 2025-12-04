@@ -17,6 +17,16 @@
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -36,6 +46,7 @@
           modules = [
             ./configuration.nix
             inputs.sops-nix.nixosModules.sops
+            ./noctalia.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -43,7 +54,7 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
 
-              home-manager.extraSpecialArgs = inputs;
+              home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [ ./home.nix ];
               };

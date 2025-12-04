@@ -192,6 +192,10 @@
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  # Enable niri window manager as default, keep KDE as fallback
+  programs.niri.enable = true;
+  services.displayManager.defaultSession = "niri";
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";

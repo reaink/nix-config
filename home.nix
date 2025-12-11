@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -83,7 +84,7 @@
 
       warp-terminal
       google-chrome
-      vscode
+      inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
       wechat-uos
       qq
       cherry-studio

@@ -17,6 +17,11 @@
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    vscode-insiders = {
+      url = "github:iosmanthus/code-insiders-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -24,6 +29,7 @@
       nixpkgs,
       home-manager,
       winapps,
+      vscode-insiders,
       ...
     }:
     {
@@ -43,7 +49,7 @@
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "backup";
 
-              home-manager.extraSpecialArgs = inputs;
+              home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [ ./home.nix ];
               };

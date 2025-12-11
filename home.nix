@@ -56,6 +56,7 @@
       google-cloud-sdk
       gparted
       appimage-run
+      gearlever
       android-tools
       imagemagick
 

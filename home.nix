@@ -110,6 +110,7 @@
       wpsoffice
       gdu
       ngrok
+      shopify-cli
     ])
     ++ [
     ];

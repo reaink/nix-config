@@ -109,6 +109,7 @@
       obsidian
       wpsoffice
       gdu
+      ngrok
     ])
     ++ [
     ];

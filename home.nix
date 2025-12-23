@@ -21,6 +21,7 @@
       ripgrep
       jq
       eza
+      bat
 
       rustup
       protobuf
@@ -174,7 +175,30 @@
     syntaxHighlighting.enable = true;
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch";
+      # System management
+      rebuild = "sudo nixos-rebuild switch --flake .#";
+      test = "sudo nixos-rebuild test --flake .#";
+      
+      # Nix maintenance
+      gc = "sudo nix-collect-garbage";
+      gcold = "sudo nix-collect-garbage --delete-older-than 30d";
+      gcall = "sudo nix-collect-garbage -d";
+      optimize = "sudo nix-store --optimize";
+      clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
+      
+      # Flake operations
+      flake-update = "nix flake update";
+      flake-check = "nix flake check";
+      
+      # System info
+      list-gens = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      
+      # Common shortcuts
+      ls = "eza --icons";
+      ll = "eza -l --icons";
+      la = "eza -la --icons";
+      lt = "eza --tree --icons";
+      cat = "bat";
     };
 
     history.size = 10000;

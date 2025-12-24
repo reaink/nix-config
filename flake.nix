@@ -13,11 +13,6 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
-    winapps = {
-      url = "github:winapps-org/winapps";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     vscode-insiders = {
       url = "github:iosmanthus/code-insiders-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,7 +23,6 @@
     inputs@{
       nixpkgs,
       home-manager,
-      winapps,
       vscode-insiders,
       ...
     }:
@@ -54,20 +48,6 @@
                 imports = [ ./home.nix ];
               };
             }
-
-            (
-              {
-                pkgs,
-                system ? pkgs.system,
-                ...
-              }:
-              {
-                environment.systemPackages = [
-                  winapps.packages."${system}".winapps
-                  winapps.packages."${system}".winapps-launcher # optional
-                ];
-              }
-            )
           ];
         };
       };

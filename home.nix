@@ -112,6 +112,7 @@
       gdu
       ngrok
       shopify-cli
+      winboat
     ])
     ++ [
     ];

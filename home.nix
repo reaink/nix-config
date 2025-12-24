@@ -176,8 +176,8 @@
 
     shellAliases = {
       # System management
-      rebuild = "sudo nixos-rebuild switch --flake .#";
-      test = "sudo nixos-rebuild test --flake .#";
+      rebuild = "sudo nixos-rebuild switch";
+      test = "sudo nixos-rebuild test";
       
       # Nix maintenance
       gc = "sudo nix-collect-garbage";

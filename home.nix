@@ -237,9 +237,10 @@
 
   programs.niri = {
     settings = {
-      spawn-at-startup = [
-        { command = [ "noctalia-shell" ]; }
-      ];
+      # Don't spawn noctalia-shell here - managed by systemd service in noctalia.nix
+      # spawn-at-startup = [
+      #   { command = [ "noctalia-shell" ]; }
+      # ];
 
       input = {
         keyboard.xkb = {

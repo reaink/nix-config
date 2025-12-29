@@ -30,6 +30,18 @@
       eza
       bat
 
+      # Screenshot tools
+      grim      # Wayland screenshot
+      satty     # Screenshot annotation
+      slurp     # Screen region selector
+
+      # Clipboard tools
+      wl-clipboard  # Wayland clipboard utilities (wl-copy, wl-paste)
+      clipse        # Modern TUI clipboard manager
+
+      # Xwayland support for X11 apps (WeChat, QQ, Steam, etc.)
+      xwayland-satellite
+
       rustup
       protobuf
       clang
@@ -238,9 +250,20 @@
   programs.niri = {
     settings = {
       # Don't spawn noctalia-shell here - managed by systemd service in noctalia.nix
-      # spawn-at-startup = [
-      #   { command = [ "noctalia-shell" ]; }
-      # ];
+      spawn-at-startup = [
+        # Start Clipse clipboard manager daemon
+        {
+          command = [
+            "sh"
+            "-c"
+            "clipse -listen"
+          ];
+        }
+        # Start Xwayland for X11 apps (WeChat, QQ, Steam, etc.)
+        {
+          command = [ "xwayland-satellite" ];
+        }
+      ];
 
       input = {
         keyboard.xkb = {
@@ -304,7 +327,45 @@
           "Mod+J".action.focus-window-down = { };
           "Mod+K".action.focus-window-up = { };
           "Mod+L".action.focus-column-right = { };
+
+          # Screenshots
+          "Print".action.spawn = [
+            "sh"
+            "-c"
+            "grim -g \"$(slurp)\" - | satty --filename - --output-filename ~/Pictures/Screenshots/$(date '+%Y%m%d_%H%M%S').png"
+          ];
+          "Shift+Print".action.spawn = [
+            "sh"
+            "-c"
+            "grim ~/Pictures/Screenshots/$(date '+%Y%m%d_%H%M%S').png"
+          ];
+
+          # Clipboard history
+          "Mod+V".action.spawn = [ "kitty" "--class" "clipse" "-o" "initial_window_width=800" "-o" "initial_window_height=576" "clipse" ];
         };
+
+      outputs."DP-1" = {
+        mode = {
+          width = 3840;
+          height = 2160;
+          refresh = 60.0;
+        };
+        scale = 1.5;
+        variable-refresh-rate = false;
+      };
+
+      # Window rules
+      window-rules = [
+        {
+          matches = [
+            { app-id = "^clipse$"; }
+          ];
+          open-floating = true;
+          default-column-width = { proportion = 0.3; };
+          open-maximized = false;
+          open-fullscreen = false;
+        }
+      ];
 
       # Layout configuration
       layout = {
@@ -316,6 +377,8 @@
       environment = {
         NIXOS_OZONE_WL = "1";
         MOZ_ENABLE_WAYLAND = "1";
+        # Xwayland display
+        DISPLAY = ":0";
       };
     };
   };

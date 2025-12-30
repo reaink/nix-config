@@ -22,6 +22,7 @@
       jq
       eza
       bat
+      bottom
 
       rustup
       protobuf

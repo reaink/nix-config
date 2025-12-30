@@ -335,6 +335,7 @@
     "__GL_SHADER_DISK_CACHE" = "1";
     "__GL_THREADED_OPTIMIZATION" = "1";
     LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
+    KWIN_DRM_NO_VRR = "1";
   };
 
   virtualisation.libvirtd = {

@@ -168,6 +168,42 @@
     enableZshIntegration = true;
   };
 
+  # GTK theme configuration for KDE integration
+  gtk = {
+    enable = true;
+    
+    theme = {
+      name = "Breeze";
+      package = pkgs.kdePackages.breeze-gtk;
+    };
+    
+    iconTheme = {
+      name = "breeze";
+      package = pkgs.kdePackages.breeze-icons;
+    };
+    
+    cursorTheme = {
+      name = "breeze_cursors";
+      package = pkgs.kdePackages.breeze;
+      size = 24;
+    };
+
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
+    };
+
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = true;
+    };
+  };
+
+  # Qt/KDE configuration
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+    style.name = "breeze";
+  };
+
   services.kdeconnect.enable = true;
 
   programs.zsh = {

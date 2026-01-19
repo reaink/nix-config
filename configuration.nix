@@ -73,9 +73,11 @@
     "nvidia_uvm"
     "nvidia_drm"
   ];
-  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.extraModulePackages = [ config.hardware.nvidia.package ];
 
-  boot.kernelPackages = pkgs.linuxPackages_6_17;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.blacklistedKernelModules = ["nouveau"];
 
   nix.optimise.automatic = true;
 

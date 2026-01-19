@@ -112,7 +112,7 @@
       wpsoffice
       gdu
       ngrok
-      shopify-cli
+      # shopify-cli  # build broken: pnpm ENOTDIR error
       winboat
     ])
     ++ [

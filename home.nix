@@ -63,12 +63,20 @@
       android-tools
       imagemagick
 
+      # Database for Akonadi
+      mariadb
+
       # kdePackages
       kdePackages.breeze
       kdePackages.breeze-gtk
       kdePackages.breeze-icons
       kdePackages.akonadi
       kdePackages.akonadi-import-wizard
+      kdePackages.akonadi-calendar
+      kdePackages.akonadi-contacts
+      kdePackages.akonadi-mime
+      kdePackages.akonadi-search
+      kdePackages.kdepim-runtime
       kdePackages.dragon
       kdePackages.kcalc
       kdePackages.kamoso

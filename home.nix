@@ -276,7 +276,7 @@
       };
       
       virtualDesktops = {
-        rows = 1;
+        rows = 2;
         number = 4;
         names = [ "Main" "Code" "Web" "Media" ];
       };
@@ -362,7 +362,6 @@
               };
             };
           }
-          "org.kde.plasma.pager"
           {
             name = "org.kde.plasma.icontasks";
             config = {
@@ -399,6 +398,7 @@
               };
             };
           }
+          "org.kde.plasma.pager"
           "org.kde.plasma.showdesktop"
         ];
       }

@@ -59,6 +59,7 @@
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
     "nvidia.NVreg_EnableMPO=0"
+    "nordrand"  # Disable RDSEED/RDRAND to avoid RDSEED32 BROKEN warning
   ];
   boot.initrd.kernelModules = [
     "nvidia"

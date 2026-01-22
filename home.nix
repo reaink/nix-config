@@ -64,6 +64,9 @@
       imagemagick
 
       # kdePackages
+      kdePackages.breeze
+      kdePackages.breeze-gtk
+      kdePackages.breeze-icons
       kdePackages.akonadi
       kdePackages.akonadi-import-wizard
       kdePackages.dragon

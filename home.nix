@@ -203,7 +203,12 @@
       gtk-application-prefer-dark-theme = true;
     };
 
-    gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+    gtk2 = {
+      configLocation = "${config.xdg.stateHome}/gtk-2.0/gtkrc";
+      extraConfig = ''
+        # Force GTK2 theme
+      '';
+    };
   };
 
   # Qt/KDE configuration

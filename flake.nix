@@ -47,8 +47,8 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "backup";
-
+              home-manager.backupFileExtension = null;
+              home-manager.backupCommand = "${nixpkgs.legacyPackages.${system}.coreutils}/bin/mv \"$1\" \"$1.bak.$(${nixpkgs.legacyPackages.${system}.coreutils}/bin/date +%s)\"";
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [

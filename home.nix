@@ -367,7 +367,7 @@
             name = "org.kde.plasma.kickoff";
             config = {
               General = {
-                icon = "nix-snowflake";
+                icon = "start-here-kde";
               };
             };
           }
@@ -385,6 +385,7 @@
             };
           }
           "org.kde.plasma.marginsseparator"
+          "org.kde.plasma.pager"
           {
             systemTray.items = {
               shown = [
@@ -421,7 +422,6 @@
               };
             };
           }
-          "org.kde.plasma.pager"
           "org.kde.plasma.showdesktop"
         ];
       }

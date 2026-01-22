@@ -58,8 +58,8 @@
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-    "nvidia.NVreg_EnableMPO=0"
-    "nordrand"  # Disable RDSEED/RDRAND to avoid RDSEED32 BROKEN warning
+    "clearcpuid=rdrand"  # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs
+    "random.trust_cpu=0"  # Don't trust CPU random number generator
   ];
   boot.initrd.kernelModules = [
     "nvidia"
@@ -72,6 +72,9 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.blacklistedKernelModules = ["nouveau"];
+
+  # Load Bluetooth ISO module for advanced audio profiles
+  boot.kernelModules = ["bluetooth_iso"];
 
   nix.optimise.automatic = true;
 
@@ -158,6 +161,7 @@
       General = {
         Enable = "Source,Sink,Media,Socket";
         Experimental = true;
+        KernelExperimental = true;  # Enable ISO Socket for BAP support
       };
     };
   };

@@ -101,6 +101,7 @@
       kdePackages.kio-extras
       kdePackages.kio-fuse
       kdePackages.plasma-workspace  # calendar plugins support
+      kdePackages.kweather  # weather widget
 
       google-chrome
       inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
@@ -399,10 +400,10 @@
             };
           }
           {
-            name = "org.kde.plasma.weatherWidget";
+            name = "org.kde.plasma.weather";
             config = {
               General = {
-                source = "wettercom|weather|Xi'an, Shaanxi, CN|2657896";
+                source = "bbcukmet|weather|Xi'an, Shaanxi, CN|2657896";
               };
             };
           }

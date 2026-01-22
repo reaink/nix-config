@@ -258,15 +258,39 @@
     # Shortcuts
     shortcuts = {
       "kwin" = {
+        # Desktop switching
         "Switch to Desktop 1" = "Meta+1";
         "Switch to Desktop 2" = "Meta+2";
         "Switch to Desktop 3" = "Meta+3";
         "Switch to Desktop 4" = "Meta+4";
+        
+        # Desktop navigation (scrolling workspaces)
+        "Switch to Next Desktop" = "Meta+Ctrl+Right";
+        "Switch to Previous Desktop" = "Meta+Ctrl+Left";
+        "Switch One Desktop Down" = "Meta+Ctrl+Down";
+        "Switch One Desktop Up" = "Meta+Ctrl+Up";
+        
+        # Window management
         "Window Close" = "Meta+Q";
         "Window Maximize" = "Meta+Up";
+        "Window Minimize" = "Meta+M";
+        
+        # Window tiling (KDE native)
         "Window Quick Tile Bottom" = "Meta+Down";
         "Window Quick Tile Left" = "Meta+Left";
         "Window Quick Tile Right" = "Meta+Right";
+        "Window Quick Tile Top Left" = "Meta+U";
+        "Window Quick Tile Top Right" = "Meta+I";
+        "Window Quick Tile Bottom Left" = "Meta+N";
+        "Window Quick Tile Bottom Right" = "Meta+.";
+        
+        # Move window to other desktop
+        "Window to Desktop 1" = "Meta+Shift+1";
+        "Window to Desktop 2" = "Meta+Shift+2";
+        "Window to Desktop 3" = "Meta+Shift+3";
+        "Window to Desktop 4" = "Meta+Shift+4";
+        "Window to Next Desktop" = "Meta+Shift+Right";
+        "Window to Previous Desktop" = "Meta+Shift+Left";
       };
       "org.kde.konsole.desktop" = {
         "_launch" = "Meta+Return";

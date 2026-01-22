@@ -87,7 +87,6 @@
       kdePackages.kaccounts-providers
       kdePackages.kio-gdrive
 
-      warp-terminal
       google-chrome
       inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
       wechat-uos
@@ -112,7 +111,6 @@
       vlc
       mpv
       obsidian
-      wpsoffice
       gdu
       ngrok
       # shopify-cli  # build broken: pnpm ENOTDIR error

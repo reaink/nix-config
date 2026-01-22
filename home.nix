@@ -92,6 +92,7 @@
       kdePackages.kio-admin
       kdePackages.kio-extras
       kdePackages.kio-fuse
+      kdePackages.plasma-workspace  # calendar plugins support
 
       google-chrome
       inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
@@ -389,8 +390,22 @@
             };
           }
           {
+            name = "org.kde.plasma.weatherWidget";
+            config = {
+              General = {
+                source = "wettercom|weather|Xi'an, Shaanxi, CN|2657896";
+              };
+            };
+          }
+          {
             digitalClock = {
-              calendar.firstDayOfWeek = "monday";
+              calendar = {
+                firstDayOfWeek = "monday";
+                plugins = [
+                  "holidaysevents"  # korganizer calendar events
+                  "alternatecalendar"  # lunar calendar support
+                ];
+              };
               time.format = "24h";
               date = {
                 enable = true;

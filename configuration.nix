@@ -306,7 +306,7 @@
     git
     neovim
     wget
-    nixfmt-rfc-style
+    nixfmt
     openssl
     sops
     age

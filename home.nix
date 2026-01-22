@@ -86,6 +86,12 @@
       kdePackages.kaccounts-integration
       kdePackages.kaccounts-providers
       kdePackages.kio-gdrive
+      kdePackages.yakuake
+      kdePackages.filelight
+      kdePackages.partitionmanager
+      kdePackages.kio-admin
+      kdePackages.kio-extras
+      kdePackages.kio-fuse
 
       google-chrome
       inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
@@ -208,6 +214,215 @@
   };
 
   services.kdeconnect.enable = true;
+
+  # Plasma Manager - declarative KDE configuration
+  programs.plasma = {
+    enable = true;
+
+    # Workspace settings
+    workspace = {
+      clickItemTo = "open";
+      lookAndFeel = "org.kde.breezedark.desktop";
+      cursor = {
+        theme = "breeze_cursors";
+        size = 24;
+      };
+      theme = "breeze-dark";
+      colorScheme = "BreezeDark";
+    };
+
+    # Hotkeys configuration
+    hotkeys.commands = {
+      "launch-yakuake" = {
+        name = "Launch Yakuake";
+        key = "Meta+`";
+        command = "yakuake";
+      };
+    };
+
+    # Shortcuts
+    shortcuts = {
+      "kwin" = {
+        "Switch to Desktop 1" = "Meta+1";
+        "Switch to Desktop 2" = "Meta+2";
+        "Switch to Desktop 3" = "Meta+3";
+        "Switch to Desktop 4" = "Meta+4";
+        "Window Close" = "Meta+Q";
+        "Window Maximize" = "Meta+Up";
+        "Window Quick Tile Bottom" = "Meta+Down";
+        "Window Quick Tile Left" = "Meta+Left";
+        "Window Quick Tile Right" = "Meta+Right";
+      };
+      "org.kde.konsole.desktop" = {
+        "_launch" = "Meta+Return";
+      };
+    };
+
+    # KWin configuration
+    kwin = {
+      edgeBarrier = 0;  # disable edge barriers
+      cornerBarrier = false;
+      
+      effects = {
+        blur.enable = true;
+        desktopSwitching.animation = "slide";
+        dimInactive.enable = false;
+        translucency.enable = true;
+      };
+      
+      virtualDesktops = {
+        rows = 1;
+        number = 4;
+        names = [ "Main" "Code" "Web" "Media" ];
+      };
+    };
+
+    # KRunner settings
+    krunner = {
+      position = "center";
+      historyBehavior = "enableSuggestions";
+    };
+
+    # Screen locker
+    kscreenlocker = {
+      autoLock = true;
+      timeout = 15;  # minutes
+      lockOnResume = true;
+    };
+
+    # Power management
+    powerdevil = {
+      AC = {
+        autoSuspend = {
+          action = "nothing";
+        };
+        dimDisplay = {
+          enable = true;
+          idleTimeout = 600;  # 10 minutes
+        };
+        turnOffDisplay = {
+          idleTimeout = 900;  # 15 minutes
+          idleTimeoutWhenLocked = 120;  # 2 minutes when locked
+        };
+        powerButtonAction = "showLogoutScreen";
+      };
+      
+      battery = {
+        autoSuspend = {
+          action = "sleep";
+          idleTimeout = 1800;  # 30 minutes
+        };
+        dimDisplay = {
+          enable = true;
+          idleTimeout = 300;  # 5 minutes
+        };
+        turnOffDisplay = {
+          idleTimeout = 600;  # 10 minutes
+          idleTimeoutWhenLocked = 60;  # 1 minute when locked
+        };
+        powerButtonAction = "sleep";
+      };
+      
+      lowBattery = {
+        autoSuspend = {
+          action = "sleep";
+          idleTimeout = 300;  # 5 minutes
+        };
+        dimDisplay = {
+          enable = true;
+          idleTimeout = 120;  # 2 minutes
+        };
+        turnOffDisplay = {
+          idleTimeout = 180;  # 3 minutes
+          idleTimeoutWhenLocked = 30;  # 30 seconds when locked
+        };
+        powerButtonAction = "sleep";
+      };
+    };
+
+    # Panel configuration
+    panels = [
+      {
+        location = "bottom";
+        height = 44;
+        floating = false;
+        hiding = "none";
+        
+        widgets = [
+          {
+            name = "org.kde.plasma.kickoff";
+            config = {
+              General = {
+                icon = "nix-snowflake";
+              };
+            };
+          }
+          "org.kde.plasma.pager"
+          {
+            name = "org.kde.plasma.icontasks";
+            config = {
+              General = {
+                launchers = [
+                  "applications:org.kde.konsole.desktop"
+                  "applications:google-chrome.desktop"
+                  "applications:code-insiders.desktop"
+                  "applications:org.kde.dolphin.desktop"
+                ];
+              };
+            };
+          }
+          "org.kde.plasma.marginsseparator"
+          {
+            systemTray.items = {
+              shown = [
+                "org.kde.plasma.networkmanagement"
+                "org.kde.plasma.bluetooth"
+                "org.kde.plasma.volume"
+              ];
+              hidden = [
+                "org.kde.plasma.brightness"
+              ];
+            };
+          }
+          {
+            digitalClock = {
+              calendar.firstDayOfWeek = "monday";
+              time.format = "24h";
+              date = {
+                enable = true;
+                format = "isoDate";
+              };
+            };
+          }
+          "org.kde.plasma.showdesktop"
+        ];
+      }
+    ];
+
+    # Desktop configuration
+    desktop.icons = {
+      arrangement = "leftToRight";
+      lockInPlace = false;
+      size = 2;  # 0=small, 1=medium, 2=large, 3=huge
+      alignment = "left";
+    };
+
+    # File manager (Dolphin) settings
+    configFile = {
+      "dolphinrc"."General"."ShowFullPath" = true;
+      "dolphinrc"."General"."RememberOpenedTabs" = false;
+      
+      # Konsole settings
+      "konsolerc"."Desktop Entry"."DefaultProfile" = "Default.profile";
+      
+      # Yakuake settings
+      "yakuakerc"."Animation"."Frames" = 20;
+      "yakuakerc"."Window"."Height" = 50;
+      "yakuakerc"."Window"."Width" = 100;
+      "yakuakerc"."Window"."ShowTabBar" = "ShowTabBarWhenNeeded";
+      "yakuakerc"."Dialogs"."FirstRun" = false;
+    };
+  };
 
   programs.zsh = {
     enable = true;

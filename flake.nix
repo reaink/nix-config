@@ -17,6 +17,12 @@
       url = "github:iosmanthus/code-insiders-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs =
@@ -45,7 +51,10 @@
 
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
-                imports = [ ./home.nix ];
+                imports = [
+                  ./home.nix
+                  inputs.plasma-manager.homeModules.plasma-manager
+                ];
               };
             }
           ];

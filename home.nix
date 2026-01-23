@@ -502,6 +502,10 @@
       # System info
       list-gens = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
       
+      # Python via uv
+      python = "uv run python";
+      python3 = "uv run python";
+      
       # Common shortcuts
       ls = "eza --icons";
       ll = "eza -l --icons";

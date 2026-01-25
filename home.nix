@@ -129,8 +129,8 @@
       obsidian
       gdu
       ngrok
-      # shopify-cli  # build broken: pnpm ENOTDIR error
       winboat
+      todesk
     ])
     ++ [
     ];

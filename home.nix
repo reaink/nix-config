@@ -9,6 +9,7 @@
   home.username = "rea";
   home.homeDirectory = "/home/rea";
 
+  # ToDesk wrapper script to fix DISPLAY variable in bwrap sandbox
   home.packages =
     (with pkgs; [
       neofetch
@@ -130,7 +131,25 @@
       gdu
       ngrok
       winboat
-      todesk
+      todesk  # Keep original for service
+      # GUI wrapper with DISPLAY fix
+      (pkgs.writeShellScriptBin "todesk-gui" ''
+        # Add X11 authorization
+        ${pkgs.xorg.xhost}/bin/xhost +local: >/dev/null 2>&1 || true
+        
+        # Force correct environment
+        export DISPLAY=:0
+        export QT_QPA_PLATFORM=xcb
+        export GDK_BACKEND=x11
+        export XAUTHORITY="$HOME/.Xauthority"
+        
+        # Kill existing GUI instances
+        ${pkgs.procps}/bin/pkill -f "ToDesk desktop" 2>/dev/null || true
+        sleep 1
+        
+        # Launch with error filtering
+        exec ${pkgs.todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
+      '')
     ])
     ++ [
     ];
@@ -227,6 +246,19 @@
     platformTheme.name = "kde";
     style.name = "breeze";
   };
+
+  # ToDesk desktop launcher with wrapper script
+  xdg.dataFile."applications/todesk.desktop".text = ''
+    [Desktop Entry]
+    Name=ToDesk
+    Exec=todesk-gui
+    Icon=todesk
+    Type=Application
+    Categories=Network;RemoteAccess;
+    Comment=ToDesk Remote Desktop (Fixed for Wayland/XWayland)
+    Terminal=false
+    X-KDE-SubstituteUID=false
+  '';
 
   # Steam pressure-vessel container font support
   # Link CJK fonts to ~/.local/share/fonts/ where pressure-vessel can access them

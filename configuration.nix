@@ -320,6 +320,7 @@
     wayland-utils
     wl-clipboard
     xclip
+    xorg.xhost
 
     # Docker tools
     docker-compose
@@ -504,6 +505,32 @@
     bind = "0.0.0.0";
     # For example, to set a password:
     # passwordFile = "/path/to/your/redis_password_file";
+  };
+
+  # ToDesk remote desktop support
+  systemd.tmpfiles.rules = [
+    "d /var/lib/todesk 0755 root root -"
+    "d /var/log/todesk 0755 root root -"
+    "d /opt/todesk 0755 root root -"
+  ];
+
+  systemd.services.todeskd = {
+    description = "ToDesk Remote Desktop Service";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.todesk}/bin/todesk service";
+      Restart = "on-failure";
+      RestartSec = 10;
+      
+      # Security settings
+      PrivateTmp = false;
+      
+      # Network access
+      PrivateNetwork = false;
+    };
   };
 
   networking.firewall = {

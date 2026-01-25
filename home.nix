@@ -475,9 +475,8 @@
         location = "bottom";
         height = 44;
         floating = true;
-        hiding = "dodgewindows";
+        hiding = "none";
         alignment = "center";
-        lengthMode = "fit";
         
         widgets = [
           {

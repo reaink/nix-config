@@ -81,7 +81,7 @@
       kdePackages.kcalc
       kdePackages.kamoso
       kdePackages.kdepim-addons
-      kdePackages.kdenlive
+      # kdePackages.kdenlive # video editor, ffmpeg-full shaderc dependency issues
       kdePackages.sddm-kcm
       kdePackages.ksystemlog
       kdePackages.kontact

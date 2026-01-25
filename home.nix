@@ -9,7 +9,6 @@
   home.username = "rea";
   home.homeDirectory = "/home/rea";
 
-  # ToDesk wrapper script to fix DISPLAY variable in bwrap sandbox
   home.packages =
     (with pkgs; [
       neofetch

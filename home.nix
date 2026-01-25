@@ -234,13 +234,43 @@
     <?xml version="1.0"?>
     <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
     <fontconfig>
-      <!-- Make Arial fallback to sans-serif for automatic CJK font selection -->
+      <!-- Steam UI uses Motiva Sans - critical for CJK display -->
+      <match target="pattern">
+        <test name="family">
+          <string>Motiva Sans</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>sans-serif</string>
+        </edit>
+      </match>
+
+      <!-- Arial fallback -->
       <match target="pattern">
         <test name="family">
           <string>Arial</string>
         </test>
         <edit name="family" mode="prepend" binding="strong">
           <string>sans-serif</string>
+        </edit>
+      </match>
+
+      <!-- Helvetica fallback -->
+      <match target="pattern">
+        <test name="family">
+          <string>Helvetica</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>sans-serif</string>
+        </edit>
+      </match>
+
+      <!-- Times New Roman fallback -->
+      <match target="pattern">
+        <test name="family">
+          <string>Times New Roman</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>serif</string>
         </edit>
       </match>
 
@@ -272,26 +302,6 @@
           <family>Noto Sans Mono CJK SC</family>
         </prefer>
       </alias>
-
-      <!-- Helvetica fallback -->
-      <match target="pattern">
-        <test name="family">
-          <string>Helvetica</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>sans-serif</string>
-        </edit>
-      </match>
-
-      <!-- Times New Roman fallback -->
-      <match target="pattern">
-        <test name="family">
-          <string>Times New Roman</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>serif</string>
-        </edit>
-      </match>
     </fontconfig>
   '';
 

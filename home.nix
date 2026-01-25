@@ -228,49 +228,62 @@
     style.name = "breeze";
   };
 
+  # Steam pressure-vessel container font support
+  # Link CJK fonts to ~/.local/share/fonts/ where pressure-vessel can access them
+  # Note: Home Manager automatically creates parent directories, so no mkdir needed
+  home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source = "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";
+  home.file.".local/share/fonts/source-han/SourceHanSans-VF.otf.ttc".source = "${pkgs.source-han-sans}/share/fonts/opentype/source-han-sans/SourceHanSans-VF.otf.ttc";
+
   # Fontconfig for Steam CJK font support
   # Steam container only reads user-level fontconfig, not system-level /etc/fonts/
+  # CRITICAL: Direct font mapping (NOT via sans-serif) - Steam containers don't follow indirect aliases
   xdg.configFile."fontconfig/fonts.conf".text = ''
     <?xml version="1.0"?>
     <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
     <fontconfig>
-      <!-- Steam UI uses Motiva Sans - critical for CJK display -->
+      <!-- CRITICAL: Direct Arial->CJK mapping (Steam's primary query font) -->
       <match target="pattern">
-        <test name="family">
-          <string>Motiva Sans</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>sans-serif</string>
-        </edit>
-      </match>
-
-      <!-- Arial fallback -->
-      <match target="pattern">
-        <test name="family">
+        <test qual="any" name="family">
           <string>Arial</string>
         </test>
         <edit name="family" mode="prepend" binding="strong">
-          <string>sans-serif</string>
+          <string>Noto Sans CJK SC</string>
+          <string>Source Han Sans SC</string>
+          <string>WenQuanYi Zen Hei</string>
         </edit>
       </match>
 
-      <!-- Helvetica fallback -->
+      <!-- Direct Motiva Sans->CJK mapping (Steam UI font) -->
       <match target="pattern">
-        <test name="family">
+        <test qual="any" name="family">
+          <string>Motiva Sans</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>Noto Sans CJK SC</string>
+          <string>Source Han Sans SC</string>
+          <string>WenQuanYi Zen Hei</string>
+        </edit>
+      </match>
+
+      <!-- Direct Helvetica->CJK mapping -->
+      <match target="pattern">
+        <test qual="any" name="family">
           <string>Helvetica</string>
         </test>
         <edit name="family" mode="prepend" binding="strong">
-          <string>sans-serif</string>
+          <string>Noto Sans CJK SC</string>
+          <string>Source Han Sans SC</string>
         </edit>
       </match>
 
-      <!-- Times New Roman fallback -->
+      <!-- Direct Times New Roman->CJK mapping -->
       <match target="pattern">
-        <test name="family">
+        <test qual="any" name="family">
           <string>Times New Roman</string>
         </test>
         <edit name="family" mode="prepend" binding="strong">
-          <string>serif</string>
+          <string>Noto Serif CJK SC</string>
+          <string>Source Han Serif SC</string>
         </edit>
       </match>
 
@@ -297,7 +310,6 @@
       <alias>
         <family>monospace</family>
         <prefer>
-          <family>Source Han Mono</family>
           <family>Sarasa Mono SC</family>
           <family>Noto Sans Mono CJK SC</family>
         </prefer>

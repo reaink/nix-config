@@ -474,8 +474,10 @@
       {
         location = "bottom";
         height = 44;
-        floating = false;
-        hiding = "none";
+        floating = true;
+        hiding = "dodgewindows";
+        alignment = "center";
+        lengthMode = "fit";
         
         widgets = [
           {

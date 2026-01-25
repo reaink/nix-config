@@ -228,6 +228,73 @@
     style.name = "breeze";
   };
 
+  # Fontconfig for Steam CJK font support
+  # Steam container only reads user-level fontconfig, not system-level /etc/fonts/
+  xdg.configFile."fontconfig/fonts.conf".text = ''
+    <?xml version="1.0"?>
+    <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+    <fontconfig>
+      <!-- Make Arial fallback to sans-serif for automatic CJK font selection -->
+      <match target="pattern">
+        <test name="family">
+          <string>Arial</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>sans-serif</string>
+        </edit>
+      </match>
+
+      <!-- Default sans-serif font family with CJK priority -->
+      <alias>
+        <family>sans-serif</family>
+        <prefer>
+          <family>Noto Sans CJK SC</family>
+          <family>Source Han Sans SC</family>
+          <family>WenQuanYi Zen Hei</family>
+        </prefer>
+      </alias>
+
+      <!-- Default serif font family -->
+      <alias>
+        <family>serif</family>
+        <prefer>
+          <family>Noto Serif CJK SC</family>
+          <family>Source Han Serif SC</family>
+        </prefer>
+      </alias>
+
+      <!-- Default monospace font family -->
+      <alias>
+        <family>monospace</family>
+        <prefer>
+          <family>Source Han Mono</family>
+          <family>Sarasa Mono SC</family>
+          <family>Noto Sans Mono CJK SC</family>
+        </prefer>
+      </alias>
+
+      <!-- Helvetica fallback -->
+      <match target="pattern">
+        <test name="family">
+          <string>Helvetica</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>sans-serif</string>
+        </edit>
+      </match>
+
+      <!-- Times New Roman fallback -->
+      <match target="pattern">
+        <test name="family">
+          <string>Times New Roman</string>
+        </test>
+        <edit name="family" mode="prepend" binding="strong">
+          <string>serif</string>
+        </edit>
+      </match>
+    </fontconfig>
+  '';
+
   services.kdeconnect.enable = true;
 
   # Plasma Manager - declarative KDE configuration

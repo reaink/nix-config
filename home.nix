@@ -333,7 +333,8 @@
     powerdevil = {
       AC = {
         autoSuspend = {
-          action = "nothing";
+          action = "sleep";  # Enable auto-sleep on AC power
+          idleTimeout = 1800;  # 30 minutes
         };
         dimDisplay = {
           enable = true;
@@ -341,7 +342,7 @@
         };
         turnOffDisplay = {
           idleTimeout = 900;  # 15 minutes
-          idleTimeoutWhenLocked = 120;  # 2 minutes when locked
+          idleTimeoutWhenLocked = 180;  # 3 minutes when locked
         };
         powerButtonAction = "showLogoutScreen";
       };
@@ -349,14 +350,14 @@
       battery = {
         autoSuspend = {
           action = "sleep";
-          idleTimeout = 1800;  # 30 minutes
+          idleTimeout = 900;  # 15 minutes
         };
         dimDisplay = {
           enable = true;
-          idleTimeout = 300;  # 5 minutes
+          idleTimeout = 180;  # 3 minutes
         };
         turnOffDisplay = {
-          idleTimeout = 600;  # 10 minutes
+          idleTimeout = 300;  # 5 minutes
           idleTimeoutWhenLocked = 60;  # 1 minute when locked
         };
         powerButtonAction = "sleep";

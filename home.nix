@@ -127,6 +127,14 @@
       vlc
       mpv
       obsidian
+      # OBS Studio with NVIDIA support and plugins
+      (wrapOBS {
+        plugins = with obs-studio-plugins; [
+          obs-vaapi  # VAAPI support (works via nvidia-vaapi-driver)
+          obs-vkcapture  # Vulkan/OpenGL capture
+          obs-pipewire-audio-capture  # PipeWire audio capture
+        ];
+      })
       gdu
       ngrok
       winboat
@@ -174,6 +182,11 @@
     PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
     PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
     PNPM_HOME = "$HOME/.local/share/pnpm";
+    
+    # Chrome/Chromium hardware acceleration with NVIDIA
+    LIBVA_DRIVER_NAME = "nvidia";
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    NVD_BACKEND = "direct";
   };
 
   home.sessionPath = [

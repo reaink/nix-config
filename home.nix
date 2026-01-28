@@ -139,6 +139,12 @@
       ngrok
       winboat
       todesk  # Keep original for service
+      
+      # Xbox controller tools
+      antimicrox  # Gamepad to keyboard/mouse mapping tool
+      jstest-gtk  # Gamepad testing utility
+      linuxConsoleTools  # Input device testing (jstest, jscal)
+      
       # GUI wrapper with DISPLAY fix
       (pkgs.writeShellScriptBin "todesk-gui" ''
         # Add X11 authorization

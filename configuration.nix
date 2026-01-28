@@ -166,6 +166,10 @@
     };
   };
 
+  # Xbox controller support
+  hardware.xpadneo.enable = true;  # Bluetooth Xbox controller driver
+  hardware.xone.enable = true;  # Xbox One wireless adapter support
+
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 

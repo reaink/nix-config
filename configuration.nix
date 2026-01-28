@@ -250,6 +250,7 @@
       "adbusers"
       "docker"
       "libvirtd"
+      "input"
     ];
     packages = with pkgs; [
       kdePackages.kate

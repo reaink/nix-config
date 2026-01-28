@@ -23,6 +23,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    rime-keytao = {
+      url = "github:xkinput/KeyTao";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -47,13 +52,13 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = null;
-              home-manager.backupCommand = "${nixpkgs.legacyPackages.${system}.coreutils}/bin/mv \"$1\" \"$1.bak.$(${nixpkgs.legacyPackages.${system}.coreutils}/bin/date +%s)\"";
+              home-manager.backupFileExtension = "backup";
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [
                   ./home.nix
                   inputs.plasma-manager.homeModules.plasma-manager
+                  inputs.rime-keytao.homeManagerModules.default
                 ];
               };
             }

@@ -176,6 +176,13 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    
+    # Fix dynamic linking for Rust binaries
+    LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath [
+      pkgs.openssl
+      pkgs.stdenv.cc.cc.lib
+      pkgs.zlib
+    ]}:$LD_LIBRARY_PATH";
     PKG_CONFIG_PATH = "${pkgs.lib.makeSearchPath "lib/pkgconfig" [
       pkgs.glib.dev
       pkgs.gtk3.dev
@@ -201,6 +208,10 @@
     "$HOME/.local/share/pnpm"
     "$HOME/.cargo/bin"
   ];
+
+  # Keep rustup directories from being affected by nix gc
+  home.file.".cargo/.keep".text = "";
+  home.file.".rustup/.keep".text = "";
 
   programs.zsh.initContent = ''
     eval "$(fnm env --use-on-cd --shell zsh)"

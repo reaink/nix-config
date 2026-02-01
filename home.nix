@@ -163,6 +163,7 @@
         # Launch with error filtering
         exec ${pkgs.todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
       '')
+      prisma-engines_7
     ])
     ++ [
     ];
@@ -265,6 +266,7 @@
 
     gtk2 = {
       configLocation = "${config.xdg.stateHome}/gtk-2.0/gtkrc";
+      force = true;
       extraConfig = ''
         # Force GTK2 theme
       '';

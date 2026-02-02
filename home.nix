@@ -204,6 +204,18 @@
     LIBVA_DRIVER_NAME = "nvidia";
     MOZ_DISABLE_RDD_SANDBOX = "1";
     NVD_BACKEND = "direct";
+    
+    # Fix GTK icon rendering issues on Wayland/KDE with NVIDIA
+    # https://bugs.kde.org/show_bug.cgi?id=495073
+    GDK_SCALE = "1";
+    GDK_DPI_SCALE = "1";
+    GDK_BACKEND = "wayland,x11";
+    # Force GTK4 to use NGL renderer instead of Vulkan (fixes icon hover issues)
+    GSK_RENDERER = "ngl";
+    # Disable GTK3 overlay scrollbars which can cause rendering glitches
+    GTK_OVERLAY_SCROLLING = "0";
+    # Fix hardware cursor issues on NVIDIA Wayland
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   home.sessionPath = [
@@ -242,14 +254,21 @@
   gtk = {
     enable = true;
     
+    # Arc theme: Modern flat design that auto-follows dark mode
+    # Arc-Dark will be used when dark mode is enabled
     theme = {
-      name = "Breeze";
-      package = pkgs.kdePackages.breeze-gtk;
+      name = "Arc-Dark";
+      package = pkgs.arc-theme;
     };
     
+    # Papirus-Dark: Modern, complete icon set with excellent GTK compatibility
+    # Alternative options:
+    # - Adwaita (minimalist): name="Adwaita", package=pkgs.adwaita-icon-theme
+    # - Tela-dark (colorful): name="Tela-dark", package=pkgs.tela-icon-theme
+    # - Numix-Circle (rounded): name="Numix-Circle", package=pkgs.numix-icon-theme-circle
     iconTheme = {
-      name = "breeze";
-      package = pkgs.kdePackages.breeze-icons;
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
     };
     
     cursorTheme = {
@@ -259,11 +278,20 @@
     };
 
     gtk3.extraConfig = {
+      # Auto-follow system dark mode (managed by KDE)
       gtk-application-prefer-dark-theme = true;
+      gtk-icon-theme-name = "Papirus-Dark";
+      gtk-button-images = true;
+      gtk-menu-images = true;
+      # Disable animations that may cause rendering issues
+      gtk-enable-animations = false;
     };
 
     gtk4.extraConfig = {
+      # Auto-follow system dark mode (managed by KDE)
       gtk-application-prefer-dark-theme = true;
+      gtk-icon-theme-name = "Papirus-Dark";
+      gtk-enable-animations = false;
     };
 
     gtk2 = {
@@ -281,6 +309,42 @@
     platformTheme.name = "kde";
     style.name = "breeze";
   };
+
+  # GTK settings.ini to fix icon rendering issues
+  xdg.configFile."gtk-3.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name=Arc-Dark
+    gtk-icon-theme-name=Papirus-Dark
+    gtk-font-name=Noto Sans 10
+    gtk-cursor-theme-name=breeze_cursors
+    gtk-cursor-theme-size=24
+    gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ
+    gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
+    gtk-button-images=1
+    gtk-menu-images=1
+    gtk-enable-event-sounds=0
+    gtk-enable-input-feedback-sounds=0
+    gtk-xft-antialias=1
+    gtk-xft-hinting=1
+    gtk-xft-hintstyle=hintslight
+    gtk-xft-rgba=rgb
+    gtk-application-prefer-dark-theme=1
+    # Disable animations to fix rendering glitches
+    gtk-enable-animations=0
+    # Force proper icon loading
+    gtk-icon-sizes=panel-menu=24,24:panel=24,24:gtk-button=16,16:gtk-large-toolbar=24,24
+  '';
+
+  xdg.configFile."gtk-4.0/settings.ini".text = ''
+    [Settings]
+    gtk-theme-name=Arc-Dark
+    gtk-icon-theme-name=Papirus-Dark
+    gtk-font-name=Noto Sans 10
+    gtk-cursor-theme-name=breeze_cursors
+    gtk-cursor-theme-size=24
+    gtk-application-prefer-dark-theme=1
+    gtk-enable-animations=0
+  '';
 
   # ToDesk desktop launcher with wrapper script
   xdg.dataFile."applications/todesk.desktop".text = ''

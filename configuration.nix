@@ -123,7 +123,7 @@
 
     forceFullCompositionPipeline = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     # PRIME
     prime = {
       sync.enable = true;
@@ -386,6 +386,9 @@
     "__GL_SHADER_DISK_CACHE" = "1";
     "__GL_THREADED_OPTIMIZATION" = "1";
     LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
+    # KDE Plasma compositor optimization for NVIDIA
+    # https://bugs.kde.org/show_bug.cgi?id=495073
+    KWIN_COMPOSE = "O2";
   };
 
   virtualisation.libvirtd = {
@@ -537,6 +540,17 @@
   # https://github.com/NixOS/nixpkgs/issues/462935
   # nixos/orca: Screen reader on by default on non-GNOME desktops, cannot be disabled
   systemd.user.services.orca.wantedBy = lib.mkForce [ ];
+
+  # XDG Desktop Portal configuration for GTK apps in KDE
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      kdePackages.xdg-desktop-portal-kde
+    ];
+    config.common.default = "*";
+  };
+
+  programs.dconf.enable = true;
 
   services.redis.servers.my-redis = {
     enable = true;

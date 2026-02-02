@@ -23,6 +23,7 @@
       eza
       bat
       bottom
+      zoxide
 
       rustup
       protobuf
@@ -216,6 +217,7 @@
 
   programs.zsh.initContent = ''
     eval "$(fnm env --use-on-cd --shell zsh)"
+    eval "$(zoxide init zsh)"
   '';
 
   programs.git = {

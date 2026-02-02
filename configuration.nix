@@ -251,6 +251,8 @@
       "docker"
       "libvirtd"
       "input"
+      "video"
+      "render"
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -346,7 +348,38 @@
     stdenv.cc.cc.lib
     libgcc
     glibc
+
+    # Game streaming server
+    sunshine
   ];
+
+  # Sunshine with proper capabilities for KMS capture
+  security.wrappers.sunshine = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_sys_admin+p";
+    source = "${pkgs.sunshine}/bin/sunshine";
+  };
+
+  # Sunshine systemd service
+  systemd.user.services.sunshine = {
+    description = "Sunshine - self-hosted game streaming service";
+    wantedBy = [ "graphical-session.target" ];
+    
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "/run/wrappers/bin/sunshine";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    
+    environment = {
+      # Ensure proper display access
+      DISPLAY = ":0";
+      WAYLAND_DISPLAY = "wayland-0";
+      XDG_SESSION_TYPE = "wayland";
+    };
+  };
 
   environment.variables = {
     EDITOR = "nvim";
@@ -554,11 +587,19 @@
       3000
       3389
       5000
+      47984  # Sunshine HTTPS
+      47989  # Sunshine HTTP
+      47990  # Sunshine Web UI
+      48010  # Sunshine Admin
     ];
     allowedUDPPortRanges = [
       {
         from = 1714;
         to = 1764;
+      }
+      {
+        from = 47998;
+        to = 48000;  # Sunshine video/audio streaming
       }
     ];
   };

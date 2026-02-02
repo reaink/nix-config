@@ -205,10 +205,6 @@
     MOZ_DISABLE_RDD_SANDBOX = "1";
     NVD_BACKEND = "direct";
     
-    # Fix GTK icon rendering issues on Wayland/KDE with NVIDIA
-    # https://bugs.kde.org/show_bug.cgi?id=495073
-    GDK_SCALE = "1";
-    GDK_DPI_SCALE = "1";
     GDK_BACKEND = "wayland,x11";
     # Force GTK4 to use NGL renderer instead of Vulkan (fixes icon hover issues)
     GSK_RENDERER = "ngl";
@@ -358,6 +354,32 @@
     Terminal=false
     X-KDE-SubstituteUID=false
   '';
+
+  # Sunshine streaming apps configuration
+  xdg.configFile."sunshine/apps.json".text = builtins.toJSON {
+    env = {
+      PATH = "$(PATH):$(HOME)/.local/bin";
+    };
+    apps = [
+      {
+        name = "Desktop";
+        image-path = "desktop.png";
+      }
+      {
+        name = "Steam Big Picture";
+        detached = [
+          "/run/current-system/sw/bin/setsid ${config.home.homeDirectory}/.nix-profile/bin/steam steam://open/bigpicture"
+        ];
+        prep-cmd = [
+          {
+            do = "";
+            undo = "/run/current-system/sw/bin/setsid ${config.home.homeDirectory}/.nix-profile/bin/steam steam://close/bigpicture";
+          }
+        ];
+        image-path = "steam.png";
+      }
+    ];
+  };
 
   # Steam pressure-vessel container font support
   # Link CJK fonts to ~/.local/share/fonts/ where pressure-vessel can access them

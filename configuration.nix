@@ -387,6 +387,8 @@
       DISPLAY = ":0";
       WAYLAND_DISPLAY = "wayland-0";
       XDG_SESSION_TYPE = "wayland";
+      # Add system binaries to PATH for setsid, xrandr etc.
+      PATH = lib.mkForce "/run/current-system/sw/bin:/etc/profiles/per-user/rea/bin:${pkgs.xorg.xrandr}/bin";
     };
   };
 

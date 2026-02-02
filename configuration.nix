@@ -76,6 +76,15 @@
   # Load Bluetooth ISO module for advanced audio profiles
   boot.kernelModules = ["bluetooth_iso"];
 
+  # UVC webcam quirks for UGREEN Camera 2K (0c45:636f)
+  # Fix slow initialization by skipping unsupported UVC control queries
+  boot.extraModprobeConfig = ''
+    # Quirks flags:
+    # 0x80  = UVC_QUIRK_NO_RESET_RESUME - Skip bandwidth checks
+    # 0x100 = UVC_QUIRK_IGNORE_SELECTOR_UNIT - Ignore processing units
+    options uvcvideo quirks=0x80
+  '';
+
   nix.optimise.automatic = true;
 
   nix.gc = {

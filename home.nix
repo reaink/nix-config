@@ -200,8 +200,8 @@
     PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
     PNPM_HOME = "$HOME/.local/share/pnpm";
     
-    # Chrome/Chromium hardware acceleration with NVIDIA
-    LIBVA_DRIVER_NAME = "nvidia";
+    # Chromium hardware acceleration with NVIDIA
+    # Note: Removed LIBVA_DRIVER_NAME to allow Sunshine to use NVENC properly
     MOZ_DISABLE_RDD_SANDBOX = "1";
     NVD_BACKEND = "direct";
     
@@ -366,25 +366,9 @@
         image-path = "desktop.png";
       }
       {
-        name = "Low Res Desktop";
-        image-path = "desktop.png";
-        prep-cmd = [
-          {
-            do = "${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-1 --mode 1920x1080";
-            undo = "${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-1 --mode 1920x1200";
-          }
-        ];
-      }
-      {
         name = "Steam Big Picture";
         detached = [
-          "/run/current-system/sw/bin/setsid ${pkgs.steam}/bin/steam steam://open/bigpicture"
-        ];
-        prep-cmd = [
-          {
-            do = "";
-            undo = "/run/current-system/sw/bin/setsid ${pkgs.steam}/bin/steam steam://close/bigpicture";
-          }
+          "steam steam://open/bigpicture"
         ];
         image-path = "steam.png";
       }

@@ -366,14 +366,24 @@
         image-path = "desktop.png";
       }
       {
+        name = "Low Res Desktop";
+        image-path = "desktop.png";
+        prep-cmd = [
+          {
+            do = "${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-1 --mode 1920x1080";
+            undo = "${pkgs.xorg.xrandr}/bin/xrandr --output HDMI-1 --mode 1920x1200";
+          }
+        ];
+      }
+      {
         name = "Steam Big Picture";
         detached = [
-          "/run/current-system/sw/bin/setsid ${config.home.homeDirectory}/.nix-profile/bin/steam steam://open/bigpicture"
+          "/run/current-system/sw/bin/setsid ${pkgs.steam}/bin/steam steam://open/bigpicture"
         ];
         prep-cmd = [
           {
             do = "";
-            undo = "/run/current-system/sw/bin/setsid ${config.home.homeDirectory}/.nix-profile/bin/steam steam://close/bigpicture";
+            undo = "/run/current-system/sw/bin/setsid ${pkgs.steam}/bin/steam steam://close/bigpicture";
           }
         ];
         image-path = "steam.png";

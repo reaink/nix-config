@@ -357,31 +357,24 @@
     stdenv.cc.cc.lib
     libgcc
     glibc
-
-    # Game streaming server with CUDA support for NVENC
-    (sunshine.override {
-      cudaSupport = true;
-    })
   ];
 
-  # Sunshine with proper capabilities for KMS capture
-  security.wrappers.sunshine = {
-    owner = "root";
-    group = "root";
-    capabilities = "cap_sys_admin+p";
-    source = "${pkgs.sunshine}/bin/sunshine";
-  };
-
-  # Sunshine systemd service
-  systemd.user.services.sunshine = {
+  # Sunshine systemd service as system service with capabilities
+  systemd.services.sunshine = {
     description = "Sunshine - self-hosted game streaming service";
-    wantedBy = [ "graphical-session.target" ];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" "graphical.target" ];
     
     serviceConfig = {
       Type = "simple";
-      ExecStart = "/run/wrappers/bin/sunshine";
+      ExecStart = "${pkgs.sunshine.override { cudaSupport = true; cudaPackages = pkgs.cudaPackages; }}/bin/sunshine";
       Restart = "on-failure";
       RestartSec = 5;
+      User = "rea";
+      Group = "users";
+      # Grant CAP_SYS_ADMIN for KMS capture
+      AmbientCapabilities = "CAP_SYS_ADMIN";
+      CapabilityBoundingSet = "CAP_SYS_ADMIN";
     };
     
     environment = {
@@ -389,10 +382,11 @@
       DISPLAY = ":0";
       WAYLAND_DISPLAY = "wayland-0";
       XDG_SESSION_TYPE = "wayland";
-      # Add system binaries to PATH for setsid, xrandr etc.
+      XDG_RUNTIME_DIR = "/run/user/1000";
+      # Add system binaries to PATH
       PATH = lib.mkForce "/run/current-system/sw/bin:/etc/profiles/per-user/rea/bin:${pkgs.xorg.xrandr}/bin";
-      # Add NVIDIA driver libraries for NVENC support
-      LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+      # Add NVIDIA driver libraries for NVENC/CUDA support
+      LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
     };
   };
 

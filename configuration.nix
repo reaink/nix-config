@@ -358,8 +358,10 @@
     libgcc
     glibc
 
-    # Game streaming server
-    sunshine
+    # Game streaming server with CUDA support for NVENC
+    (sunshine.override {
+      cudaSupport = true;
+    })
   ];
 
   # Sunshine with proper capabilities for KMS capture

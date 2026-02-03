@@ -214,8 +214,24 @@
   };
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  services.displayManager = {
+    sddm = {
+      enable = true;
+      wayland.enable = true;
+      
+      settings = {
+        General = {
+          DisplayStopTime = 300; # 5 minutes
+        };
+      };
+    };
+    
+    autoLogin = {
+      enable = true;
+      user = "rea";
+    };
+  };
+  
   services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11

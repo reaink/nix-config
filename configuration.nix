@@ -13,6 +13,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./sunshine.nix
   ];
 
   # sops secrets configuration
@@ -359,35 +360,14 @@
     glibc
   ];
 
-  # Sunshine systemd service as system service with capabilities
-  systemd.services.sunshine = {
-    description = "Sunshine - self-hosted game streaming service";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "graphical.target" ];
-    
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.sunshine.override { cudaSupport = true; cudaPackages = pkgs.cudaPackages; }}/bin/sunshine";
-      Restart = "on-failure";
-      RestartSec = 5;
-      User = "rea";
-      Group = "users";
-      # Grant CAP_SYS_ADMIN for KMS capture
-      AmbientCapabilities = "CAP_SYS_ADMIN";
-      CapabilityBoundingSet = "CAP_SYS_ADMIN";
-    };
-    
-    environment = {
-      # Ensure proper display access
-      DISPLAY = ":0";
-      WAYLAND_DISPLAY = "wayland-0";
-      XDG_SESSION_TYPE = "wayland";
-      XDG_RUNTIME_DIR = "/run/user/1000";
-      # Add system binaries to PATH
-      PATH = lib.mkForce "/run/current-system/sw/bin:/etc/profiles/per-user/rea/bin:${pkgs.xorg.xrandr}/bin";
-      # Add NVIDIA driver libraries for NVENC/CUDA support
-      LD_LIBRARY_PATH = "/run/opengl-driver/lib:/run/opengl-driver-32/lib";
-    };
+  # Sunshine game streaming - configured via sunshine.nix module
+  services.sunshineStreaming = {
+    enable = true;
+    hostName = "nixos";
+    user = "rea";
+    autoStart = true;
+    cudaSupport = true;
+    openFirewall = true;
   };
 
   environment.variables = {
@@ -610,19 +590,11 @@
       3000
       3389
       5000
-      47984  # Sunshine HTTPS
-      47989  # Sunshine HTTP
-      47990  # Sunshine Web UI
-      48010  # Sunshine Admin
     ];
     allowedUDPPortRanges = [
       {
         from = 1714;
         to = 1764;
-      }
-      {
-        from = 47998;
-        to = 48000;  # Sunshine video/audio streaming
       }
     ];
   };

@@ -355,26 +355,6 @@
     X-KDE-SubstituteUID=false
   '';
 
-  # Sunshine streaming apps configuration
-  xdg.configFile."sunshine/apps.json".text = builtins.toJSON {
-    env = {
-      PATH = "$(PATH):$(HOME)/.local/bin";
-    };
-    apps = [
-      {
-        name = "Desktop";
-        image-path = "desktop.png";
-      }
-      {
-        name = "Steam Big Picture";
-        detached = [
-          "steam steam://open/bigpicture"
-        ];
-        image-path = "steam.png";
-      }
-    ];
-  };
-
   # Steam pressure-vessel container font support
   # Link CJK fonts to ~/.local/share/fonts/ where pressure-vessel can access them
   # Note: Home Manager automatically creates parent directories, so no mkdir needed

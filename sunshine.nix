@@ -18,7 +18,9 @@ with lib; let
   steam-run-url = pkgs.writeShellApplication {
     name = "steam-run-url";
     text = ''
-      echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
+      # Use XDG_RUNTIME_DIR if available, otherwise fall back to /run/user/$(id -u)
+      FIFO_PATH="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/steam-run-url.fifo"
+      echo "$1" > "$FIFO_PATH"
     '';
     runtimeInputs = [
       pkgs.coreutils
@@ -177,8 +179,14 @@ in {
     
     # Home Manager configuration for the specified user
     home-manager.users.${cfg.user} = {
-      # Install helper scripts
+      # Install Sunshine and helper scripts for icon and desktop file support
       home.packages = [
+        (if cfg.cudaSupport
+         then pkgs.sunshine.override { 
+           cudaSupport = true; 
+           cudaPackages = pkgs.cudaPackages; 
+         }
+         else pkgs.sunshine)
         steam-run-url
         steam-launch-and-wait
       ];
@@ -195,10 +203,10 @@ in {
           }
           {
             name = "Steam Big Picture";
-            # Use cmd to track the process properly
-            cmd = "${lib.getExe steam-launch-and-wait} steam://open/bigpicture";
-            # Close Big Picture when stream ends
-            undo = "${pkgs.procps}/bin/pkill -f 'steam.*bigpicture'";
+            # Use steam-run-url helper script instead of shell command
+            detached = [
+              "${lib.getExe steam-run-url} steam://open/bigpicture"
+            ];
             image-path = "steam.png";
           }
         ];

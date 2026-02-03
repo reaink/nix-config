@@ -234,6 +234,12 @@
   
   services.desktopManager.plasma6.enable = true;
 
+  # KWallet PAM integration for auto-login
+  security.pam.services = {
+    sddm.enableKwallet = true;
+    login.enableKwallet = true;
+  };
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";

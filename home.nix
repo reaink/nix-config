@@ -105,7 +105,7 @@
       kdePackages.kweather  # weather widget
 
       google-chrome
-      inputs.vscode-insiders.packages.${pkgs.stdenv.hostPlatform.system}.vscode-insider
+      (import ./vscode-insiders.nix { inherit pkgs lib; })
       wechat-uos
       qq
       cherry-studio
@@ -705,6 +705,7 @@
       # System management
       rebuild = "sudo nixos-rebuild switch";
       test = "sudo nixos-rebuild test";
+      update-vscode = "~/nix-config/update-vscode-insiders.sh && rebuild";  # Update vscode insiders and rebuild
       
       # Nix maintenance
       gc = "sudo nix-collect-garbage";

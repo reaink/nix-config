@@ -137,8 +137,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "plasma-manager": "plasma-manager",
         "rime-keytao": "rime-keytao",
-        "sops-nix": "sops-nix",
-        "vscode-insiders": "vscode-insiders"
+        "sops-nix": "sops-nix"
       }
     },
     "sops-nix": {
@@ -171,26 +170,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "vscode-insiders": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1770164404,
-        "narHash": "sha256-R0EGLzJmmLQcWmp5na2PA7cnbc28YoV4tNrUkDRO7NM=",
-        "owner": "iosmanthus",
-        "repo": "code-insiders-flake",
-        "rev": "d4d2aa93ddd8f6cf98d8c26875ec0540429d76b7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "iosmanthus",
-        "repo": "code-insiders-flake",
         "type": "github"
       }
     }

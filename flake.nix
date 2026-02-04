@@ -13,11 +13,6 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
-    vscode-insiders = {
-      url = "github:iosmanthus/code-insiders-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -34,7 +29,6 @@
     inputs@{
       nixpkgs,
       home-manager,
-      vscode-insiders,
       ...
     }:
     {

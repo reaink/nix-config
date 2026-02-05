@@ -435,7 +435,7 @@
       storage-driver = "overlay2";
     };
     rootless = {
-      enable = true;
+      enable = false;
       setSocketVariable = true;
     };
   };

@@ -27,12 +27,18 @@ echo "Platform: $platform"
 echo "Fetching latest VS Code Insiders..."
 url="https://code.visualstudio.com/sha/download?build=insider&os=$platform"
 
-# Use nix-prefetch-url to get the sha256
-sha256=$(nix-prefetch-url --unpack --name "vscode-insiders" "$url" 2>&1 | tail -n1)
+if ! prefetch_output=$(nix-prefetch-url --unpack --name "vscode-insiders" "$url" 2>&1); then
+  echo "Failed to fetch sha256"
+  echo "$prefetch_output"
+  exit 1
+fi
 
-if [ -z "$sha256" ]; then
-    echo "Failed to fetch sha256"
-    exit 1
+sha256=$(printf '%s\n' "$prefetch_output" | tail -n1)
+
+if [ -z "$sha256" ] || ! echo "$sha256" | grep -Eq '^[0-9a-z]{52}$'; then
+  echo "Fetcher returned invalid sha256"
+  echo "$prefetch_output"
+  exit 1
 fi
 
 echo "Latest sha256: $sha256"

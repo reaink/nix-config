@@ -165,6 +165,7 @@
         exec ${pkgs.todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
       '')
       prisma-engines_7
+      wpsoffice-cn
     ])
     ++ [
     ];
@@ -364,85 +365,88 @@
   # Fontconfig for Steam CJK font support
   # Steam container only reads user-level fontconfig, not system-level /etc/fonts/
   # CRITICAL: Direct font mapping (NOT via sans-serif) - Steam containers don't follow indirect aliases
-  xdg.configFile."fontconfig/fonts.conf".text = ''
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-    <fontconfig>
-      <!-- CRITICAL: Direct Arial->CJK mapping (Steam's primary query font) -->
-      <match target="pattern">
-        <test qual="any" name="family">
-          <string>Arial</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>Noto Sans CJK SC</string>
-          <string>Source Han Sans SC</string>
-          <string>WenQuanYi Zen Hei</string>
-        </edit>
-      </match>
+  xdg.configFile."fontconfig/fonts.conf" = {
+    force = true;
+    text = ''
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+      <fontconfig>
+        <!-- CRITICAL: Direct Arial->CJK mapping (Steam's primary query font) -->
+        <match target="pattern">
+          <test qual="any" name="family">
+            <string>Arial</string>
+          </test>
+          <edit name="family" mode="prepend" binding="strong">
+            <string>Noto Sans CJK SC</string>
+            <string>Source Han Sans SC</string>
+            <string>WenQuanYi Zen Hei</string>
+          </edit>
+        </match>
 
-      <!-- Direct Motiva Sans->CJK mapping (Steam UI font) -->
-      <match target="pattern">
-        <test qual="any" name="family">
-          <string>Motiva Sans</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>Noto Sans CJK SC</string>
-          <string>Source Han Sans SC</string>
-          <string>WenQuanYi Zen Hei</string>
-        </edit>
-      </match>
+        <!-- Direct Motiva Sans->CJK mapping (Steam UI font) -->
+        <match target="pattern">
+          <test qual="any" name="family">
+            <string>Motiva Sans</string>
+          </test>
+          <edit name="family" mode="prepend" binding="strong">
+            <string>Noto Sans CJK SC</string>
+            <string>Source Han Sans SC</string>
+            <string>WenQuanYi Zen Hei</string>
+          </edit>
+        </match>
 
-      <!-- Direct Helvetica->CJK mapping -->
-      <match target="pattern">
-        <test qual="any" name="family">
-          <string>Helvetica</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>Noto Sans CJK SC</string>
-          <string>Source Han Sans SC</string>
-        </edit>
-      </match>
+        <!-- Direct Helvetica->CJK mapping -->
+        <match target="pattern">
+          <test qual="any" name="family">
+            <string>Helvetica</string>
+          </test>
+          <edit name="family" mode="prepend" binding="strong">
+            <string>Noto Sans CJK SC</string>
+            <string>Source Han Sans SC</string>
+          </edit>
+        </match>
 
-      <!-- Direct Times New Roman->CJK mapping -->
-      <match target="pattern">
-        <test qual="any" name="family">
-          <string>Times New Roman</string>
-        </test>
-        <edit name="family" mode="prepend" binding="strong">
-          <string>Noto Serif CJK SC</string>
-          <string>Source Han Serif SC</string>
-        </edit>
-      </match>
+        <!-- Direct Times New Roman->CJK mapping -->
+        <match target="pattern">
+          <test qual="any" name="family">
+            <string>Times New Roman</string>
+          </test>
+          <edit name="family" mode="prepend" binding="strong">
+            <string>Noto Serif CJK SC</string>
+            <string>Source Han Serif SC</string>
+          </edit>
+        </match>
 
-      <!-- Default sans-serif font family with CJK priority -->
-      <alias>
-        <family>sans-serif</family>
-        <prefer>
-          <family>Noto Sans CJK SC</family>
-          <family>Source Han Sans SC</family>
-          <family>WenQuanYi Zen Hei</family>
-        </prefer>
-      </alias>
+        <!-- Default sans-serif font family with CJK priority -->
+        <alias>
+          <family>sans-serif</family>
+          <prefer>
+            <family>Noto Sans CJK SC</family>
+            <family>Source Han Sans SC</family>
+            <family>WenQuanYi Zen Hei</family>
+          </prefer>
+        </alias>
 
-      <!-- Default serif font family -->
-      <alias>
-        <family>serif</family>
-        <prefer>
-          <family>Noto Serif CJK SC</family>
-          <family>Source Han Serif SC</family>
-        </prefer>
-      </alias>
+        <!-- Default serif font family -->
+        <alias>
+          <family>serif</family>
+          <prefer>
+            <family>Noto Serif CJK SC</family>
+            <family>Source Han Serif SC</family>
+          </prefer>
+        </alias>
 
-      <!-- Default monospace font family -->
-      <alias>
-        <family>monospace</family>
-        <prefer>
-          <family>Sarasa Mono SC</family>
-          <family>Noto Sans Mono CJK SC</family>
-        </prefer>
-      </alias>
-    </fontconfig>
-  '';
+        <!-- Default monospace font family -->
+        <alias>
+          <family>monospace</family>
+          <prefer>
+            <family>Sarasa Mono SC</family>
+            <family>Noto Sans Mono CJK SC</family>
+          </prefer>
+        </alias>
+      </fontconfig>
+    '';
+  };
 
   services.kdeconnect.enable = true;
 

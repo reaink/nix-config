@@ -207,6 +207,8 @@
         qt6Packages.fcitx5-configtool
         fcitx5-mozc
         fcitx5-gtk
+        libsForQt5.fcitx5-qt
+        qt6Packages.fcitx5-qt
         fcitx5-nord
         fcitx5-rime
       ];
@@ -412,6 +414,11 @@
     # KDE Plasma compositor optimization for NVIDIA
     # https://bugs.kde.org/show_bug.cgi?id=495073
     KWIN_COMPOSE = "O2";
+    # Fcitx5 input method configuration for Wayland
+    # Note: Do NOT set GTK_IM_MODULE or QT_IM_MODULE when using Wayland frontend
+    # Wayland native apps will use text-input-v3 protocol automatically
+    # See: https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#KDE_Plasma
+    XMODIFIERS = "@im=fcitx";  # Still needed for XWayland apps
   };
 
   virtualisation.libvirtd = {

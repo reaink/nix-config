@@ -165,7 +165,20 @@
         exec ${pkgs.todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
       '')
       prisma-engines_7
-      wpsoffice-cn
+      
+      # WPS Office with HiDPI support
+      (pkgs.symlinkJoin {
+        name = "wpsoffice-cn-hidpi";
+        paths = [ pkgs.wpsoffice-cn ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          for bin in $out/bin/*; do
+            wrapProgram $bin \
+              --set QT_AUTO_SCREEN_SCALE_FACTOR 1 \
+              --set QT_ENABLE_HIGHDPI_SCALING 1
+          done
+        '';
+      })
     ])
     ++ [
     ];
@@ -173,6 +186,8 @@
   programs.rime-keytao.enable = true;
 
   home.sessionVariables = {
+    GDK_SCALE = "1";
+    
     LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
     BINDGEN_EXTRA_CLANG_ARGS = "-isystem ${pkgs.clang}/lib/clang/${pkgs.lib.getVersion pkgs.clang}/include";
 
@@ -271,7 +286,7 @@
     cursorTheme = {
       name = "breeze_cursors";
       package = pkgs.kdePackages.breeze;
-      size = 24;
+      size = 24;  # Normal size, will scale with display settings
     };
 
     gtk3.extraConfig = {
@@ -282,6 +297,7 @@
       gtk-menu-images = true;
       # Disable animations that may cause rendering issues
       gtk-enable-animations = false;
+      gtk-cursor-theme-size = 24;
     };
 
     gtk4.extraConfig = {

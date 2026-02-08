@@ -165,7 +165,7 @@
         exec ${pkgs.todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
       '')
       prisma-engines_7
-      wpsoffice
+      wpsoffice-cn
     ])
     ++ [
     ];

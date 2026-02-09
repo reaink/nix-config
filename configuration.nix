@@ -236,17 +236,17 @@
   
   services.desktopManager.plasma6.enable = true;
 
-  # KDE Plasma font configuration - use Maple Mono NF CN for full Nerd Font icon support
+  # KDE Plasma font configuration - optimized for readability
   environment.etc."xdg/kdeglobals".text = lib.generators.toINI {} {
     General = {
-      font = "Maple Mono NF CN,11,-1,5,50,0,0,0,0,0";  # General UI font with Nerd Font support
+      font = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0";  # General UI font - best for Chinese display
       fixed = "Maple Mono NF CN,10,-1,5,50,0,0,0,0,0";  # Fixed-width font (terminal, code)
-      menuFont = "Maple Mono NF CN,11,-1,5,50,0,0,0,0,0";  # Menu font
-      smallestReadableFont = "Maple Mono NF CN,9,-1,5,50,0,0,0,0,0";  # Smallest readable font
-      toolBarFont = "Maple Mono NF CN,10,-1,5,50,0,0,0,0,0";  # Toolbar font
+      menuFont = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0";  # Menu font
+      smallestReadableFont = "Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0";  # Smallest readable font
+      toolBarFont = "Noto Sans CJK SC,10,-1,5,50,0,0,0,0,0";  # Toolbar font
     };
     WM = {
-      activeFont = "Maple Mono NF CN,11,-1,5,75,0,0,0,0,0";  # Window title font (bold)
+      activeFont = "Noto Sans CJK SC,11,-1,5,75,0,0,0,0,0";  # Window title font (bold)
     };
   };
 
@@ -328,12 +328,13 @@
       source-han-sans
       source-han-serif
       wqy_zenhei
+      lxgw-wenkai
     ];
     fontconfig = {
       defaultFonts = {
-        sansSerif = [ "Maple Mono NF CN" "Noto Sans CJK SC" ];
-        serif = [ "Noto Serif CJK SC" ];
-        monospace = [ "Maple Mono NF CN" "JetBrains Mono" ];
+        sansSerif = [ "Noto Sans CJK SC" "Sarasa Gothic SC" "DejaVu Sans" ];
+        serif = [ "Noto Serif CJK SC" "LXGW WenKai" ];
+        monospace = [ "Maple Mono NF CN" "Sarasa Mono SC" "JetBrains Mono" ];
       };
     };
   };

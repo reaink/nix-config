@@ -149,7 +149,7 @@
       # GUI wrapper with DISPLAY fix
       (pkgs.writeShellScriptBin "todesk-gui" ''
         # Add X11 authorization
-        ${pkgs.xorg.xhost}/bin/xhost +local: >/dev/null 2>&1 || true
+        ${pkgs.xhost}/bin/xhost +local: >/dev/null 2>&1 || true
         
         # Force correct environment
         export DISPLAY=:0

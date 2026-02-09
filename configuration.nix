@@ -373,7 +373,7 @@
     wayland-utils
     wl-clipboard
     xclip
-    xorg.xhost
+    xhost
 
     # Docker tools
     docker-compose
@@ -458,11 +458,11 @@
     libgcc
     glibc
     gcc.cc.lib
-    xorg.libX11
-    xorg.libXext
-    xorg.libXi
-    xorg.libXrandr
-    xorg.libXrender
+    libx11
+    libxext
+    libxi
+    libxrandr
+    libxrender
     libGL
     freetype
     fontconfig

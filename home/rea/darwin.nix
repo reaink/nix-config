@@ -19,6 +19,7 @@
     # macOS-specific packages (can be added as needed)
     home.packages = with pkgs; [
       wechat
+      ghostty-bin
     ];
 
     # macOS-specific Zsh aliases (override common.nix aliases)

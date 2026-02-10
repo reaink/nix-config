@@ -125,6 +125,7 @@
       antimicrox
       jstest-gtk
       linuxConsoleTools
+      ghostty
 
       winboat
     ];

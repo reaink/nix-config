@@ -71,7 +71,7 @@
     wpsoffice-cn
     firefox
     vlc-bin
-    tabby
+    metacubexd
   ];
 
   # Session variables - cross-platform

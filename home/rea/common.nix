@@ -68,7 +68,6 @@
     obsidian
     cherry-studio
     qq
-    wpsoffice-cn
     firefox
     vlc-bin
   ];

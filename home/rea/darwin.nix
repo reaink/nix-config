@@ -20,7 +20,6 @@
     home.packages = with pkgs; [
       wechat
       ghostty-bin
-      clash-rs
     ];
 
     # macOS-specific Zsh aliases (override common.nix aliases)

@@ -77,6 +77,7 @@
 
       # Linux-specific GUI apps
       wechat-uos
+      wpsoffice-cn
 
       # System tools
       gparted

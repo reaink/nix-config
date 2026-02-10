@@ -71,7 +71,6 @@
     wpsoffice-cn
     firefox
     vlc-bin
-    metacubexd
   ];
 
   # Session variables - cross-platform

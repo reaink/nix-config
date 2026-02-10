@@ -18,17 +18,21 @@
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
-  # Auto-optimize store to save space
-  nix.settings.auto-optimise-store = true;
+  # Auto-optimize store to save space (nix-darwin uses optimise.automatic)
   nix.optimise.automatic = true;
 
   # Automatic garbage collection
   nix.gc = {
     automatic = true;
-    dates = "weekly";
+    interval = { Weekday = 0; Hour = 0; Minute = 0; };  # Weekly on Sunday at midnight
     options = "--delete-older-than 1w";
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  
+  # Allow insecure packages
+  nixpkgs.config.permittedInsecurePackages = [
+    "google-chrome-144.0.7559.97"
+  ];
 }

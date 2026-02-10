@@ -9,17 +9,20 @@
   # Set hostname
   networking.hostName = "mac";
 
-  # Enable nix-daemon
-  services.nix-daemon.enable = true;
-
   # Basic system packages for macOS
   environment.systemPackages = with pkgs; [
     vim
     git
     neovim
     wget
-    nixfmt-rfc-style
+    nixfmt
   ];
+
+  # Define user
+  users.users.rea = {
+    name = "rea";
+    home = "/Users/rea";
+  };
 
   # Enable alternative shell support
   programs.zsh.enable = true;

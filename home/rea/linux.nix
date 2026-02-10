@@ -4,6 +4,43 @@
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
     home.packages = with pkgs; [
+    # Tauri/GTK development libraries
+    glib
+    glib.dev
+    gtk3
+    gtk3.dev
+    webkitgtk_4_1
+    webkitgtk_4_1.dev
+    pango
+    pango.dev
+    cairo
+    cairo.dev
+    atk
+    atk.dev
+    libsoup_3
+    libsoup_3.dev
+    dbus
+    dbus.dev
+    gdk-pixbuf
+
+    # Database tools
+    dbeaver-bin
+    mariadb
+
+    # Development tools
+    android-tools
+    postman
+    android-studio
+    vscode
+
+    # Media and productivity GUI apps
+    vlc
+    mpv
+    spotify
+    discord
+    libreoffice-fresh
+    shotcut
+
     # KDE packages
     kdePackages.breeze
     kdePackages.breeze-gtk
@@ -106,12 +143,31 @@
       pkgs.stdenv.cc.cc.lib
       pkgs.zlib
     ];
+
+    # Tauri/GTK PKG_CONFIG
+    PKG_CONFIG_PATH = "${pkgs.lib.makeSearchPath "lib/pkgconfig" [
+      pkgs.glib.dev
+      pkgs.gtk3.dev
+      pkgs.webkitgtk_4_1.dev
+      pkgs.pango.dev
+      pkgs.cairo.dev
+      pkgs.atk.dev
+      pkgs.libsoup_3.dev
+      pkgs.openssl.dev
+      pkgs.dbus.dev
+    ]}";
+    PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
+    PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
     
     # Wayland & GTK settings
     GDK_BACKEND = "wayland,x11";
     GSK_RENDERER = "ngl";
     GTK_OVERLAY_SCROLLING = "0";
     WLR_NO_HARDWARE_CURSORS = "1";
+
+    # Chromium hardware acceleration
+    MOZ_DISABLE_RDD_SANDBOX = "1";
+    NVD_BACKEND = "direct";
   };
 
   # Linux-specific Zsh aliases (override common.nix aliases)
@@ -130,7 +186,6 @@
     # Linux-specific (with sudo)
     rebuild = "sudo nixos-rebuild switch --flake ~/nix-config#nixos";
     test = "sudo nixos-rebuild test --flake ~/nix-config#nixos";
-    update-vscode = "~/nix-config/update-vscode-insiders.sh && rebuild";
     gc = "sudo nix-collect-garbage";
     gcold = "sudo nix-collect-garbage --delete-older-than 30d";
     gcall = "sudo nix-collect-garbage -d";

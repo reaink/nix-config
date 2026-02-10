@@ -12,7 +12,7 @@
 
   # macOS-specific packages (can be added as needed)
   home.packages = with pkgs; [
-    # Add macOS-specific packages here
+    vscode
   ];
 
   # macOS-specific Zsh aliases (override common.nix aliases)
@@ -29,8 +29,8 @@
     flake-check = "nix flake check";
     
     # macOS-specific (no sudo)
-    rebuild = "darwin-rebuild switch --flake ~/nix-config#mac";
-    test = "darwin-rebuild check --flake ~/nix-config#mac";
+    rebuild = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac";
+    test = "sudo darwin-rebuild check --flake ~/nix-config\\#mac";
     gc = "nix-collect-garbage";
     gcold = "nix-collect-garbage --delete-older-than 30d";
     gcall = "nix-collect-garbage -d";

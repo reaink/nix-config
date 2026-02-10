@@ -1,8 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
 
-let
-  vscode-insiders = pkgs.callPackage ../../vscode-insiders.nix { inherit lib; };
-in
 {
   # Cross-platform packages
   home.packages = with pkgs; [
@@ -24,7 +21,7 @@ in
     lazydocker
     gdu
     
-    # Development tools - Rust
+    # Development tools - Rust (cross-platform)
     rustup
     protobuf
     clang
@@ -32,25 +29,8 @@ in
     lld
     gnumake
     pkg-config
-    glib
-    glib.dev
-    gtk3
-    gtk3.dev
-    webkitgtk_4_1
-    webkitgtk_4_1.dev
-    pango
-    pango.dev
-    cairo
-    cairo.dev
-    atk
-    atk.dev
-    libsoup_3
-    libsoup_3.dev
     openssl
     openssl.dev
-    dbus
-    dbus.dev
-    gdk-pixbuf
     
     # Development tools - Node.js & Python
     uv
@@ -61,28 +41,16 @@ in
     google-cloud-sdk
     ngrok
     
-    # Database tools
-    dbeaver-bin
-    mariadb
+    # Database tools (cross-platform)
     prisma-engines_7
     
-    # Development tools
-    android-tools
+    # Development tools (cross-platform)
     imagemagick
-    postman
-    android-studio
     
     # Cross-platform GUI applications
-    vscode-insiders
     google-chrome
     telegram-desktop
     obsidian
-    vlc
-    mpv
-    spotify
-    discord
-    libreoffice-fresh
-    shotcut
   ];
 
   # Session variables - cross-platform
@@ -93,26 +61,9 @@ in
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
-    PKG_CONFIG_PATH = "${pkgs.lib.makeSearchPath "lib/pkgconfig" [
-      pkgs.glib.dev
-      pkgs.gtk3.dev
-      pkgs.webkitgtk_4_1.dev
-      pkgs.pango.dev
-      pkgs.cairo.dev
-      pkgs.atk.dev
-      pkgs.libsoup_3.dev
-      pkgs.openssl.dev
-      pkgs.dbus.dev
-    ]}";
-    PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
-    PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
     
     # Node.js
     PNPM_HOME = "$HOME/.local/share/pnpm";
-    
-    # Chromium hardware acceleration
-    MOZ_DISABLE_RDD_SANDBOX = "1";
-    NVD_BACKEND = "direct";
   };
 
   home.sessionPath = [
@@ -127,8 +78,10 @@ in
   # Git configuration
   programs.git = {
     enable = true;
-    userName = "Rea";
-    userEmail = "hi@rea.ink";
+    settings = {
+      user.name = "Rea";
+      user.email = "hi@rea.ink";
+    };
   };
 
   # Zsh configuration
@@ -138,7 +91,7 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    initExtra = ''
+    initContent = ''
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
     '';

@@ -4,7 +4,6 @@
   imports = [
     # Shared modules
     ../../modules/nix-settings.nix
-    ../../modules/locale.nix
   ];
 
   # Set hostname

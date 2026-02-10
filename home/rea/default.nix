@@ -3,9 +3,8 @@
 {
   imports = [
     ./common.nix
-    ./linux.nix
-    ./darwin.nix
-  ];
+  ] ++ (if pkgs.stdenv.isLinux then [ ./linux.nix ] else [])
+    ++ (if pkgs.stdenv.isDarwin then [ ./darwin.nix ] else []);
 
   # Basic user configuration
   home.username = "rea";

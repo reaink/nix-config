@@ -65,7 +65,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [
-                  ./home/rea
+                  ./home/rea/linux-home.nix
                   inputs.plasma-manager.homeModules.plasma-manager
                   inputs.rime-keytao.homeManagerModules.default
                 ];
@@ -93,7 +93,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users.rea = {
                 imports = [
-                  ./home/rea
+                  ./home/rea/darwin-home.nix
                   inputs.rime-keytao.homeManagerModules.default
                 ];
               };

@@ -138,45 +138,22 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    initExtra = ''
+    initContent = ''
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
     '';
 
     shellAliases = {
-      # System management (will be overridden in linux.nix/darwin.nix)
-      rebuild = if pkgs.stdenv.isLinux 
-        then "sudo nixos-rebuild switch --flake ~/nix-config#nixos"
-        else "darwin-rebuild switch --flake ~/nix-config#mac";
-      test = if pkgs.stdenv.isLinux
-        then "sudo nixos-rebuild test --flake ~/nix-config#nixos"
-        else "darwin-rebuild check --flake ~/nix-config#mac";
-      
       # Nix maintenance
-      gc = if pkgs.stdenv.isLinux
-        then "sudo nix-collect-garbage"
-        else "nix-collect-garbage";
-      gcold = if pkgs.stdenv.isLinux
-        then "sudo nix-collect-garbage --delete-older-than 30d"
-        else "nix-collect-garbage --delete-older-than 30d";
-      gcall = if pkgs.stdenv.isLinux
-        then "sudo nix-collect-garbage -d"
-        else "nix-collect-garbage -d";
-      optimize = if pkgs.stdenv.isLinux
-        then "sudo nix-store --optimize"
-        else "nix-store --optimize";
-      clean = if pkgs.stdenv.isLinux
-        then "sudo nix-collect-garbage -d && sudo nix-store --optimize"
-        else "nix-collect-garbage -d && nix-store --optimize";
+      gc = "nix-collect-garbage";
+      gcold = "nix-collect-garbage --delete-older-than 30d";
+      gcall = "nix-collect-garbage -d";
+      optimize = "nix-store --optimize";
+      clean = "nix-collect-garbage -d && nix-store --optimize";
       
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";
-      
-      # System info
-      list-gens = if pkgs.stdenv.isLinux
-        then "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system"
-        else "nix-env --list-generations --profile /nix/var/nix/profiles/system";
       
       # Python via uv
       python = "uv run python";

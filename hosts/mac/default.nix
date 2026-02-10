@@ -26,7 +26,7 @@
   programs.zsh.enable = true;
 
   # Set Git commit hash for darwin-version
-  system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+  system.configurationRevision = null;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

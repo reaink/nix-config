@@ -1,8 +1,9 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
-  # Linux-specific packages
-  home.packages = with pkgs; [
+  config = lib.mkIf pkgs.stdenv.isLinux {
+    # Linux-specific packages
+    home.packages = with pkgs; [
     # KDE packages
     kdePackages.breeze
     kdePackages.breeze-gtk
@@ -100,11 +101,11 @@
   # Linux-specific environment variables
   home.sessionVariables = {
     # Fix dynamic linking for Rust binaries on Linux
-    LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath [
+    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
       pkgs.openssl
       pkgs.stdenv.cc.cc.lib
       pkgs.zlib
-    ]}:$LD_LIBRARY_PATH";
+    ];
     
     # Wayland & GTK settings
     GDK_BACKEND = "wayland,x11";
@@ -113,11 +114,29 @@
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
-  # Override Zsh aliases for Linux-specific commands
-  programs.zsh.shellAliases = {
+  # Linux-specific Zsh aliases (override common.nix aliases)
+  programs.zsh.shellAliases = lib.mkForce {
+    # Inherit common aliases
+    python = "uv run python";
+    python3 = "uv run python";
+    ls = "eza --icons";
+    ll = "eza -l --icons";
+    la = "eza -la --icons";
+    lt = "eza --tree --icons";
+    cat = "bat";
+    flake-update = "nix flake update";
+    flake-check = "nix flake check";
+    
+    # Linux-specific (with sudo)
     rebuild = "sudo nixos-rebuild switch --flake ~/nix-config#nixos";
     test = "sudo nixos-rebuild test --flake ~/nix-config#nixos";
     update-vscode = "~/nix-config/update-vscode-insiders.sh && rebuild";
+    gc = "sudo nix-collect-garbage";
+    gcold = "sudo nix-collect-garbage --delete-older-than 30d";
+    gcall = "sudo nix-collect-garbage -d";
+    optimize = "sudo nix-store --optimize";
+    clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
+    list-gens = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
   };
 
   # GTK theme configuration
@@ -531,5 +550,6 @@
       "yakuakerc"."Window"."ShowTabBar" = "ShowTabBarWhenNeeded";
       "yakuakerc"."Dialogs"."FirstRun" = false;
     };
+  };
   };
 }

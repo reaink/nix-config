@@ -86,18 +86,6 @@
     options uvcvideo quirks=0x80
   '';
 
-  nix.optimise.automatic = true;
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
-
-  nix.settings.auto-optimise-store = true;
-
-  nixpkgs.config.allowUnfree = true;
-
   # Graphics configuration
   hardware.graphics = {
     enable = true;
@@ -179,24 +167,6 @@
   # Xbox controller support
   hardware.xpadneo.enable = true;  # Bluetooth Xbox controller driver
   hardware.xone.enable = true;  # Xbox One wireless adapter support
-
-  # Set your time zone.
-  time.timeZone = "Asia/Shanghai";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "zh_CN.UTF-8";
-    LC_IDENTIFICATION = "zh_CN.UTF-8";
-    LC_MEASUREMENT = "zh_CN.UTF-8";
-    LC_MONETARY = "zh_CN.UTF-8";
-    LC_NAME = "zh_CN.UTF-8";
-    LC_NUMERIC = "zh_CN.UTF-8";
-    LC_PAPER = "zh_CN.UTF-8";
-    LC_TELEPHONE = "zh_CN.UTF-8";
-    LC_TIME = "zh_CN.UTF-8";
-  };
 
   i18n.inputMethod = {
     enable = true;
@@ -341,21 +311,6 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-
-  # enable flakes and nix command
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  nix.settings.substituters = [
-    "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-    "https://mirror.nju.edu.cn/nix-channels/store"
-    "https://nix-community.cachix.org"
-  ];
-  nix.settings.trusted-public-keys = [
-    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-  ];
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [

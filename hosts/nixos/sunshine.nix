@@ -6,9 +6,10 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.services.sunshineStreaming;
-  
+
   # Helper utility for launching Steam games from Sunshine
   # This works around Sunshine's security wrapper that prevents Steam from launching
   # Examples:
@@ -33,14 +34,14 @@ with lib; let
     name = "steam-launch-and-wait";
     text = ''
       set -euo pipefail
-      
+
       # Launch Steam with the provided URL
       steam "$1" &
       STEAM_PID=$!
-      
+
       # Wait for Steam process to fully start
       sleep 3
-      
+
       # Monitor Steam process - exit when it's gone
       while kill -0 "$STEAM_PID" 2>/dev/null; do
         sleep 1
@@ -51,146 +52,157 @@ with lib; let
       pkgs.procps
     ];
   };
-  
+
   # FIFO listener service using Python for robust message handling
-  steam-fifo-listener = pkgs.writers.writePython3 "steam-fifo-listener" {
-    libraries = [ ];
-  } ''
-    # Steam FIFO listener for Sunshine
-    import os
-    import subprocess
-    import sys
-    from pathlib import Path
+  steam-fifo-listener =
+    pkgs.writers.writePython3 "steam-fifo-listener"
+      {
+        libraries = [ ];
+      }
+      ''
+        # Steam FIFO listener for Sunshine
+        import os
+        import subprocess
+        import sys
+        from pathlib import Path
 
 
-    def main():
-        # Use XDG_RUNTIME_DIR for FIFO location
-        runtime_dir = os.getenv('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')
-        fifo_path = Path(runtime_dir) / 'steam-run-url.fifo'
+        def main():
+            # Use XDG_RUNTIME_DIR for FIFO location
+            runtime_dir = os.getenv('XDG_RUNTIME_DIR', f'/run/user/{os.getuid()}')
+            fifo_path = Path(runtime_dir) / 'steam-run-url.fifo'
 
-        print(f"Creating FIFO at {fifo_path}", file=sys.stderr)
+            print(f"Creating FIFO at {fifo_path}", file=sys.stderr)
 
-        try:
-            # Create FIFO if it doesn't exist
-            if fifo_path.exists():
-                fifo_path.unlink()
-            os.mkfifo(fifo_path, 0o600)
+            try:
+                # Create FIFO if it doesn't exist
+                if fifo_path.exists():
+                    fifo_path.unlink()
+                os.mkfifo(fifo_path, 0o600)
 
-            print(f"Listening for Steam URLs on {fifo_path}...", file=sys.stderr)
+                print(f"Listening for Steam URLs on {fifo_path}...", file=sys.stderr)
 
-            # Open FIFO in read mode and process messages
-            while True:
-                with open(fifo_path, 'r') as fifo:
-                    for line in fifo:
-                        url = line.strip()
-                        if not url:
-                            continue
+                # Open FIFO in read mode and process messages
+                while True:
+                    with open(fifo_path, 'r') as fifo:
+                        for line in fifo:
+                            url = line.strip()
+                            if not url:
+                                continue
 
-                        print(f"Received URL: {url}", file=sys.stderr)
+                            print(f"Received URL: {url}", file=sys.stderr)
 
-                        try:
-                            # Launch Steam with the URL
-                            subprocess.Popen(
-                                ['steam', url],
-                                start_new_session=True,
-                                stdout=subprocess.DEVNULL,
-                                stderr=subprocess.DEVNULL
-                            )
-                            print(f"Launched Steam with: {url}", file=sys.stderr)
-                        except Exception as e:
-                            print(f"Error launching Steam: {e}", file=sys.stderr)
-        finally:
-            if fifo_path.exists():
-                fifo_path.unlink()
+                            try:
+                                # Launch Steam with the URL
+                                subprocess.Popen(
+                                    ['steam', url],
+                                    start_new_session=True,
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL
+                                )
+                                print(f"Launched Steam with: {url}", file=sys.stderr)
+                            except Exception as e:
+                                print(f"Error launching Steam: {e}", file=sys.stderr)
+            finally:
+                if fifo_path.exists():
+                    fifo_path.unlink()
 
 
-    if __name__ == '__main__':
-        main()
-  '';
-in {
+        if __name__ == '__main__':
+            main()
+      '';
+in
+{
   options.services.sunshineStreaming = {
     enable = mkEnableOption "Enable Sunshine streaming with Steam workaround";
-    
+
     hostName = mkOption {
       type = types.str;
       default = config.networking.hostName;
       description = "The name of this host as seen in Moonlight";
     };
-    
+
     openFirewall = mkOption {
       type = types.bool;
       default = true;
       description = "Whether to open the firewall for Sunshine";
     };
-    
+
     autoStart = mkOption {
       type = types.bool;
       default = true;
       description = "Whether to start Sunshine automatically on login";
     };
-    
+
     user = mkOption {
       type = types.str;
       default = "rea";
       description = "The user to configure Sunshine for";
     };
-    
+
     outputName = mkOption {
       type = types.str;
       default = "0";
       description = "Wayland output name (0 for X11 display number)";
     };
-    
+
     cudaSupport = mkOption {
       type = types.bool;
       default = true;
       description = "Enable CUDA/NVENC support for hardware encoding";
     };
   };
-  
+
   config = mkIf cfg.enable {
     # System-level Sunshine configuration
     security.wrappers.sunshine = {
       source = "${
-        if cfg.cudaSupport
-        then pkgs.sunshine.override { 
-          cudaSupport = true; 
-          cudaPackages = pkgs.cudaPackages; 
-        }
-        else pkgs.sunshine
+        if cfg.cudaSupport then
+          pkgs.sunshine.override {
+            cudaSupport = true;
+            cudaPackages = pkgs.cudaPackages;
+          }
+        else
+          pkgs.sunshine
       }/bin/sunshine";
       capabilities = "cap_sys_admin+p";
       owner = "root";
       group = "root";
     };
-    
+
     # Firewall configuration
     networking.firewall = mkIf cfg.openFirewall {
       allowedTCPPorts = [
-        47984  # HTTPS
-        47989  # HTTP
-        47990  # Web UI
-        48010  # Admin
+        47984 # HTTPS
+        47989 # HTTP
+        47990 # Web UI
+        48010 # Admin
       ];
       allowedUDPPortRanges = [
-        { from = 47998; to = 48000; }  # Video/audio streaming
+        {
+          from = 47998;
+          to = 48000;
+        } # Video/audio streaming
       ];
     };
-    
+
     # Home Manager configuration for the specified user
     home-manager.users.${cfg.user} = {
       # Install Sunshine and helper scripts for icon and desktop file support
       home.packages = [
-        (if cfg.cudaSupport
-         then pkgs.sunshine.override { 
-           cudaSupport = true; 
-           cudaPackages = pkgs.cudaPackages; 
-         }
-         else pkgs.sunshine)
+        (
+          if cfg.cudaSupport then
+            pkgs.sunshine.override {
+              cudaSupport = true;
+              cudaPackages = pkgs.cudaPackages;
+            }
+          else
+            pkgs.sunshine
+        )
         steam-run-url
         steam-launch-and-wait
       ];
-      
+
       # Sunshine apps configuration
       xdg.configFile."sunshine/apps.json".text = builtins.toJSON {
         env = {
@@ -211,14 +223,14 @@ in {
           }
         ];
       };
-      
+
       # FIFO listener systemd service
       systemd.user.services.steam-run-url = {
         Unit = {
           Description = "Steam URL FIFO listener for Sunshine";
           After = [ "graphical-session.target" ];
         };
-        
+
         Service = {
           Type = "simple";
           ExecStart = "${steam-fifo-listener}";
@@ -228,20 +240,23 @@ in {
             "PATH=/run/wrappers/bin:/etc/profiles/per-user/${cfg.user}/bin:/run/current-system/sw/bin"
           ];
         };
-        
+
         Install = {
           WantedBy = [ "graphical-session.target" ];
         };
       };
-      
+
       # Sunshine user service
       systemd.user.services.sunshine = {
         Unit = {
           Description = "Sunshine self-hosted game streaming";
-          After = [ "graphical-session.target" "steam-run-url.service" ];
+          After = [
+            "graphical-session.target"
+            "steam-run-url.service"
+          ];
           PartOf = [ "graphical-session.target" ];
         };
-        
+
         Service = {
           Type = "simple";
           ExecStart = "/run/wrappers/bin/sunshine";
@@ -251,7 +266,7 @@ in {
             "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
           ];
         };
-        
+
         Install = {
           WantedBy = mkIf cfg.autoStart [ "graphical-session.target" ];
         };

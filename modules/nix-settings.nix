@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Enable flakes and new nix command
@@ -24,13 +29,17 @@
   # Automatic garbage collection
   nix.gc = {
     automatic = true;
-    interval = { Weekday = 0; Hour = 0; Minute = 0; };  # Weekly on Sunday at midnight
+    interval = {
+      Weekday = 0;
+      Hour = 0;
+      Minute = 0;
+    }; # Weekly on Sunday at midnight
     options = "--delete-older-than 1w";
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  
+
   # Allow insecure packages
   nixpkgs.config.permittedInsecurePackages = [
     "google-chrome-144.0.7559.97"

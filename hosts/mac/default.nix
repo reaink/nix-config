@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -13,7 +19,6 @@
   environment.systemPackages = with pkgs; [
     vim
     git
-    neovim
     wget
     nixfmt
   ];
@@ -26,6 +31,35 @@
 
   # Enable alternative shell support
   programs.zsh.enable = true;
+
+  # Font configuration (matching Linux setup)
+  fonts = {
+    packages = with pkgs; [
+      hack-font
+      inter
+      jetbrains-mono
+      dejavu_fonts
+      liberation_ttf
+      monaspace
+      maple-mono.truetype
+      maple-mono.NF-unhinted
+      maple-mono.NF-CN-unhinted
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      nerd-fonts.fira-code
+      nerd-fonts.droid-sans-mono
+      nerd-fonts.caskaydia-mono
+      sarasa-gothic
+      source-code-pro
+      source-han-mono
+      source-han-sans
+      source-han-serif
+      wqy_zenhei
+      lxgw-wenkai
+    ];
+  };
 
   # Set Git commit hash for darwin-version
   system.configurationRevision = null;

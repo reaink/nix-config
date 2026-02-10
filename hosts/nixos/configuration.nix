@@ -59,8 +59,8 @@
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-    "clearcpuid=rdrand"  # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs
-    "random.trust_cpu=0"  # Don't trust CPU random number generator
+    "clearcpuid=rdrand" # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs
+    "random.trust_cpu=0" # Don't trust CPU random number generator
   ];
   boot.initrd.kernelModules = [
     "nvidia"
@@ -72,10 +72,10 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.blacklistedKernelModules = ["nouveau"];
+  boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Load Bluetooth ISO module for advanced audio profiles
-  boot.kernelModules = ["bluetooth_iso"];
+  boot.kernelModules = [ "bluetooth_iso" ];
 
   # UVC webcam quirks for UGREEN Camera 2K (0c45:636f)
   # Fix slow initialization by skipping unsupported UVC control queries
@@ -159,14 +159,14 @@
       General = {
         Enable = "Source,Sink,Media,Socket";
         Experimental = true;
-        KernelExperimental = true;  # Enable ISO Socket for BAP support
+        KernelExperimental = true; # Enable ISO Socket for BAP support
       };
     };
   };
 
   # Xbox controller support
-  hardware.xpadneo.enable = true;  # Bluetooth Xbox controller driver
-  hardware.xone.enable = true;  # Xbox One wireless adapter support
+  hardware.xpadneo.enable = true; # Bluetooth Xbox controller driver
+  hardware.xone.enable = true; # Xbox One wireless adapter support
 
   i18n.inputMethod = {
     enable = true;
@@ -190,33 +190,33 @@
     sddm = {
       enable = true;
       wayland.enable = true;
-      
+
       settings = {
         General = {
           DisplayStopTime = 300; # 5 minutes
         };
       };
     };
-    
+
     autoLogin = {
       enable = true;
       user = "rea";
     };
   };
-  
+
   services.desktopManager.plasma6.enable = true;
 
   # KDE Plasma font configuration - optimized for readability
-  environment.etc."xdg/kdeglobals".text = lib.generators.toINI {} {
+  environment.etc."xdg/kdeglobals".text = lib.generators.toINI { } {
     General = {
-      font = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0";  # General UI font - best for Chinese display
-      fixed = "Maple Mono NF CN,10,-1,5,50,0,0,0,0,0";  # Fixed-width font (terminal, code)
-      menuFont = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0";  # Menu font
-      smallestReadableFont = "Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0";  # Smallest readable font
-      toolBarFont = "Noto Sans CJK SC,10,-1,5,50,0,0,0,0,0";  # Toolbar font
+      font = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0"; # General UI font - best for Chinese display
+      fixed = "Maple Mono NF CN,10,-1,5,50,0,0,0,0,0"; # Fixed-width font (terminal, code)
+      menuFont = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0"; # Menu font
+      smallestReadableFont = "Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0"; # Smallest readable font
+      toolBarFont = "Noto Sans CJK SC,10,-1,5,50,0,0,0,0,0"; # Toolbar font
     };
     WM = {
-      activeFont = "Noto Sans CJK SC,11,-1,5,75,0,0,0,0,0";  # Window title font (bold)
+      activeFont = "Noto Sans CJK SC,11,-1,5,75,0,0,0,0,0"; # Window title font (bold)
     };
   };
 
@@ -302,9 +302,20 @@
     ];
     fontconfig = {
       defaultFonts = {
-        sansSerif = [ "Noto Sans CJK SC" "Sarasa Gothic SC" "DejaVu Sans" ];
-        serif = [ "Noto Serif CJK SC" "LXGW WenKai" ];
-        monospace = [ "Maple Mono NF CN" "Sarasa Mono SC" "JetBrains Mono" ];
+        sansSerif = [
+          "Noto Sans CJK SC"
+          "Sarasa Gothic SC"
+          "DejaVu Sans"
+        ];
+        serif = [
+          "Noto Serif CJK SC"
+          "LXGW WenKai"
+        ];
+        monospace = [
+          "Maple Mono NF CN"
+          "Sarasa Mono SC"
+          "JetBrains Mono"
+        ];
       };
     };
   };
@@ -374,7 +385,7 @@
     # Note: Do NOT set GTK_IM_MODULE or QT_IM_MODULE when using Wayland frontend
     # Wayland native apps will use text-input-v3 protocol automatically
     # See: https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#KDE_Plasma
-    XMODIFIERS = "@im=fcitx";  # Still needed for XWayland apps
+    XMODIFIERS = "@im=fcitx"; # Still needed for XWayland apps
   };
 
   virtualisation.libvirtd = {
@@ -410,7 +421,7 @@
     stdenv.cc.libc
     zlib
     openssl
-    openssl_3  # Add OpenSSL 3.x for newer binaries
+    openssl_3 # Add OpenSSL 3.x for newer binaries
     libgcc
     glibc
     gcc.cc.lib
@@ -557,16 +568,16 @@
     description = "ToDesk Remote Desktop Service";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
-    
+
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.todesk}/bin/todesk service";
       Restart = "on-failure";
       RestartSec = 10;
-      
+
       # Security settings
       PrivateTmp = false;
-      
+
       # Network access
       PrivateNetwork = false;
     };

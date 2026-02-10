@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   # Cross-platform packages
@@ -9,7 +15,7 @@
     xz
     unzip
     p7zip
-    
+
     # Modern CLI tools
     ripgrep
     jq
@@ -20,7 +26,10 @@
     lazygit
     lazydocker
     gdu
-    
+    neovim
+    redis
+    rclone
+
     # Development tools - Rust (cross-platform)
     rustup
     protobuf
@@ -31,26 +40,38 @@
     pkg-config
     openssl
     openssl.dev
-    
-    # Development tools - Node.js & Python
+    android-tools
+
     uv
     fnm
     pnpm
-    
+    bun
+    mariadb
+
     # Cloud & DevOps
     google-cloud-sdk
     ngrok
-    
+
     # Database tools (cross-platform)
     prisma-engines_7
-    
+
     # Development tools (cross-platform)
     imagemagick
-    
+
     # Cross-platform GUI applications
+    dbeaver-bin
+    postman
     google-chrome
     telegram-desktop
+    discord
+    vscode
     obsidian
+    cherry-studio
+    qq
+    wpsoffice-cn
+    firefox
+    vlc-bin
+    tabby
   ];
 
   # Session variables - cross-platform
@@ -61,7 +82,7 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
-    
+
     # Node.js
     PNPM_HOME = "$HOME/.local/share/pnpm";
   };
@@ -103,15 +124,15 @@
       gcall = "nix-collect-garbage -d";
       optimize = "nix-store --optimize";
       clean = "nix-collect-garbage -d && nix-store --optimize";
-      
+
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";
-      
+
       # Python via uv
       python = "uv run python";
       python3 = "uv run python";
-      
+
       # Common shortcuts
       ls = "eza --icons";
       ll = "eza -l --icons";

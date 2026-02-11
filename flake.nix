@@ -53,6 +53,13 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
+            # Apply custom overlays
+            {
+              nixpkgs.overlays = [
+                (import ./overlays/vscode-latest.nix)
+              ];
+            }
+
             # Host-specific configuration
             ./hosts/nixos
 
@@ -81,6 +88,13 @@
           system = "aarch64-darwin";
           specialArgs = { inherit inputs self; };
           modules = [
+            # Apply custom overlays
+            {
+              nixpkgs.overlays = [
+                (import ./overlays/vscode-latest.nix)
+              ];
+            }
+
             # Host-specific configuration
             ./hosts/mac
 

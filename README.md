@@ -67,6 +67,10 @@ nix-config/
 │   ├── nix-settings.nix      # Nix 配置（镜像源、GC、实验性功能）
 │   └── locale.nix            # 时区和区域设置
 │
+├── overlays/                 # 自定义包覆盖层
+│   ├── vscode-latest.nix     # VSCode 最新版本自动获取
+│   └── README.md             # 覆盖层文档
+│
 ├── home/                     # Home Manager 用户配置
 │   └── rea/
 │       ├── default.nix       # 用户入口（条件导入）
@@ -77,6 +81,8 @@ nix-config/
 ├── secrets/                  # SOPS 加密密钥（NixOS）
 │   └── secrets.yaml
 │
+├── update-vscode-hash.sh     # VSCode 版本更新脚本
+│
 └── shells
     └── rust-shell.nix
 ```
@@ -86,9 +92,14 @@ nix-config/
 ### 完全共享（`modules/` 和 `home/rea/common.nix`）
 - Nix 核心设置（镜像源、缓存、GC）
 - 开发工具链（Rust、Node.js、Python、CLI 工具）
-- 跨平台 GUI（VSCode、Chrome、Telegram、Obsidian）
+- 跨平台 GUI（VSCode Latest、Chrome、Telegram、Obsidian）
 - Shell 配置（Zsh 插件、别名、工具集成）
 - Git 配置
+
+### 自定义包（`overlays/`）
+- **VSCode Latest**: 自动从官方获取最新稳定版本
+  - 运行 `./update-vscode-hash.sh` 更新到最新版本
+  - 详见 `overlays/README.md`
 
 ### 平台隔离
 - **NixOS 特有** (`hosts/nixos/` + `home/rea/linux.nix`):

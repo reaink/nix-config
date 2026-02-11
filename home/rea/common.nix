@@ -64,7 +64,7 @@
     google-chrome
     telegram-desktop
     discord
-    vscode
+    vscode-latest
     obsidian
     cherry-studio
     qq

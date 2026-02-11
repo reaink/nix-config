@@ -29,13 +29,21 @@
   # Automatic garbage collection
   nix.gc = {
     automatic = true;
-    interval = {
-      Weekday = 0;
-      Hour = 0;
-      Minute = 0;
-    }; # Weekly on Sunday at midnight
     options = "--delete-older-than 1w";
-  };
+  } // (
+    if pkgs.stdenv.isDarwin then
+      {
+        interval = {
+          Weekday = 0;
+          Hour = 0;
+          Minute = 0;
+        }; # Weekly on Sunday at midnight (nix-darwin)
+      }
+    else
+      {
+        dates = "weekly"; # Weekly (NixOS)
+      }
+  );
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

@@ -69,7 +69,6 @@
     cherry-studio
     qq
     firefox
-    vlc-bin
   ];
 
   # Session variables - cross-platform

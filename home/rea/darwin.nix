@@ -20,6 +20,7 @@
     home.packages = with pkgs; [
       wechat
       ghostty-bin
+      vlc-bin
     ];
 
     # macOS-specific Zsh aliases (override common.nix aliases)

@@ -18,7 +18,7 @@
 
   # sops secrets configuration
   sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ../../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
     age.keyFile = "/home/rea/.config/sops/age/keys.txt";
 

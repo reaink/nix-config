@@ -77,20 +77,6 @@
       max_connections = 100;
       shared_buffers = "128MB";
     };
-
-    # Ensure databases exist
-    ensureDatabases = [
-      "postgres"
-      "rea"
-    ];
-
-    # Ensure users exist
-    ensureUsers = [
-      {
-        name = "rea";
-        ensureDBOwnership = true;
-      }
-    ];
   };
 
   # Setup PostgreSQL passwords and authentication using launchd
@@ -139,11 +125,19 @@
             # Wait a moment for reload
             sleep 1
             
-            # Set passwords (note: initial connection might still use trust method)
+            # Create user if not exists
+            ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -tc "SELECT 1 FROM pg_user WHERE usename = 'rea'" | grep -q 1 || \
+              ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -c "CREATE USER rea WITH CREATEDB;" 2>/dev/null || true
+            
+            # Set password and grant privileges
             ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -c "ALTER USER rea PASSWORD '$REA_PASS';" 2>/dev/null || true
             ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -c "ALTER USER rea CREATEDB;" 2>/dev/null || true
             
-            echo "PostgreSQL passwords setup completed"
+            # Create databases if not exist
+            ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'rea'" | grep -q 1 || \
+              ${pkgs.postgresql_16}/bin/psql -h 127.0.0.1 -p 5432 postgres -c "CREATE DATABASE rea OWNER rea;" 2>/dev/null || true
+            
+            echo "PostgreSQL setup completed: user and database created"
             echo "Connection string: postgresql://rea:[password]@localhost:5432/rea"
     '';
 

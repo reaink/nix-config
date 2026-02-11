@@ -19,7 +19,7 @@ self: super: {
       # Platform-specific configurations
       platformConfig = if super.stdenv.isDarwin then {
         platform = "darwin-arm64";
-        hash = super.lib.fakeSha256;  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
+        hash = "1alpqxgnlpxmyn8qqyzwm3r5kchfsk9n0lwb080a56a56ldf21s6";  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
       } else {
         platform = "linux-x64";
         hash = "1sc92pa3zdfidlm0vl2xxvqnnai68q7p4ab7ds0hdd6d1gr64gj9";  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable

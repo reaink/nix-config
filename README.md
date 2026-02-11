@@ -77,10 +77,7 @@ nix-config/
 ├── secrets/                  # SOPS 加密密钥（NixOS）
 │   └── secrets.yaml
 │
-└── 构建脚本
-    ├── vscode-insiders.nix
-    ├── vscode-insiders-sha256.nix
-    ├── update-vscode-insiders.sh
+└── shells
     └── rust-shell.nix
 ```
 

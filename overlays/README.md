@@ -10,18 +10,24 @@ The `vscode-latest.nix` overlay provides a `vscode-latest` package that always f
 
 The VSCode package in nixpkgs (even on unstable channel) can lag behind official releases by days or weeks. This overlay ensures you always have access to the absolute latest version.
 
+### Platform Support
+
+✅ **Linux (x86_64)** - Downloads from `linux-x64` endpoint  
+✅ **macOS (Apple Silicon)** - Downloads from `darwin-arm64` endpoint
+
+The overlay automatically detects your platform and fetches the appropriate version.
+
 ### How it works
 
-The overlay fetches VSCode from:
-```
-https://update.code.visualstudio.com/latest/linux-x64/stable
-```
+The overlay fetches VSCode from platform-specific URLs:
+- **Linux**: `https://update.code.visualstudio.com/latest/linux-x64/stable`
+- **macOS**: `https://update.code.visualstudio.com/latest/darwin-arm64/stable`
 
-This URL always redirects to the newest stable release tarball.
+These URLs always redirect to the newest stable release for each platform.
 
 ### Updating the hash
 
-When Microsoft releases a new VSCode version, the content at the URL changes but the URL stays the same. This means you need to update the SHA256 hash in the overlay.
+When Microsoft releases a new VSCode version, the content at the URL changes but the URL stays the same. This means you need to update the SHA256 hash in the overlay for your platform.
 
 #### Method 1: Using the update script (Recommended)
 
@@ -31,16 +37,22 @@ Run the provided update script from the repository root:
 ./update-vscode-hash.sh
 ```
 
-This will automatically fetch the latest version and update the hash in the overlay file.
+The script automatically detects your platform and updates the corresponding hash.
 
 #### Method 2: Manual update
 
-1. Run `nix-prefetch-url` to get the current hash:
+1. Run `nix-prefetch-url` to get the current hash for your platform:
    ```bash
+   # On Linux:
    nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
+   
+   # On macOS:
+   nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
    ```
 
-2. Update the `sha256` value in `vscode-latest.nix` with the output
+2. Update the corresponding `hash` value in `vscode-latest.nix`:
+   - For Linux: Update the hash in the `linux-x64` platform block
+   - For macOS: Update the hash in the `darwin-arm64` platform block
 
 3. Rebuild your system:
    ```bash
@@ -53,7 +65,7 @@ This will automatically fetch the latest version and update the hash in the over
 
 ### Usage
 
-The `vscode-latest` package is already configured in `home/rea/common.nix`. It will be available on both NixOS and macOS systems.
+The `vscode-latest` package is already configured in `home/rea/common.nix`. It will be available on both NixOS and macOS systems with platform-appropriate binaries.
 
 ### First-time setup
 

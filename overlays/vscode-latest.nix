@@ -22,7 +22,7 @@ self: super: {
         hash = super.lib.fakeSha256;  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
       } else {
         platform = "linux-x64";
-        hash = super.lib.fakeSha256;  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
+        hash = "1sc92pa3zdfidlm0vl2xxvqnnai68q7p4ab7ds0hdd6d1gr64gj9";  # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
       };
     in
     rec {

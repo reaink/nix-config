@@ -180,8 +180,8 @@
       flake-check = "nix flake check";
 
       # Linux-specific (with sudo)
-      rebuild = "sudo nixos-rebuild switch --flake ~/nix-config#nixos";
-      test = "sudo nixos-rebuild test --flake ~/nix-config#nixos";
+      rebuild = "sudo nixos-rebuild switch --flake ~/nix-config\\#nixos";
+      test = "sudo nixos-rebuild test --flake ~/nix-config\\#nixos";
       gc = "sudo nix-collect-garbage";
       gcold = "sudo nix-collect-garbage --delete-older-than 30d";
       gcall = "sudo nix-collect-garbage -d";

@@ -41,7 +41,9 @@
     git
     wget
     nixfmt
-    postgresql_16 # PostgreSQL client tools
+    postgresql_16
+    sops
+    age
   ];
 
   # Define user

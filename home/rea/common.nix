@@ -125,6 +125,7 @@
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";
+      update-vscode = "sh update-vscode-hash.sh";
 
       # Python via uv
       python = "uv run python";

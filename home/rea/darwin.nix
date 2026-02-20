@@ -19,7 +19,7 @@
     # macOS-specific packages (can be added as needed)
     home.packages = with pkgs; [
       wechat
-      ghostty-bin
+      kitty
       vlc-bin
     ];
 
@@ -35,6 +35,7 @@
       cat = "bat";
       flake-update = "nix flake update";
       flake-check = "nix flake check";
+      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
 
       # macOS-specific (no sudo)
       rebuild = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac";

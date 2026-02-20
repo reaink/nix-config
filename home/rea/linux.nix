@@ -126,7 +126,7 @@
       antimicrox
       jstest-gtk
       linuxConsoleTools
-      ghostty
+      kitty
 
       winboat
     ];
@@ -178,6 +178,7 @@
       cat = "bat";
       flake-update = "nix flake update";
       flake-check = "nix flake check";
+      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
 
       # Linux-specific (with sudo)
       rebuild = "sudo nixos-rebuild switch --flake ~/nix-config\\#nixos";

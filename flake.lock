@@ -121,11 +121,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771337092,
-        "narHash": "sha256-f0qkC/yM62p22JHHeMoGwSTCnWcV7QVpzh0ZUAN4v9s=",
+        "lastModified": 1771592606,
+        "narHash": "sha256-2wKig2t36p8CTCsC+aOxRcgzQZgPca6cjkSS370a3l8=",
         "owner": "xkinput",
         "repo": "KeyTao",
-        "rev": "f795631f0addf671a01c0c6477c8139ca2051278",
+        "rev": "b0aceb216a8c2628cb253a28300aa9e7d777972c",
         "type": "github"
       },
       "original": {

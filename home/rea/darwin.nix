@@ -21,7 +21,34 @@
       wechat
       kitty
       vlc-bin
+      # Docker via Colima (open-source Docker Desktop alternative)
+      colima
+      docker
+      docker-compose
+      docker-credential-helpers
     ];
+
+    home.file.".docker/config.json".text = builtins.toJSON {
+      auths = { };
+      credsStore = "osxkeychain";
+      currentContext = "colima";
+    };
+
+    # Auto-start Colima as a launchd user agent
+    launchd.agents.colima = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          "${pkgs.colima}/bin/colima"
+          "start"
+          "--foreground"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/tmp/colima.log";
+        StandardErrorPath = "/tmp/colima.error.log";
+      };
+    };
 
     # macOS-specific Zsh aliases (override common.nix aliases)
     programs.zsh.shellAliases = lib.mkForce {

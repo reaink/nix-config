@@ -22,12 +22,12 @@ self: super: {
         if super.stdenv.isDarwin then
           {
             platform = "darwin-arm64";
-            hash = "19rm6kg1qbas11cgkv85g862kchn8z0hi48gb2kp9016hj5axv1i"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
+            hash = "016cv2v8480rnv01kqb44z9p99rmjjbzl4im9nxjr17nhckhak3j"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
           }
         else
           {
             platform = "linux-x64";
-            hash = "1lgl83l1dwvjbafvqykk9x0py5sxpk1dn5l73dm2d1qvjwmmffkx"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
+            hash = "19xipl93dn29rl5imkrlhy9scr4sbak2gvip39jhz9fxq01h25kh"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
           };
     in
     rec {

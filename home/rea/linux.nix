@@ -82,7 +82,7 @@
       # System tools
       gparted
       appimage-run
-      gearlever
+      # gearlever  # broken: dwarfs fails with boost 1.89 (upstream nixpkgs issue)
 
       # Gaming
       (lutris.override {

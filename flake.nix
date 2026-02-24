@@ -46,6 +46,14 @@
       home-manager,
       ...
     }:
+    let
+      stablePkgsFor =
+        system:
+        import inputs.nixpkgs-stable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+    in
     {
       # NixOS configuration
       nixosConfigurations = {
@@ -57,6 +65,9 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
+                (import ./overlays/fix-picosvg-tests.nix)
+                # sunshine is broken in unstable (boost 1.89 regression), use stable
+                (_: _: { sunshine = (stablePkgsFor "x86_64-linux").sunshine; })
               ];
             }
 

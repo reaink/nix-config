@@ -60,6 +60,7 @@
     # Development tools (cross-platform)
     imagemagick
     ffmpeg
+    mdbook
 
     # Cross-platform GUI applications
     dbeaver-bin

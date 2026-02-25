@@ -87,7 +87,7 @@
       # Gaming
       (lutris.override {
         extraPkgs = pkgs: [
-          pkgs.wineWowPackages.stable
+          pkgs.wineWow64Packages.stable
         ];
       })
       prismlauncher

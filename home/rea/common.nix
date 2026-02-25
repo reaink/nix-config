@@ -51,6 +51,8 @@
     # Cloud & DevOps
     google-cloud-sdk
     ngrok
+    gh
+    claude-code
 
     # Database tools (cross-platform)
     prisma-engines_7
@@ -83,6 +85,9 @@
 
     # Node.js
     PNPM_HOME = "$HOME/.local/share/pnpm";
+
+    # Claude Code - use GitHub Copilot as backend
+    ANTHROPIC_BASE_URL = "https://api.githubcopilot.com";
   };
 
   home.sessionPath = [
@@ -113,6 +118,9 @@
     initContent = ''
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
+      if command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; then
+        export ANTHROPIC_API_KEY="$(gh auth token 2>/dev/null)"
+      fi
     '';
 
     shellAliases = {

@@ -376,7 +376,6 @@
   environment.variables = {
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
-    "__GL_THREADED_OPTIMIZATION" = "1";
     LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
     # KDE Plasma compositor optimization for NVIDIA
     # https://bugs.kde.org/show_bug.cgi?id=495073

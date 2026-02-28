@@ -66,8 +66,9 @@
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
                 (import ./overlays/fix-picosvg-tests.nix)
-                # sunshine is broken in unstable (boost 1.89 regression), use stable
+                # sunshine/gearlever(dwarfs) are broken in unstable (boost 1.89 regression), use stable
                 (_: _: { sunshine = (stablePkgsFor "x86_64-linux").sunshine; })
+                (_: _: { gearlever = (stablePkgsFor "x86_64-linux").gearlever; })
               ];
             }
 

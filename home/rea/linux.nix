@@ -155,6 +155,15 @@
       PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
       PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
 
+      # Disable NVIDIA driver's internal threaded GL optimizations.
+      # This is the root fix for EGL mutex deadlocks in WebKit and Electron on NVIDIA.
+      # Without this, libnvidia-glsi causes deadlocks when multiple threads call EGL simultaneously.
+      __GL_THREADED_OPTIMIZATIONS = "0";
+
+      # Disable WebKit DMA-BUF renderer (zero-copy path) which triggers EGL multi-thread issues.
+      # Keeps hardware compositing active, only disables the problematic DMA-BUF sharing path.
+      WEBKIT_DISABLE_DMABUF_RENDERER = "1";
+
       # Wayland & GTK settings
       GDK_BACKEND = "wayland,x11";
       GSK_RENDERER = "ngl";

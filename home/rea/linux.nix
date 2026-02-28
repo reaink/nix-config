@@ -283,6 +283,22 @@
       gtk-enable-animations=0
     '';
 
+    # Cherry Studio - override desktop file to use absolute icon path
+    # The package's desktop file uses Icon=cherry-studio which KDE Plasma can't resolve
+    xdg.dataFile."applications/cherry-studio.desktop".text = ''
+      [Desktop Entry]
+      Categories=Utility
+      Comment=A powerful AI assistant for producer.
+      Exec=cherry-studio --no-sandbox %U
+      Icon=${pkgs.cherry-studio}/share/icons/hicolor/1024x1024/apps/cherry-studio.png
+      MimeType=x-scheme-handler/cherrystudio
+      Name=Cherry Studio
+      StartupWMClass=CherryStudio
+      Terminal=false
+      Type=Application
+      Version=1.5
+    '';
+
     # ToDesk desktop launcher
     xdg.dataFile."applications/todesk.desktop".text = ''
       [Desktop Entry]

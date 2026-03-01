@@ -92,6 +92,7 @@
   };
 
   home.sessionPath = [
+    "$HOME/.local/bin"
     "$HOME/.local/share/pnpm"
     "$HOME/.cargo/bin"
   ];

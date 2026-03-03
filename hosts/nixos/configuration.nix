@@ -119,14 +119,20 @@
       finegrained = false;
     };
 
-    forceFullCompositionPipeline = true;
+    # forceFullCompositionPipeline is X11-only workaround for tearing,
+    # on Wayland it only adds compositor latency - keep it off
+    forceFullCompositionPipeline = false;
 
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    # PRIME
+    # PRIME: offload mode lets AMD handle KWin compositing (lower latency),
+    # NVIDIA is activated on-demand for heavy workloads (games, CUDA)
     prime = {
-      sync.enable = true;
+      sync.enable = false;
 
-      offload.enable = false;
+      offload = {
+        enable = true;
+        enableOffloadCmd = true; # provides `nvidia-offload` wrapper
+      };
 
       nvidiaBusId = "PCI:1:0:0";
       amdgpuBusId = "PCI:13:0:0";
@@ -136,9 +142,8 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
-    deviceSection = ''
-      Option "PrimaryGPU" "yes"
-    '';
+    # No deviceSection override: in PRIME offload mode AMD is primary,
+    # NixOS handles NVIDIA offload device config automatically
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -377,9 +382,6 @@
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
     LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
-    # KDE Plasma compositor optimization for NVIDIA
-    # https://bugs.kde.org/show_bug.cgi?id=495073
-    KWIN_COMPOSE = "O2";
     # Fcitx5 input method configuration for Wayland
     # Note: Do NOT set GTK_IM_MODULE or QT_IM_MODULE when using Wayland frontend
     # Wayland native apps will use text-input-v3 protocol automatically

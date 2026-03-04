@@ -126,8 +126,6 @@
       antimicrox
       jstest-gtk
       linuxConsoleTools
-      kitty
-
       winboat
     ];
 

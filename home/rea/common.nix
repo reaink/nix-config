@@ -73,6 +73,9 @@
     cherry-studio
     qq
     firefox
+    kitty
+    opencode
+    opencode-desktop
   ];
 
   # Session variables - cross-platform

@@ -59,6 +59,7 @@
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
+    "mem_sleep_default=s2idle" # S3 deep sleep breaks NVIDIA PRIME resume; use s2idle instead
     "clearcpuid=rdrand" # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs
     "random.trust_cpu=0" # Don't trust CPU random number generator
   ];

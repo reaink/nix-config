@@ -367,6 +367,15 @@
     stdenv.cc.cc.lib
     libgcc
     glibc
+
+    # GStreamer plugins required by WebKitGTK and other media consumers
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
+    gst_all_1.gst-plugins-ugly
+    gst_all_1.gst-libav
+    gst_all_1.gst-vaapi
   ];
 
   # Sunshine game streaming - configured via sunshine.nix module

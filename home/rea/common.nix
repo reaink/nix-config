@@ -73,7 +73,6 @@
     cherry-studio
     qq
     firefox
-    kitty
     opencode
     opencode-desktop
   ];
@@ -171,6 +170,11 @@
         ''
       ];
     };
+  };
+
+  programs.kitty = {
+    enable = true;
+    settings.confirm_os_window_close = 0;
   };
 
   # Tool integrations

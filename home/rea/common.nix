@@ -7,6 +7,9 @@
 }:
 
 {
+  imports = [
+    ./opencode.nix
+  ];
   # Cross-platform packages
   home.packages = with pkgs; [
     # System utilities
@@ -209,6 +212,7 @@
       tab_powerline_style = "slanted";
       tab_bar_edge = "bottom";
       tab_title_template = "{index}: {title}";
+      open_url_modifiers = "ctrl";
     };
     keybindings = {
       # Tab management

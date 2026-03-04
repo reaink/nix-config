@@ -159,8 +159,13 @@
       __GL_THREADED_OPTIMIZATIONS = "0";
 
       # Disable WebKit DMA-BUF renderer (zero-copy path) which triggers EGL multi-thread issues.
-      # Keeps hardware compositing active, only disables the problematic DMA-BUF sharing path.
       WEBKIT_DISABLE_DMABUF_RENDERER = "1";
+      # WebKit 2.50.5 bug: createVideoSink() ScopeExit iterates the GL video sink bin to find leaf
+      # sinks, but webkitglvideosink fails to initialize its internal GL context on NVIDIA/Wayland,
+      # leaving the iterator returning an invalid element → gstObjectHasProperty(null) → SIGSEGV.
+      # This disables only the GL video sink path, falling back to the software webkitVideoSinkNew().
+      # Unlike WEBKIT_DISABLE_COMPOSITING_MODE, GPU compositing for web content remains active.
+      WEBKIT_GST_DISABLE_GL_SINK = "1";
 
       # Wayland & GTK settings
       GDK_BACKEND = "wayland,x11";

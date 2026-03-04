@@ -392,6 +392,26 @@
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
     LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
+    # Make GStreamer plugins discoverable by WebKitGTK subprocesses (WebKitWebProcess, etc.)
+    # NixOS does not set this automatically; without it createAudioSink crashes with SIGABRT.
+    GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatStringsSep ":" (
+      map (p: "${p}/lib/gstreamer-1.0") (
+        (with pkgs.gst_all_1; [
+          gstreamer
+          gst-plugins-base
+          gst-plugins-good
+          gst-plugins-bad
+          gst-plugins-ugly
+          gst-libav
+          gst-vaapi
+          # gtk4paintablesink (libgstgtk4.so) required by WebKitGTK 2.50+ for video rendering
+          gst-plugins-rs
+        ])
+        # WebKitGTK 2.50+ prefers pipewiresink; without libgstpipewire.so
+        # createAudioSink crashes with SIGABRT even when PulseAudio compat is enabled.
+        ++ [ pkgs.pipewire ]
+      )
+    );
     # Fcitx5 input method configuration for Wayland
     # Note: Do NOT set GTK_IM_MODULE or QT_IM_MODULE when using Wayland frontend
     # Wayland native apps will use text-input-v3 protocol automatically

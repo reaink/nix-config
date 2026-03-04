@@ -213,7 +213,7 @@
     keybindings = {
       # Tab management
       "ctrl+shift+t" = "new_tab_with_cwd";
-      "ctrl+w" = "close_tab";
+      "ctrl+shift+w" = "close_tab"; # was ctrl+w, conflicts with nvim <C-w> window prefix
       "ctrl+shift+h" = "previous_tab";
       "ctrl+shift+l" = "next_tab";
       "ctrl+1" = "goto_tab 1";
@@ -225,11 +225,11 @@
       "ctrl+shift+\\" = "launch --location=vsplit --cwd=current";
       "ctrl+shift+-" = "launch --location=hsplit --cwd=current";
       "ctrl+shift+q" = "close_window";
-      # Window navigation
-      "alt+h" = "neighboring_window left";
-      "alt+j" = "neighboring_window down";
-      "alt+k" = "neighboring_window up";
-      "alt+l" = "neighboring_window right";
+      # Window navigation (ctrl+alt to avoid conflicts with nvim alt+hjkl in insert mode)
+      "ctrl+alt+h" = "neighboring_window left";
+      "ctrl+alt+j" = "neighboring_window down";
+      "ctrl+alt+k" = "neighboring_window up";
+      "ctrl+alt+l" = "neighboring_window right";
     };
   };
 

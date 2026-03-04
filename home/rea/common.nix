@@ -7,10 +7,6 @@
 }:
 
 {
-  imports = [
-    ./nvim
-  ];
-
   # Cross-platform packages
   home.packages = with pkgs; [
     # System utilities
@@ -105,6 +101,27 @@
   # Keep rustup directories from being affected by nix gc
   home.file.".cargo/.keep".text = "";
   home.file.".rustup/.keep".text = "";
+
+  # Neovim wrapper — extraPackages are injected into the wrapper's PATH so
+  # tools are available regardless of how nvim is launched (GUI, etc.)
+  programs.neovim = {
+    enable = true;
+    extraPackages = with pkgs; [
+      lsof
+      fd
+      tree-sitter
+      sqlite
+      stylua
+      shfmt
+      shellcheck
+      nodePackages.prettier
+      ruff
+    ];
+  };
+
+  # AstroNvim configuration — symlink the entire config directory from the
+  # pinned GitHub source so `rebuild` always applies the latest locked version.
+  xdg.configFile."nvim".source = inputs.astro-nvim-config;
 
   # Git configuration
   programs.git = {

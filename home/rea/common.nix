@@ -75,6 +75,9 @@
     firefox
     opencode
     opencode-desktop
+
+    # Fonts
+    pkgs.nerd-fonts.jetbrains-mono
   ];
 
   # Session variables - cross-platform
@@ -106,6 +109,8 @@
     settings = {
       user.name = "Rea";
       user.email = "hi@rea.ink";
+      init.defaultBranch = "main";
+      pull.rebase = true;
     };
   };
 
@@ -161,12 +166,10 @@
         ''
           mattmc3/zfunctions
           zsh-users/zsh-autosuggestions
-          zdharma-continuum/fast-syntax-highlighting kind:defer
           zsh-users/zsh-history-substring-search
           ohmyzsh/ohmyzsh path:lib/git.zsh
           ohmyzsh/ohmyzsh path:plugins/git
           ohmyzsh/ohmyzsh path:plugins/colored-man-pages
-          sindresorhus/pure
         ''
       ];
     };
@@ -174,11 +177,54 @@
 
   programs.kitty = {
     enable = true;
-    settings.confirm_os_window_close = 0;
+    font = {
+      name = "JetBrainsMono Nerd Font";
+      size = 13;
+    };
+    settings = {
+      confirm_os_window_close = 0;
+      scrollback_lines = 10000;
+      window_padding_width = 8;
+      tab_bar_style = "powerline";
+      tab_powerline_style = "slanted";
+      tab_bar_edge = "bottom";
+      tab_title_template = "{index}: {title}";
+    };
+    keybindings = {
+      "ctrl+t" = "new_tab_with_cwd";
+      "ctrl+w" = "close_tab";
+      "ctrl+shift+h" = "previous_tab";
+      "ctrl+shift+l" = "next_tab";
+      "ctrl+1" = "goto_tab 1";
+      "ctrl+2" = "goto_tab 2";
+      "ctrl+3" = "goto_tab 3";
+      "ctrl+4" = "goto_tab 4";
+      "ctrl+5" = "goto_tab 5";
+    };
+  };
+
+  catppuccin.kitty = {
+    enable = true;
+    flavor = "mocha";
   };
 
   # Tool integrations
   programs.fzf.enable = true;
+
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  catppuccin.starship = {
+    enable = true;
+    flavor = "mocha";
+  };
+
+  catppuccin.zsh-syntax-highlighting = {
+    enable = true;
+    flavor = "mocha";
+  };
 
   programs.direnv = {
     enable = true;

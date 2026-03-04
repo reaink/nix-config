@@ -36,6 +36,11 @@
       url = "github:xkinput/KeyTao";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Catppuccin theme
+    catppuccin = {
+      url = "github:catppuccin/nix";
+    };
   };
 
   outputs =
@@ -87,6 +92,7 @@
                   ./home/rea/linux-home.nix
                   inputs.plasma-manager.homeModules.plasma-manager
                   inputs.rime-keytao.homeManagerModules.default
+                  inputs.catppuccin.homeModules.catppuccin
                 ];
               };
             }
@@ -121,6 +127,7 @@
                 imports = [
                   ./home/rea/darwin-home.nix
                   inputs.rime-keytao.homeManagerModules.default
+                  inputs.catppuccin.homeModules.catppuccin
                 ];
               };
             }

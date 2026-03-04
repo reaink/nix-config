@@ -3,11 +3,11 @@
     "astro-nvim-config": {
       "flake": false,
       "locked": {
-        "lastModified": 1772621354,
-        "narHash": "sha256-14+xMSMy4oH2KAnF829wMmIlNjIAAtszZ1CCyVfKhQg=",
+        "lastModified": 1772625908,
+        "narHash": "sha256-vlw6OfUQjQT5o5DOLzEdB7LZ/I7dNW9UZusWjWZKUK8=",
         "owner": "reaink",
         "repo": "astro-nvim-config",
-        "rev": "cb5b7c9f20918cef34a7e40782651101d0ca595f",
+        "rev": "e97a6318d80769cc182d476a079e9e9863a6006b",
         "type": "github"
       },
       "original": {

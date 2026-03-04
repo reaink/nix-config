@@ -7,6 +7,10 @@
 }:
 
 {
+  imports = [
+    ./nvim
+  ];
+
   # Cross-platform packages
   home.packages = with pkgs; [
     # System utilities
@@ -28,15 +32,6 @@
     gdu
     redis
     rclone
-
-    # Neovim dependencies (also available globally as CLI tools)
-    lsof
-    fd
-    tree-sitter
-    sqlite
-    stylua
-    shfmt
-    shellcheck
 
     # Development tools - Rust (cross-platform)
     rustup
@@ -110,26 +105,6 @@
   # Keep rustup directories from being affected by nix gc
   home.file.".cargo/.keep".text = "";
   home.file.".rustup/.keep".text = "";
-
-  # Neovim — use programs.neovim so extraPackages are injected into the
-  # wrapper's PATH, making them available regardless of how nvim is launched
-  # (e.g. from a GUI or without a full shell session).
-  programs.neovim = {
-    enable = true;
-    extraPackages = with pkgs; [
-      lsof
-      fd
-      tree-sitter
-      sqlite
-      stylua
-      shfmt
-      shellcheck
-    ];
-  };
-
-  # AstroNvim configuration — symlink the entire config directory from the
-  # pinned GitHub source so `rebuild` always applies the latest locked version.
-  xdg.configFile."nvim".source = inputs.astro-nvim-config;
 
   # Git configuration
   programs.git = {

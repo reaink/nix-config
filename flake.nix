@@ -42,10 +42,10 @@
       url = "github:catppuccin/nix";
     };
 
-    # AstroNvim user configuration
-    astro-nvim-config = {
-      url = "github:reaink/astro-nvim-config";
-      flake = false;
+    # NixVim - configure Neovim with Nix
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -99,6 +99,7 @@
                   inputs.plasma-manager.homeModules.plasma-manager
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
+                  inputs.nixvim.homeModules.nixvim
                 ];
               };
             }
@@ -134,6 +135,7 @@
                   ./home/rea/darwin-home.nix
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
+                  inputs.nixvim.homeModules.nixvim
                 ];
               };
             }

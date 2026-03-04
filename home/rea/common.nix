@@ -212,7 +212,7 @@
     };
     keybindings = {
       # Tab management
-      "ctrl+t" = "new_tab_with_cwd";
+      "ctrl+shift+t" = "new_tab_with_cwd";
       "ctrl+w" = "close_tab";
       "ctrl+shift+h" = "previous_tab";
       "ctrl+shift+l" = "next_tab";

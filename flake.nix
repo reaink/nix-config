@@ -41,6 +41,12 @@
     catppuccin = {
       url = "github:catppuccin/nix";
     };
+
+    # AstroNvim user configuration
+    astro-nvim-config = {
+      url = "github:reaink/astro-nvim-config";
+      flake = false;
+    };
   };
 
   outputs =

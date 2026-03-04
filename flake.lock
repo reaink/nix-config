@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "astro-nvim-config": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772613385,
+        "narHash": "sha256-NgwOwd2AGu5gCcM8YvnljEHXp541I0UazgmLEb2ofwM=",
+        "owner": "reaink",
+        "repo": "astro-nvim-config",
+        "rev": "0c27e8d577ff696c748fd93ffd28e25dad4c14cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "reaink",
+        "repo": "astro-nvim-config",
+        "type": "github"
+      }
+    },
     "catppuccin": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -170,6 +186,7 @@
     },
     "root": {
       "inputs": {
+        "astro-nvim-config": "astro-nvim-config",
         "catppuccin": "catppuccin",
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",

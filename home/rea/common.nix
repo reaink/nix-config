@@ -26,9 +26,17 @@
     lazygit
     lazydocker
     gdu
-    neovim
     redis
     rclone
+
+    # Neovim dependencies (also available globally as CLI tools)
+    lsof
+    fd
+    tree-sitter
+    sqlite
+    stylua
+    shfmt
+    shellcheck
 
     # Development tools - Rust (cross-platform)
     rustup
@@ -102,6 +110,26 @@
   # Keep rustup directories from being affected by nix gc
   home.file.".cargo/.keep".text = "";
   home.file.".rustup/.keep".text = "";
+
+  # Neovim — use programs.neovim so extraPackages are injected into the
+  # wrapper's PATH, making them available regardless of how nvim is launched
+  # (e.g. from a GUI or without a full shell session).
+  programs.neovim = {
+    enable = true;
+    extraPackages = with pkgs; [
+      lsof
+      fd
+      tree-sitter
+      sqlite
+      stylua
+      shfmt
+      shellcheck
+    ];
+  };
+
+  # AstroNvim configuration — symlink the entire config directory from the
+  # pinned GitHub source so `rebuild` always applies the latest locked version.
+  xdg.configFile."nvim".source = inputs.astro-nvim-config;
 
   # Git configuration
   programs.git = {
@@ -191,6 +219,7 @@
       tab_title_template = "{index}: {title}";
     };
     keybindings = {
+      # Tab management
       "ctrl+t" = "new_tab_with_cwd";
       "ctrl+w" = "close_tab";
       "ctrl+shift+h" = "previous_tab";
@@ -200,6 +229,15 @@
       "ctrl+3" = "goto_tab 3";
       "ctrl+4" = "goto_tab 4";
       "ctrl+5" = "goto_tab 5";
+      # Window (pane) splitting
+      "ctrl+shift+\\" = "launch --location=vsplit --cwd=current";
+      "ctrl+shift+-" = "launch --location=hsplit --cwd=current";
+      "ctrl+shift+q" = "close_window";
+      # Window navigation
+      "alt+h" = "neighboring_window left";
+      "alt+j" = "neighboring_window down";
+      "alt+k" = "neighboring_window up";
+      "alt+l" = "neighboring_window right";
     };
   };
 

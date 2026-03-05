@@ -431,18 +431,20 @@
   programs.virt-manager.enable = true;
 
   # Fix: libvirt upstream bug — virt-secret-init-encryption.service hardcodes
-  # /usr/bin/sh which does not exist on NixOS. Override ExecStart to use the
-  # Nix store path for bash instead.
+  # /usr/bin/sh which does not exist on NixOS.
+  # systemd drop-in must emit "ExecStart=" (empty) first to clear the original
+  # value before setting the replacement; passing a list achieves exactly that.
   systemd.services.virt-secret-init-encryption = {
-    serviceConfig.ExecStart = lib.mkForce (
-      pkgs.writeShellScript "virt-secret-init-encryption" ''
+    serviceConfig.ExecStart = [
+      "" # clear the upstream ExecStart=/usr/bin/sh ... line
+      (pkgs.writeShellScript "virt-secret-init-encryption" ''
         umask 0077
         dd if=/dev/random status=none bs=32 count=1 \
           | ${pkgs.systemd}/bin/systemd-creds encrypt \
               --name=secrets-encryption-key \
               - /var/lib/libvirt/secrets/secrets-encryption-key
-      ''
-    );
+      '')
+    ];
   };
 
   virtualisation.docker = {

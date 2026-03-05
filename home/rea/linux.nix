@@ -84,6 +84,9 @@
       appimage-run
       gearlever
 
+      # Fun / terminal eye candy
+      pokemon-colorscripts
+
       # Gaming
       (lutris.override {
         extraPkgs = pkgs: [

@@ -53,7 +53,6 @@
     # Cloud & DevOps
     google-cloud-sdk
     ngrok
-    gh
     claude-code
 
     # Database tools (cross-platform)
@@ -81,6 +80,12 @@
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono
   ];
+
+  # GitHub CLI with gh-notify extension
+  programs.gh = {
+    enable = true;
+    extensions = [ pkgs.gh-notify ];
+  };
 
   # Session variables - cross-platform
   home.sessionVariables = {

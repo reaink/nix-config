@@ -225,6 +225,8 @@
       "ctrl+shift+w" = "close_tab"; # was ctrl+w, conflicts with nvim <C-w> window prefix
       "ctrl+shift+h" = "previous_tab";
       "ctrl+shift+l" = "next_tab";
+      "ctrl+shift+," = "move_tab_backward";
+      "ctrl+shift+." = "move_tab_forward";
       "ctrl+1" = "goto_tab 1";
       "ctrl+2" = "goto_tab 2";
       "ctrl+3" = "goto_tab 3";

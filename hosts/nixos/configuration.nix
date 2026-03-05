@@ -412,11 +412,13 @@
         ++ [ pkgs.pipewire ]
       )
     );
-    # Fcitx5 input method configuration for Wayland
-    # Note: Do NOT set GTK_IM_MODULE or QT_IM_MODULE when using Wayland frontend
-    # Wayland native apps will use text-input-v3 protocol automatically
-    # See: https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland#KDE_Plasma
-    XMODIFIERS = "@im=fcitx"; # Still needed for XWayland apps
+    # Fcitx5 input method environment variables.
+    # Native Wayland apps (GTK4, Qt6 with Wayland QPA) use the text-input-v3 protocol
+    # and ignore GTK_IM_MODULE / QT_IM_MODULE.  XWayland apps (kitty, Electron/VSCode)
+    # still use the legacy IM-module path and require all three variables.
+    XMODIFIERS = "@im=fcitx";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
   };
 
   virtualisation.libvirtd = {
@@ -568,6 +570,54 @@
   # https://github.com/NixOS/nixpkgs/issues/462935
   # nixos/orca: Screen reader on by default on non-GNOME desktops, cannot be disabled
   systemd.user.services.orca.wantedBy = lib.mkForce [ ];
+
+  # Fix: KWin loses DRM master permission after suspend/resume on NVIDIA PRIME offload.
+  #
+  # Root cause: post-resume.service has `After=sleep.target`, but sleep.target is
+  # already active when suspend begins, so logind triggers post-resume immediately
+  # upon wakeup — before nvidia-resume.service finishes restoring GPU state and before
+  # logind re-grants DRM master to the user session. KWin then gets Permission denied
+  # on all DRM/modeset calls, leaving the screen black or at minimum brightness.
+  #
+  # Fix (system level): ensure post-resume.service waits for nvidia-resume.service.
+  systemd.services.post-resume = {
+    after = lib.mkAfter [ "nvidia-resume.service" ];
+    requires = lib.mkAfter [ "nvidia-resume.service" ];
+  };
+
+  # Fix (user level): after system resume, send KWin a reconfigure signal so it
+  # re-queries DRM outputs and restores full brightness/compositing.
+  systemd.user.services.kwin-resume-fix = {
+    description = "Restore KWin display state after suspend/resume";
+    # Run after the system-level resume target is reached
+    after = [
+      "suspend.target"
+      "hibernate.target"
+      "hybrid-sleep.target"
+    ];
+    wantedBy = [
+      "suspend.target"
+      "hibernate.target"
+      "hybrid-sleep.target"
+    ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      # Small delay to let logind finish re-granting DRM master to the session,
+      # then reconfigure KWin so it resets output state and restores brightness.
+      ExecStart = pkgs.writeShellScript "kwin-resume-fix" ''
+        sleep 2
+        DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
+        export DBUS_SESSION_BUS_ADDRESS
+        ${pkgs.dbus}/bin/dbus-send \
+          --session \
+          --dest=org.kde.KWin \
+          --print-reply \
+          /KWin \
+          org.kde.KWin.reconfigure 2>/dev/null || true
+      '';
+    };
+  };
 
   # XDG Desktop Portal configuration for GTK apps in KDE
   xdg.portal = {

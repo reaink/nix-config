@@ -19,6 +19,7 @@
     # macOS-specific packages (can be added as needed)
     home.packages = with pkgs; [
       pokemon-colorscripts-mac
+      coreutils
       wechat
       vlc-bin
       # Docker via Colima (open-source Docker Desktop alternative)

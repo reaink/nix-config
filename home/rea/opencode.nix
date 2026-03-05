@@ -232,22 +232,18 @@
   # ── Build agent system prompt ─────────────────
   xdg.configFile."opencode/prompts/build.md".source = ./opencode/prompts/build.md;
 
-  # ── Machine-specific skill (hand-written, no official equivalent) ────
-  xdg.configFile."opencode/skills/nix-home-manager/SKILL.md".source =
-    ./opencode/skills/nix-home-manager/SKILL.md;
-
   # ── Official skills via `npx skills` CLI ──────────────────────────────
   # Installed to ~/.agents/skills/; OpenCode reads them via ~/.claude/skills/ symlink.
   # Runs once per activation; re-runs only when the skill list changes.
   home.activation.opencodeSkills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    export PATH="${pkgs.nodejs}/bin:$PATH"
+    export PATH="${pkgs.nodejs}/bin:${pkgs.git}/bin:$PATH"
     export HOME="$HOME"
 
     install_skill() {
       local repo="$1" name="$2"
       local dest="$HOME/.agents/skills/$name"
       if [ ! -d "$dest" ]; then
-        $DRY_RUN_CMD ${pkgs.nodejs}/bin/npx --yes skills add "$repo" --global 2>&1 || true
+        $DRY_RUN_CMD ${pkgs.nodejs}/bin/npx --yes skills add "$repo" --global --yes 2>&1 || true
       fi
     }
 
@@ -260,7 +256,5 @@
     install_skill "vercel-labs/agent-skills/packages/vercel-react-best-practices" "vercel-react-best-practices"
     install_skill "vercel-labs/agent-skills/packages/web-design-guidelines"        "web-design-guidelines"
     install_skill "github/awesome-copilot/skills/conventional-commit"              "conventional-commit"
-    install_skill "wshobson/agents/skills/rust-async-patterns"                     "rust-async-patterns"
-    install_skill "0xbigboss/claude-code/skills/nix-best-practices"                "nix-best-practices"
   '';
 }

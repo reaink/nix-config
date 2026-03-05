@@ -206,7 +206,7 @@
   programs.kitty = {
     enable = true;
     font = {
-      name = "JetBrainsMono Nerd Font";
+      name = "JetBrainsMonoNerdFontMono";
       size = 12;
     };
     settings = {

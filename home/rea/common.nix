@@ -212,6 +212,7 @@
     settings = {
       confirm_os_window_close = 0;
       scrollback_lines = 10000;
+      linux_display_server = "wayland"; # force Wayland backend so text-input-v3 works with fcitx5
       window_padding_width = 8;
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";

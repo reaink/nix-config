@@ -495,7 +495,10 @@
       kscreenlocker = {
         autoLock = true;
         timeout = 15;
-        lockOnResume = true;
+        # Pre-sleep lock is handled by the kscreenlocker-pre-sleep systemd service.
+        # Keeping this false avoids launching a second kscreenlocker_greet on resume
+        # before KWin has DRM master — which would cause an error dialog.
+        lockOnResume = false;
       };
 
       powerdevil = {

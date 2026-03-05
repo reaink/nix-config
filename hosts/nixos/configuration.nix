@@ -413,12 +413,16 @@
       )
     );
     # Fcitx5 input method environment variables.
-    # Native Wayland apps (GTK4, Qt6 with Wayland QPA) use the text-input-v3 protocol
-    # and ignore GTK_IM_MODULE / QT_IM_MODULE.  XWayland apps (kitty, Electron/VSCode)
-    # still use the legacy IM-module path and require all three variables.
+    # With waylandFrontend = true, native Wayland apps (GTK4, Qt6) use the
+    # text-input-v3 protocol directly — GTK_IM_MODULE / QT_IM_MODULE must NOT
+    # be set or fcitx5 will warn and input may break.
+    # XMODIFIERS is still required for XWayland apps.
     XMODIFIERS = "@im=fcitx";
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
+    # Force Electron apps (VSCode, etc.) to use native Wayland backend so they
+    # use text-input-v3 instead of XIM. Without this, WebView-based panels
+    # (e.g. Copilot Chat) run in a separate Chromium process that bypasses XIM
+    # entirely, making fcitx5 unreachable inside them.
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
   };
 
   virtualisation.libvirtd = {
@@ -602,28 +606,38 @@
     requires = lib.mkAfter [ "nvidia-resume.service" ];
   };
 
-  # Fix (user level): after system resume, send KWin a reconfigure signal so it
-  # re-queries DRM outputs and restores full brightness/compositing.
-  systemd.user.services.kwin-resume-fix = {
-    description = "Restore KWin display state after suspend/resume";
-    # Run after the system-level resume target is reached
-    after = [
-      "suspend.target"
-      "hibernate.target"
-      "hybrid-sleep.target"
-    ];
-    wantedBy = [
-      "suspend.target"
-      "hibernate.target"
-      "hybrid-sleep.target"
-    ];
-
+  # Lock the screen BEFORE entering sleep, so kscreenlocker_greet is already
+  # running when the system resumes. This avoids the race condition where
+  # lockOnResume=true tries to start a new greeter before KWin has DRM master,
+  # which causes an error dialog instead of a lock screen.
+  systemd.services.kscreenlocker-pre-sleep = {
+    description = "Lock all sessions before sleep";
+    before = [ "sleep.target" ];
+    wantedBy = [ "sleep.target" ];
     serviceConfig = {
       Type = "oneshot";
-      # Small delay to let logind finish re-granting DRM master to the session,
-      # then reconfigure KWin so it resets output state and restores brightness.
+      ExecStart = "${pkgs.systemd}/bin/loginctl lock-sessions";
+    };
+  };
+
+  # Fix (system level, post-resume): after nvidia-resume and post-resume complete,
+  # tell KWin to re-query DRM outputs and resume compositing.
+  #
+  # The previous approach used a user-level service with wantedBy=suspend.target,
+  # but that service actually starts BEFORE suspend, and the `sleep 2` finishes
+  # before the system even goes to sleep — leaving zero post-resume delay.
+  # Running as a system service After=post-resume.service guarantees execution
+  # strictly after GPU state is restored and logind has re-granted DRM master.
+  systemd.services.kwin-resume-fix = {
+    description = "Restore KWin display state after suspend/resume";
+    after = [ "post-resume.service" ];
+    wantedBy = [ "post-resume.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "rea";
+      # Small delay to let logind finish re-granting DRM master to the session.
       ExecStart = pkgs.writeShellScript "kwin-resume-fix" ''
-        sleep 2
+        sleep 3
         DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
         export DBUS_SESSION_BUS_ADDRESS
         ${pkgs.dbus}/bin/dbus-send \
@@ -632,6 +646,12 @@
           --print-reply \
           /KWin \
           org.kde.KWin.reconfigure 2>/dev/null || true
+        ${pkgs.dbus}/bin/dbus-send \
+          --session \
+          --dest=org.kde.KWin \
+          --print-reply \
+          /Compositor \
+          org.kde.kwin.Compositing.resume 2>/dev/null || true
       '';
     };
   };

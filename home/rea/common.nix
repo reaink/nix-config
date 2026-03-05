@@ -13,7 +13,7 @@
   # Cross-platform packages
   home.packages = with pkgs; [
     # System utilities
-    neofetch
+    fastfetch
     zip
     xz
     unzip

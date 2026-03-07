@@ -150,6 +150,7 @@
     syntaxHighlighting.enable = true;
 
     initContent = ''
+      unsetopt AUTO_CD
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
     '';

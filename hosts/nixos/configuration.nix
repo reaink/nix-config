@@ -67,6 +67,10 @@
     # triggering its watchdog, crashing it, and corrupting the journal —
     # which in turn disrupts the logind DRM device re-grant to KWin.
     "nvme_core.default_ps_max_latency_us=0"
+
+    # Fix blank screen after S3 resume: disable scatter-gather display on AMD GPU.
+    # amdgpu's SG display path fails to reinitialize after deep sleep on some hardware.
+    "amdgpu.sg_display=0"
   ];
   boot.initrd.kernelModules = [
     "nvidia"
@@ -130,14 +134,14 @@
     forceFullCompositionPipeline = false;
 
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    # PRIME: offload mode lets AMD handle KWin compositing (lower latency),
-    # NVIDIA is activated on-demand for heavy workloads (games, CUDA)
+    # PRIME sync mode: NVIDIA is primary GPU, handles all rendering.
+    # AMD GPU outputs frames to the display (internal panel or connected monitors).
     prime = {
-      sync.enable = false;
+      sync.enable = true;
 
       offload = {
-        enable = true;
-        enableOffloadCmd = true; # provides `nvidia-offload` wrapper
+        enable = false;
+        enableOffloadCmd = false;
       };
 
       nvidiaBusId = "PCI:1:0:0";
@@ -148,8 +152,7 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
-    # No deviceSection override: in PRIME offload mode AMD is primary,
-    # NixOS handles NVIDIA offload device config automatically
+    # PRIME sync mode: NVIDIA is primary, NixOS configures NVIDIA display device automatically
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -198,16 +201,7 @@
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
-
-      settings = {
-        General = {
-          DisplayStopTime = 300; # 5 minutes
-        };
-      };
-    };
+    plasma-login-manager.enable = true;
 
     autoLogin = {
       enable = true;

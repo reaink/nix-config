@@ -45,6 +45,10 @@
     android-tools
 
     uv
+    python3
+    (writeShellScriptBin "python" ''
+      exec ${python3}/bin/python3 "$@"
+    '')
     fnm
     pnpm
     bun
@@ -161,10 +165,6 @@
       flake-check = "nix flake check";
       update = "nix flake update && sh ~/nix-config/update-vscode-hash.sh";
       update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
-
-      # Python via uv
-      python = "uv run python";
-      python3 = "uv run python";
 
       # Common shortcuts
       ls = "eza --icons";

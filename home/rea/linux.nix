@@ -182,19 +182,7 @@
     };
 
     # Linux-specific Zsh aliases (override common.nix aliases)
-    programs.zsh.shellAliases = lib.mkForce {
-      # Inherit common aliases
-      python = "uv run python";
-      python3 = "uv run python";
-      ls = "eza --icons";
-      ll = "eza -l --icons";
-      la = "eza -la --icons";
-      lt = "eza --tree --icons";
-      cat = "bat";
-      flake-update = "nix flake update";
-      flake-check = "nix flake check";
-      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
-
+    programs.zsh.shellAliases = {
       # Linux-specific (with sudo)
       rebuild = "sudo nixos-rebuild switch --flake ~/nix-config\\#nixos";
       test = "sudo nixos-rebuild test --flake ~/nix-config\\#nixos";

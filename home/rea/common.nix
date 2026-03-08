@@ -156,17 +156,11 @@
     '';
 
     shellAliases = {
-      # Nix maintenance
-      gc = "nix-collect-garbage";
-      gcold = "nix-collect-garbage --delete-older-than 30d";
-      gcall = "nix-collect-garbage -d";
-      optimize = "nix-store --optimize";
-      clean = "nix-collect-garbage -d && nix-store --optimize";
-
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";
       update = "nix flake update && sh ~/nix-config/update-vscode-hash.sh";
+      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
 
       # Python via uv
       python = "uv run python";

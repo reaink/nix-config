@@ -52,19 +52,7 @@
     };
 
     # macOS-specific Zsh aliases (override common.nix aliases)
-    programs.zsh.shellAliases = lib.mkForce {
-      # Inherit common aliases
-      python = "uv run python";
-      python3 = "uv run python";
-      ls = "eza --icons";
-      ll = "eza -l --icons";
-      la = "eza -la --icons";
-      lt = "eza --tree --icons";
-      cat = "bat";
-      flake-update = "nix flake update";
-      flake-check = "nix flake check";
-      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
-
+    programs.zsh.shellAliases = {
       # macOS-specific (no sudo)
       rebuild = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac";
       test = "sudo darwin-rebuild check --flake ~/nix-config\\#mac";

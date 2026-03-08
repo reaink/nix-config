@@ -46,9 +46,6 @@
 
     uv
     python3
-    (writeShellScriptBin "python" ''
-      exec ${python3}/bin/python3 "$@"
-    '')
     fnm
     pnpm
     bun

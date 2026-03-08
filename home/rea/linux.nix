@@ -455,6 +455,7 @@
       kwin = {
         edgeBarrier = 0;
         cornerBarrier = false;
+        borderlessMaximizedWindows = false;
 
         effects = {
           blur.enable = true;
@@ -474,6 +475,25 @@
           ];
         };
       };
+
+      window-rules = [
+        {
+          description = "Force Steam title bar and frame";
+          match = {
+            window-class = {
+              value = "steam";
+              type = "exact";
+            };
+            window-types = [ "normal" ];
+          };
+          apply = {
+            noborder = {
+              value = false;
+              apply = "force";
+            };
+          };
+        }
+      ];
 
       krunner = {
         position = "center";

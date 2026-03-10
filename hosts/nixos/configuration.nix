@@ -508,6 +508,7 @@
       source-han-sans
       source-han-serif
       wqy_zenhei
+      wineWow64Packages.full
     ];
   };
   programs.gamemode.enable = true;

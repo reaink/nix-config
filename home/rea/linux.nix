@@ -36,7 +36,6 @@
       android-studio
       libreoffice-fresh
       shotcut
-      steam
       todesk
 
       # KDE packages
@@ -90,7 +89,7 @@
       # Gaming
       (lutris.override {
         extraPkgs = pkgs: [
-          pkgs.wineWow64Packages.stable
+          pkgs.wineWow64Packages.full
         ];
       })
       prismlauncher
@@ -650,7 +649,6 @@
         "yakuakerc"."Dialogs"."FirstRun" = false;
       };
     };
-
     # VSCode marketplace extensions ship native binaries without execute permissions.
     # This activation script fixes them after every home-manager switch.
     home.activation.fixVSCodeExtensionBinPerms = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

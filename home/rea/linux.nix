@@ -650,5 +650,15 @@
         "yakuakerc"."Dialogs"."FirstRun" = false;
       };
     };
+
+    # VSCode marketplace extensions ship native binaries without execute permissions.
+    # This activation script fixes them after every home-manager switch.
+    home.activation.fixVSCodeExtensionBinPerms = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      find "$HOME/.vscode/extensions" \
+        -path "*/dist/bundled/bin/linux-x64/*" \
+        -type f \
+        -not -perm -u+x \
+        -exec chmod +x {} \;
+    '';
   };
 }

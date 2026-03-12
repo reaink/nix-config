@@ -34,6 +34,8 @@
       mpv
       spotify
       android-studio
+      scrcpy
+      qtscrcpy
       libreoffice-fresh
       shotcut
       todesk

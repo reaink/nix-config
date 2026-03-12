@@ -193,6 +193,7 @@
       optimize = "sudo nix-store --optimize";
       clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
       list-gens = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
+      phone = "scrcpy --turn-screen-off --stay-awake --max-size=3088 --video-bit-rate=16M --audio-bit-rate=256K";
     };
 
     # GTK theme configuration

@@ -450,6 +450,27 @@
     cfg["properties"]["ro.hardware.egl"] = "swiftshader"
     cfg["properties"]["sys.use_memfd"] = "true"
     cfg["properties"].pop("gralloc.gbm.device", None)
+    # Spoof Pixel 5 (redfin) identity to pass emulator detection.
+    # ref: https://wiki.archlinux.org/title/Waydroid#Application_need_unroot_device
+    fp = "google/redfin/redfin:11/RQ3A.211001.001/eng.electr.20230318.111310:user/release-keys"
+    cfg["properties"]["ro.product.brand"] = "google"
+    cfg["properties"]["ro.product.manufacturer"] = "Google"
+    cfg["properties"]["ro.product.name"] = "redfin"
+    cfg["properties"]["ro.product.device"] = "redfin"
+    cfg["properties"]["ro.product.model"] = "Pixel 5"
+    cfg["properties"]["ro.system.build.product"] = "redfin"
+    cfg["properties"]["ro.system.build.flavor"] = "redfin-user"
+    cfg["properties"]["ro.build.fingerprint"] = fp
+    cfg["properties"]["ro.system.build.description"] = "redfin-user 11 RQ3A.211001.001 eng.electr.20230318.111310 release-keys"
+    cfg["properties"]["ro.bootimage.build.fingerprint"] = fp
+    cfg["properties"]["ro.build.display.id"] = fp
+    cfg["properties"]["ro.build.tags"] = "release-keys"
+    cfg["properties"]["ro.build.description"] = "redfin-user 11 RQ3A.211001.001 eng.electr.20230318.111310 release-keys"
+    cfg["properties"]["ro.vendor.build.fingerprint"] = fp
+    cfg["properties"]["ro.vendor.build.id"] = "RQ3A.211001.001"
+    cfg["properties"]["ro.vendor.build.tags"] = "release-keys"
+    cfg["properties"]["ro.vendor.build.type"] = "user"
+    cfg["properties"]["ro.odm.build.tags"] = "release-keys"
     with open(sys.argv[1], "w") as f:
         cfg.write(f)
     EOF

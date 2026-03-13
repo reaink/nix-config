@@ -434,28 +434,38 @@
   # sys.use_memfd=true is required on Linux 5.18+ (ashmem replaced by memfd).
   # https://wiki.nixos.org/wiki/Waydroid#GPU_Adjustments
   #
-  # waydroid merges waydroid.cfg [properties] into waydroid_base.prop on each startup,
-  # so both files must be cleaned — otherwise cfg overrides our base.prop changes.
+  # waydroid builds waydroid_base.prop from waydroid.prop (vendor image) at each startup.
+  # The cfg [properties] section is the designed override mechanism — set values there.
+  # waydroid.prop is also patched directly so the values survive base.prop regeneration.
   systemd.services.waydroid-container.preStart = lib.mkAfter ''
     cfg=/var/lib/waydroid/waydroid.cfg
     if [ -f "$cfg" ]; then
-      ${pkgs.gnused}/bin/sed -i \
-        -e '/^ro\.hardware\.egl/d' \
-        -e '/^ro\.hardware\.gralloc/d' \
-        -e '/^gralloc\.gbm\.device/d' \
-        "$cfg"
+      ${pkgs.python3}/bin/python3 - "$cfg" <<'EOF'
+    import configparser, sys
+    cfg = configparser.ConfigParser()
+    cfg.read(sys.argv[1])
+    if "properties" not in cfg:
+        cfg["properties"] = {}
+    cfg["properties"]["ro.hardware.gralloc"] = "default"
+    cfg["properties"]["ro.hardware.egl"] = "swiftshader"
+    cfg["properties"]["sys.use_memfd"] = "true"
+    cfg["properties"].pop("gralloc.gbm.device", None)
+    with open(sys.argv[1], "w") as f:
+        cfg.write(f)
+    EOF
     fi
 
-    base=/var/lib/waydroid/waydroid_base.prop
-    if [ -f "$base" ]; then
-      ${pkgs.gnused}/bin/sed -i \
-        -e '/^ro\.hardware\.egl=/d' \
-        -e '/^ro\.hardware\.gralloc=/d' \
-        -e '/^gralloc\.gbm\.device=/d' \
-        -e '/^sys\.use_memfd=/d' \
-        "$base"
-      printf 'ro.hardware.gralloc=default\nro.hardware.egl=swiftshader\nsys.use_memfd=true\n' >> "$base"
-    fi
+    for prop in /var/lib/waydroid/waydroid.prop /var/lib/waydroid/waydroid_base.prop; do
+      if [ -f "$prop" ]; then
+        ${pkgs.gnused}/bin/sed -i \
+          -e '/^ro\.hardware\.egl=/d' \
+          -e '/^ro\.hardware\.gralloc=/d' \
+          -e '/^gralloc\.gbm\.device=/d' \
+          -e '/^sys\.use_memfd=/d' \
+          "$prop"
+        printf 'ro.hardware.gralloc=default\nro.hardware.egl=swiftshader\nsys.use_memfd=true\n' >> "$prop"
+      fi
+    done
   '';
 
   virtualisation.libvirtd = {

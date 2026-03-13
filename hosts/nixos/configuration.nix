@@ -6,6 +6,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -354,6 +355,9 @@
     # GPU info
     nvtopPackages.full
     nvidia-system-monitor-qt
+
+    # Waydroid ARM translation script (sudo waydroid-script install libndk)
+    inputs.waydroid-script.packages.${pkgs.system}.default
 
     mesa-demos
     vulkan-tools

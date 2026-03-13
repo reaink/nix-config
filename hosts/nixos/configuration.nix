@@ -433,7 +433,19 @@
   # NVIDIA GPUs are not supported by Waydroid natively; use swiftshader (software rendering).
   # sys.use_memfd=true is required on Linux 5.18+ (ashmem replaced by memfd).
   # https://wiki.nixos.org/wiki/Waydroid#GPU_Adjustments
+  #
+  # waydroid merges waydroid.cfg [properties] into waydroid_base.prop on each startup,
+  # so both files must be cleaned — otherwise cfg overrides our base.prop changes.
   systemd.services.waydroid-container.preStart = lib.mkAfter ''
+    cfg=/var/lib/waydroid/waydroid.cfg
+    if [ -f "$cfg" ]; then
+      ${pkgs.gnused}/bin/sed -i \
+        -e '/^ro\.hardware\.egl/d' \
+        -e '/^ro\.hardware\.gralloc/d' \
+        -e '/^gralloc\.gbm\.device/d' \
+        "$cfg"
+    fi
+
     base=/var/lib/waydroid/waydroid_base.prop
     if [ -f "$base" ]; then
       ${pkgs.gnused}/bin/sed -i \

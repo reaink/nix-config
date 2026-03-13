@@ -180,16 +180,6 @@ sudo nixos-rebuild switch --rollback  # NixOS
 darwin-rebuild switch --rollback      # macOS
 ```
 
-## Makefile 快捷方式
-
-```bash
-make nixos         # 构建 NixOS 配置
-make darwin        # 构建 macOS 配置
-make update        # 更新所有 flake inputs
-make clean-nixos   # NixOS 垃圾回收
-make clean-darwin  # macOS 垃圾回收
-```
-
 ## 故障排查
 
 ### NixOS 配置问题

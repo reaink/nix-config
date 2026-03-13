@@ -47,8 +47,6 @@
       url = "github:reaink/astro-nvim-config";
       flake = false;
     };
-
-    waydroid-script.url = "github:casualsnek/waydroid_script";
   };
 
   outputs =

@@ -35,7 +35,7 @@
       spotify
       android-studio
       scrcpy
-      qtscrcpy
+      waydroid-helper
       libreoffice-fresh
       shotcut
       todesk

@@ -352,8 +352,9 @@
     docker-buildx
 
     # GPU info
-    # nvtopPackages.full  # temporarily disabled due to broken CUDA dependency
+    nvtopPackages.full
     nvidia-system-monitor-qt
+
     mesa-demos
     vulkan-tools
     glmark2
@@ -423,6 +424,27 @@
     # entirely, making fcitx5 unreachable inside them.
     ELECTRON_OZONE_PLATFORM_HINT = "wayland";
   };
+
+  virtualisation.waydroid = {
+    enable = true;
+    package = pkgs.waydroid-nftables;
+  };
+
+  # NVIDIA GPUs are not supported by Waydroid natively; use swiftshader (software rendering).
+  # sys.use_memfd=true is required on Linux 5.18+ (ashmem replaced by memfd).
+  # https://wiki.nixos.org/wiki/Waydroid#GPU_Adjustments
+  systemd.services.waydroid-container.preStart = lib.mkAfter ''
+    base=/var/lib/waydroid/waydroid_base.prop
+    if [ -f "$base" ]; then
+      ${pkgs.gnused}/bin/sed -i \
+        -e '/^ro\.hardware\.egl=/d' \
+        -e '/^ro\.hardware\.gralloc=/d' \
+        -e '/^gralloc\.gbm\.device=/d' \
+        -e '/^sys\.use_memfd=/d' \
+        "$base"
+      printf 'ro.hardware.gralloc=default\nro.hardware.egl=swiftshader\nsys.use_memfd=true\n' >> "$base"
+    fi
+  '';
 
   virtualisation.libvirtd = {
     enable = true;

@@ -77,6 +77,7 @@
     firefox
     opencode
     opencode-desktop
+    antigravity
 
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono

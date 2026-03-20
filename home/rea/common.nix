@@ -7,9 +7,7 @@
 }:
 
 {
-  imports = [
-    ./opencode.nix
-  ];
+  imports = [ ];
   # Cross-platform packages
   home.packages = with pkgs; [
     # System utilities
@@ -75,8 +73,6 @@
     cherry-studio
     qq
     firefox
-    opencode
-    opencode-desktop
     antigravity
 
     # Fonts

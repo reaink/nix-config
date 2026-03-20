@@ -53,6 +53,7 @@
     google-cloud-sdk
     ngrok
     claude-code
+    claude-code-router
 
     # Database tools (cross-platform)
     prisma-engines_7
@@ -151,6 +152,8 @@
       unsetopt AUTO_CD
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
+      # Route claude through claude-code-router when the daemon is running
+      eval "$(ccr activate 2>/dev/null || true)"
     '';
 
     shellAliases = {
@@ -265,4 +268,47 @@
 
   # Rime input method (cross-platform)
   programs.rime-keytao.enable = true;
+
+  # Generate claude-code-router config from sops secret at activation time
+  home.activation.claudeCodeRouterConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    CCR_DIR="$HOME/.claude-code-router"
+    CCR_CONFIG="$CCR_DIR/config.json"
+    SOPS_SECRET="/run/secrets/openrouter-api-key"
+
+    if [ -f "$SOPS_SECRET" ]; then
+      API_KEY=$(cat "$SOPS_SECRET")
+      $DRY_RUN_CMD mkdir -p "$CCR_DIR"
+      $DRY_RUN_CMD cat > "$CCR_CONFIG" << EOF
+{
+  "LOG": false,
+  "Providers": [
+    {
+      "name": "openrouter",
+      "api_base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "api_key": "$API_KEY",
+      "models": [
+        "anthropic/claude-sonnet-4-6",
+        "google/gemini-2.5-pro",
+        "minimax/minimax-m2.7",
+        "deepseek/deepseek-v3.2"
+      ],
+      "transformer": {
+        "use": ["openrouter"]
+      }
+    }
+  ],
+  "Router": {
+    "default":              "openrouter,anthropic/claude-sonnet-4-6",
+    "background":           "openrouter,minimax/minimax-m2.7",
+    "thinking":             "openrouter,anthropic/claude-sonnet-4-6",
+    "longContext":          "openrouter,google/gemini-2.5-pro",
+    "longContextThreshold": 60000
+  }
+}
+EOF
+      $DRY_RUN_CMD chmod 600 "$CCR_CONFIG"
+    else
+      echo "Warning: sops secret $SOPS_SECRET not found, skipping claude-code-router config generation"
+    fi
+  '';
 }

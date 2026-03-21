@@ -52,8 +52,6 @@
     # Cloud & DevOps
     google-cloud-sdk
     ngrok
-    claude-code
-
     # Database tools (cross-platform)
     prisma-engines_7
 
@@ -108,6 +106,15 @@
   home.file.".cargo/.keep".text = "";
   home.file.".rustup/.keep".text = "";
 
+  # Auto-install/update claude-code via pnpm on each rebuild
+  home.activation.updateClaudeCode = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    export PNPM_HOME="$HOME/.local/share/pnpm"
+    export PATH="$PNPM_HOME:$PATH"
+    if command -v pnpm &>/dev/null; then
+      $DRY_RUN_CMD pnpm add -g @anthropic-ai/claude-code --silent
+    fi
+  '';
+
   # Neovim wrapper — extraPackages are injected into the wrapper's PATH so
   # tools are available regardless of how nvim is launched (GUI, etc.)
   programs.neovim = {
@@ -161,6 +168,7 @@
       update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
 
       # Common shortcuts
+      update-claude = "pnpm add -g @anthropic-ai/claude-code";
     };
 
     history.size = 10000;

@@ -148,9 +148,9 @@
     syntaxHighlighting.enable = true;
 
     initContent = ''
-      unsetopt AUTO_CD
       eval "$(fnm env --use-on-cd --shell zsh)"
       eval "$(zoxide init zsh)"
+      export EZA_PARAMS=('--icons')
     '';
 
     shellAliases = {
@@ -161,11 +161,6 @@
       update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
 
       # Common shortcuts
-      ls = "eza --icons";
-      ll = "eza -l --icons";
-      la = "eza -la --icons";
-      lt = "eza --tree --icons";
-      cat = "bat";
     };
 
     history.size = 10000;
@@ -187,6 +182,8 @@
           ohmyzsh/ohmyzsh path:lib/git.zsh
           ohmyzsh/ohmyzsh path:plugins/git
           ohmyzsh/ohmyzsh path:plugins/colored-man-pages
+          z-shell/zsh-eza
+          fdellwing/zsh-bat
         ''
       ];
     };

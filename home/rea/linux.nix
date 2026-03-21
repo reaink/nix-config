@@ -529,8 +529,7 @@
 
         battery = {
           autoSuspend = {
-            action = "sleep";
-            idleTimeout = 900;
+            action = "nothing";
           };
           dimDisplay = {
             enable = true;
@@ -545,8 +544,7 @@
 
         lowBattery = {
           autoSuspend = {
-            action = "sleep";
-            idleTimeout = 300;
+            action = "nothing";
           };
           dimDisplay = {
             enable = true;

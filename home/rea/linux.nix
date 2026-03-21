@@ -514,8 +514,7 @@
       powerdevil = {
         AC = {
           autoSuspend = {
-            action = "sleep";
-            idleTimeout = 1800;
+            action = "nothing";
           };
           dimDisplay = {
             enable = true;

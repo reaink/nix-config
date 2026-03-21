@@ -33,11 +33,6 @@
         group = "postgres";
         mode = "0400";
       };
-      openrouter-api-key = {
-        owner = "rea";
-        group = "users";
-        mode = "0400";
-      };
     };
   };
 

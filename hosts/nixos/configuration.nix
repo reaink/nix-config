@@ -580,6 +580,8 @@
 
   programs.kdeconnect.enable = true;
 
+  services.hardware.openrgb.enable = true;
+
   # AppImage support
   programs.appimage = {
     enable = true;

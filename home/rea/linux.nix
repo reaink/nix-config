@@ -126,6 +126,9 @@
         exec ${todesk}/bin/todesk desktop 2>&1 | grep -v "iCCP\|libpng warning" || true
       '')
 
+      # OpenRGB - universal RGB lighting control GUI
+      openrgb
+
       # Xbox controller tools
       antimicrox
       jstest-gtk

@@ -96,6 +96,11 @@
       })
       prismlauncher
 
+      # Windows app compatibility (DXVK/VKD3D-Proton → NVIDIA Vulkan)
+      bottles
+      winetricks
+      wineWow64Packages.full
+
       # Media capture
       (wrapOBS {
         plugins = with obs-studio-plugins; [

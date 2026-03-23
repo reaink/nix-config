@@ -664,7 +664,7 @@
         Wants = [ "network-online.target" ];
       };
       Service = {
-        ExecStart = "${pkgs.claude-code}/bin/claude --channels plugin:telegram@claude-plugins-official";
+        ExecStart = "${pkgs.expect}/bin/unbuffer ${pkgs.claude-code}/bin/claude --channels plugin:telegram@claude-plugins-official";
         Restart = "always";
         RestartSec = "15s";
       };

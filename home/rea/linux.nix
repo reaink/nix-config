@@ -228,6 +228,8 @@
         gtk-cursor-theme-size = 24;
       };
 
+      gtk4.theme = config.gtk.theme;
+
       gtk4.extraConfig = {
         gtk-application-prefer-dark-theme = true;
         gtk-icon-theme-name = "Papirus-Dark";
@@ -652,6 +654,25 @@
         "yakuakerc"."Dialogs"."FirstRun" = false;
       };
     };
+    # Claude Code Telegram channels daemon
+    # Runs persistently as a user service so it survives screen lock and network
+    # interruptions (suspend/resume). Restarts automatically on failure.
+    systemd.user.services.claude-channels = {
+      Unit = {
+        Description = "Claude Code Telegram channels daemon";
+        After = [ "network-online.target" ];
+        Wants = [ "network-online.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.claude-code}/bin/claude --channels plugin:telegram@claude-plugins-official";
+        Restart = "always";
+        RestartSec = "15s";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
     # VSCode marketplace extensions ship native binaries without execute permissions.
     # This activation script fixes them after every home-manager switch.
     home.activation.fixVSCodeExtensionBinPerms = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

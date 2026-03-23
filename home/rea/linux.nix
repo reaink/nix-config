@@ -96,8 +96,7 @@
       })
       prismlauncher
 
-      # Windows app compatibility (DXVK/VKD3D-Proton → NVIDIA Vulkan)
-      bottles
+      (bottles.override { removeWarningPopup = true; })
       winetricks
       wineWow64Packages.full
 

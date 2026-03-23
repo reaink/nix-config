@@ -96,7 +96,6 @@
       })
       prismlauncher
 
-      (bottles.override { removeWarningPopup = true; })
       winetricks
       wineWow64Packages.full
 
@@ -183,6 +182,9 @@
       GSK_RENDERER = "ngl";
       GTK_OVERLAY_SCROLLING = "0";
       WLR_NO_HARDWARE_CURSORS = "1";
+
+      # Flatpak app discovery — KDE/Plasma reads XDG_DATA_DIRS for .desktop files
+      XDG_DATA_DIRS = "$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share\${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}";
 
       # Chromium hardware acceleration
       MOZ_DISABLE_RDD_SANDBOX = "1";

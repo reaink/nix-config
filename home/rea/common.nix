@@ -155,8 +155,7 @@
     '';
 
     shellAliases = {
-      # Claude Telegram channels daemon (run once to accept trust, then Ctrl+B D to detach)
-      claudetg = "tmux new-session -A -s claude-channels 'claude --channels plugin:telegram@claude-plugins-official'";
+      claudetg = "claude --channels plugin:telegram@claude-plugins-official";
 
       # Flake operations
       flake-update = "nix flake update";

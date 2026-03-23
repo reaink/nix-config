@@ -660,24 +660,6 @@
         "yakuakerc"."Dialogs"."FirstRun" = false;
       };
     };
-    # Claude Code Telegram channels daemon
-    # Runs persistently as a user service so it survives screen lock and network
-    # interruptions (suspend/resume). Restarts automatically on failure.
-    systemd.user.services.claude-channels = {
-      Unit = {
-        Description = "Claude Code Telegram channels daemon";
-        After = [ "network-online.target" ];
-        Wants = [ "network-online.target" ];
-      };
-      Service = {
-        ExecStart = "${pkgs.expect}/bin/expect -c 'spawn ${pkgs.claude-code}/bin/claude --dangerously-skip-permissions --channels plugin:telegram@claude-plugins-official; expect \"Enter to confirm\"; send \"\\r\"; interact'";
-        Restart = "always";
-        RestartSec = "15s";
-      };
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-    };
 
     # VSCode marketplace extensions ship native binaries without execute permissions.
     # This activation script fixes them after every home-manager switch.

@@ -670,7 +670,7 @@
         Wants = [ "network-online.target" ];
       };
       Service = {
-        ExecStart = "${pkgs.expect}/bin/unbuffer ${pkgs.claude-code}/bin/claude --channels plugin:telegram@claude-plugins-official";
+        ExecStart = "${pkgs.expect}/bin/expect -c 'spawn ${pkgs.claude-code}/bin/claude --dangerously-skip-permissions --channels plugin:telegram@claude-plugins-official; expect \"Enter to confirm\"; send \"\\r\"; interact'";
         Restart = "always";
         RestartSec = "15s";
       };

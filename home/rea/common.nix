@@ -53,6 +53,7 @@
     google-cloud-sdk
     ngrok
     claude-code
+    tmux
 
     # Database tools (cross-platform)
     prisma-engines_7
@@ -154,6 +155,9 @@
     '';
 
     shellAliases = {
+      # Claude Telegram channels daemon (run once to accept trust, then Ctrl+B D to detach)
+      claudetg = "tmux new-session -A -s claude-channels 'claude --dangerously-skip-permissions --channels plugin:telegram@claude-plugins-official'";
+
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";

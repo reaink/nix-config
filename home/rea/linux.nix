@@ -136,7 +136,7 @@
       antimicrox
       jstest-gtk
       linuxConsoleTools
-      winboat
+      # winboat # disabled: go-1.26.1 Windows cross-compile bug (nixpkgs upstream issue)
     ];
 
     # Linux-specific environment variables

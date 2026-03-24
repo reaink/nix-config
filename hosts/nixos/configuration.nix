@@ -33,6 +33,11 @@
         group = "postgres";
         mode = "0400";
       };
+      github-token = {
+        owner = "rea";
+        group = "users";
+        mode = "0400";
+      };
     };
   };
 

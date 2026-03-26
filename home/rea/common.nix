@@ -122,6 +122,7 @@
       shfmt
       shellcheck
       nodePackages.prettier
+      nodePackages.typescript-language-server
       ruff
     ];
   };

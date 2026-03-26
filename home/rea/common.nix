@@ -59,6 +59,7 @@
     # prisma-engines_7 # disabled: build fails with new rustc (metrics-0.23.0 lifetime bug, nixpkgs upstream issue)
 
     # Development tools (cross-platform)
+    nodePackages.typescript-language-server
     imagemagick
     ffmpeg
     mdbook
@@ -122,7 +123,6 @@
       shfmt
       shellcheck
       nodePackages.prettier
-      nodePackages.typescript-language-server
       ruff
     ];
   };

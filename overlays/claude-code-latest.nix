@@ -6,11 +6,11 @@ self: super: {
   #   sh ~/nix-config/update-claude-code-hash.sh
 
   claude-code = super.claude-code.overrideAttrs (oldAttrs: rec {
-    version = "2.1.84"; # Updated by update-claude-code-hash.sh
+    version = "2.1.85"; # Updated by update-claude-code-hash.sh
 
     src = super.fetchurl {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha512-xm8BBdhHNiT2TaHFvR1Ga7xa8OYA6TpMOY0AfHgt5VDjmacQNSXJSlT9kc0j4mljzFMHTvzYS+ibXY3H4YAf/g=="; # Updated by update-claude-code-hash.sh
+      hash = "sha512-3/q3xTpk9EnBfQ/XsHGkOZniOgQx4sqD95CDKw1mvN1Qw5+9IZTp6ILdds02d7vOM6YuLL0G0zhqsMSAFVse4w=="; # Updated by update-claude-code-hash.sh
     };
 
     npmDepsHash = "sha256-sha256-RBNvo1WzZ4oRRq0W9+hknpT7T8If536DEMBg9hyq/4o="; # Updated by update-claude-code-hash.sh

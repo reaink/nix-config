@@ -154,7 +154,6 @@
       eval "$(zoxide init zsh)"
       export EZA_PARAMS=('--icons')
       if [ -f /run/secrets/github-token ]; then
-        export GITHUB_TOKEN=$(cat /run/secrets/github-token)
         export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat /run/secrets/github-token)
       fi
     '';

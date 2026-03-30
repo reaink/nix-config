@@ -77,7 +77,8 @@
       kdePackages.kweather
 
       # Linux-specific GUI apps
-      wechat-uos
+      wechat
+      # wechat-uos
       wpsoffice-cn
 
       # System tools

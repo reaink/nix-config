@@ -164,9 +164,9 @@
       # Flake operations
       flake-update = "nix flake update";
       flake-check = "nix flake check";
-      update = "nix flake update && sh ~/nix-config/update-vscode-hash.sh && sh ~/nix-config/update-claude-code-hash.sh";
-      update-vscode = "sh ~/nix-config/update-vscode-hash.sh";
-      update-claude = "sh ~/nix-config/update-claude-code-hash.sh";
+      update = "nix flake update && sh ~/nix-config/update-hashes.sh";
+      update-vscode = "sh ~/nix-config/update-hashes.sh vscode";
+      update-claude = "sh ~/nix-config/update-hashes.sh claude-code";
     };
 
     history.size = 10000;

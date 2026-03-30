@@ -1,18 +1,36 @@
 self: super: {
   # Claude Code Latest - Always tracks the latest version from npm registry
   #
-  # Overrides the nixpkgs claude-code package with the latest version.
+  # Uses buildNpmPackage directly (not overrideAttrs) to avoid lib.extendMkDerivation
+  # timing issues where npmDeps can't be updated via overrideAttrs.
+  #
+  # Only version + src hash need updating here. Everything else (npmDepsHash,
+  # postPatch with vendored package-lock.json, postInstall, meta, etc.)
+  # is inherited from nixpkgs and maintained by nixpkgs maintainers.
+  #
   # To update to the newest release, run:
-  #   sh ~/nix-config/update-claude-code-hash.sh
+  #   sh ~/nix-config/update-hashes.sh claude-code
 
-  claude-code = super.claude-code.overrideAttrs (oldAttrs: rec {
-    version = "2.1.87"; # Updated by update-claude-code-hash.sh
+  claude-code = super.buildNpmPackage (finalAttrs: {
+    pname = "claude-code";
+    version = "2.1.87"; # Updated by update-hashes.sh
 
-    src = super.fetchurl {
-      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${version}.tgz";
-      hash = "sha512-R40p85lv270MsOmuP0VrgZlsBnq6HIoW/aIrPwny6AfhPUmsChPNLkxv/F8Mf6g9iYpGNEfICt5CDw++tKZD0g=="; # Updated by update-claude-code-hash.sh
+    src = super.fetchzip {
+      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
+      hash = "sha256-jorpY6ao1YgkoTgIk1Ae2BQCbqOuEtwzoIG36BP5nG4="; # Updated by update-hashes.sh
     };
 
-    npmDepsHash = "sha256-sha256-RBNvo1WzZ4oRRq0W9+hknpT7T8If536DEMBg9hyq/4o="; # Updated by update-claude-code-hash.sh
+    inherit (super.claude-code)
+      npmDepsHash
+      strictDeps
+      postPatch
+      dontNpmBuild
+      postInstall
+      meta;
+
+    # nativeInstallCheckInputs is not exposed on the derivation attrs
+    doInstallCheck = false;
+
+    env.AUTHORIZED = "1";
   });
 }

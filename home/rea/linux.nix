@@ -326,11 +326,11 @@
     xdg.dataFile."applications/wechat.desktop".text = ''
       [Desktop Entry]
       Categories=Utility;
-      Comment=Wechat Desktop
+      Comment=WeChat Desktop
       Comment[zh_CN]=微信桌面版
       Exec=env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" wechat %U
       Icon=wechat
-      Name=wechat
+      Name=WeChat
       Name[zh_CN]=微信
       StartupNotify=true
       Terminal=false

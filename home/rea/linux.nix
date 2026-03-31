@@ -320,6 +320,23 @@
       X-KDE-SubstituteUID=false
     '';
 
+    # WeChat desktop launcher (force fcitx input method on Wayland)
+    # Since QT_IM_MODULE and GTK_IM_MODULE are disabled globally for text-input-v3,
+    # we must inject them specifically for WeChat.
+    xdg.dataFile."applications/wechat.desktop".text = ''
+      [Desktop Entry]
+      Categories=Utility;
+      Comment=Wechat Desktop
+      Comment[zh_CN]=微信桌面版
+      Exec=env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" wechat %U
+      Icon=wechat
+      Name=wechat
+      Name[zh_CN]=微信
+      StartupNotify=true
+      Terminal=false
+      Type=Application
+    '';
+
     # Steam font support
     home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source =
       "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";

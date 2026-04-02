@@ -2,26 +2,22 @@
 # Update Nix overlay hashes
 #
 # Usage:
-#   update-hashes.sh [TARGET] [--force]
+#   update-hashes.sh [TARGET]
 #
 # TARGET:
 #   all          Update everything (default)
 #   vscode       Update VSCode hashes for all platforms
 #   claude-code  Update Claude Code version and npm deps hash
 #
-# --force: Re-compute claude-code hashes even if version is unchanged
-
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 TARGET="all"
-FORCE=false
 
 for arg in "$@"; do
     case "$arg" in
         all|vscode|claude-code) TARGET="$arg" ;;
-        --force) FORCE=true ;;
         *) echo "Unknown argument: $arg"; exit 1 ;;
     esac
 done
@@ -71,9 +67,8 @@ update_claude_code() {
     echo "  current: $current_version"
     echo "  latest:  $latest_version"
 
-    if [[ "$current_version" == "$latest_version" ]] && [[ "$FORCE" == false ]]; then
-        echo "==> Claude Code already up to date. Use --force to re-compute hashes."
-        return
+    if [[ "$current_version" == "$latest_version" ]]; then
+        echo "  (version unchanged, re-computing hashes anyway)"
     fi
 
     # Compute src hash (fetchzip = recursive NAR SHA256 of unpacked tarball)

@@ -17,7 +17,7 @@ self: super: {
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-      hash = "sha256-jorpY6ao1YgkoTgIk1Ae2BQCbqOuEtwzoIG36BP5nG4="; # Updated by update-hashes.sh
+      hash = "sha256-4/hqWrY2fncQ8p0TxwBAI+mNH98ZDhjvFqB9us7GJK0="; # Updated by update-hashes.sh (src)
     };
 
     inherit (super.claude-code)
@@ -26,7 +26,8 @@ self: super: {
       postPatch
       dontNpmBuild
       postInstall
-      meta;
+      meta
+      ;
 
     # nativeInstallCheckInputs is not exposed on the derivation attrs
     doInstallCheck = false;

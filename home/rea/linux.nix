@@ -33,11 +33,11 @@
       vlc
       mpv
       spotify
+      kdePackages.kdenlive
       android-studio
       scrcpy
       waydroid-helper
       libreoffice-fresh
-      shotcut
       todesk
 
       # KDE packages

@@ -50,8 +50,4 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-38.8.4"
-  ];
 }

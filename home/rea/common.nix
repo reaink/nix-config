@@ -48,11 +48,10 @@
     pnpm
     bun
     mariadb
-
-    # Cloud & DevOps
     google-cloud-sdk
     ngrok
     claude-code
+    copilot-cli
     tmux
 
     # Database tools (cross-platform)

@@ -75,6 +75,7 @@
     qq
     firefox
     antigravity
+    losslesscut-bin
 
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono

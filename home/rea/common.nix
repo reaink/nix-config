@@ -76,6 +76,7 @@
     firefox
     antigravity
     losslesscut-bin
+    davinci-resolve
 
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono

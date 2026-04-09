@@ -13,11 +13,11 @@ self: super: {
 
   claude-code = super.buildNpmPackage (finalAttrs: {
     pname = "claude-code";
-    version = "2.1.92"; # Updated by update-hashes.sh
+    version = "2.1.97"; # Updated by update-hashes.sh
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-      hash = "sha256-CLLCtVK3TeXFZ8wBnRRHNc2MoUt7lTdMJwz8sZHpkFM="; # Updated by update-hashes.sh (src)
+      hash = "sha256-J92ILqBJmXyAueUPZ+HYZY0ls3OfN2EAhFyQHTOQF5A="; # Updated by update-hashes.sh (src)
     };
 
     inherit (super.claude-code)

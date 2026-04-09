@@ -113,6 +113,8 @@
   # tools are available regardless of how nvim is launched (GUI, etc.)
   programs.neovim = {
     enable = true;
+    withRuby = false;
+    withPython3 = false;
     extraPackages = with pkgs; [
       lsof
       fd

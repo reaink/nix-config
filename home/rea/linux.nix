@@ -78,6 +78,7 @@
 
       # Linux-specific GUI apps
       wechat
+      qq
       # wechat-uos
       wpsoffice-cn
 

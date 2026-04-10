@@ -13,6 +13,13 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# macOS sed requires an explicit empty string for in-place edit without backup
+if [[ "$(uname)" == "Darwin" ]]; then
+    SED_INPLACE=(sed -i '')
+else
+    SED_INPLACE=(sed -i)
+fi
+
 TARGET="all"
 
 for arg in "$@"; do
@@ -40,7 +47,7 @@ update_vscode() {
         local sri_hash
         sri_hash=$(uv run python -c "import sys,base64,binascii; print('sha256-'+base64.b64encode(binascii.unhexlify('${hex_hash}')).decode())")
 
-        sed -i "s|hash = \"[^\"]*\"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/${platform}/stable|hash = \"${sri_hash}\"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/${platform}/stable|" "$overlay"
+        "${SED_INPLACE[@]}" "s|hash = \"[^\"]*\"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/${platform}/stable|hash = \"${sri_hash}\"; # Update with: nix-prefetch-url https://update.code.visualstudio.com/latest/${platform}/stable|" "$overlay"
 
         if grep -qF "$sri_hash" "$overlay"; then
             echo "  [$platform] $sri_hash"
@@ -62,7 +69,7 @@ update_claude_code() {
     tarball_url=$(echo "$metadata" | jq -r '.dist.tarball')
 
     local current_version
-    current_version=$(grep -oP 'version = "\K[^"]+' "$overlay" | head -1)
+    current_version=$(sed -n 's/.*version = "\([^"]*\)".*/\1/p' "$overlay" | head -1)
 
     echo "  current: $current_version"
     echo "  latest:  $latest_version"
@@ -86,7 +93,7 @@ update_claude_code() {
     echo "  src hash (fetchzip NAR): $src_hash"
 
     # Update version and src hash
-    sed -i \
+    "${SED_INPLACE[@]}" \
         -e "s|version = \"[^\"]*\"; # Updated by update-hashes.sh|version = \"${latest_version}\"; # Updated by update-hashes.sh|" \
         -e "s|hash = \"[^\"]*\"; # Updated by update-hashes.sh (src)|hash = \"${src_hash}\"; # Updated by update-hashes.sh (src)|" \
         "$overlay"

@@ -72,7 +72,6 @@
     vscode-latest
     obsidian
     cherry-studio
-    qq
     firefox
     antigravity
 

@@ -701,37 +701,32 @@
   };
 
   # Fix (system level, post-resume): after nvidia-resume and post-resume complete,
-  # tell KWin to re-query DRM outputs and resume compositing.
+  # synthesize a DRM "change" uevent so KWin re-enumerates its outputs.
   #
-  # The previous approach used a user-level service with wantedBy=suspend.target,
-  # but that service actually starts BEFORE suspend, and the `sleep 2` finishes
-  # before the system even goes to sleep — leaving zero post-resume delay.
-  # Running as a system service After=post-resume.service guarantees execution
-  # strictly after GPU state is restored and logind has re-granted DRM master.
+  # Root cause: in NVIDIA PRIME sync mode, the AMD card (card0, scanout) depends
+  # on the NVIDIA card (card1, render) being ready. nvidia-resume.service restores
+  # NVIDIA state for ~1.2s and during that window KWin's modeset calls on card0
+  # fail with EACCES. KWin enters an error state and never self-recovers.
+  #
+  # Fix: wait for post-resume.service (which waits for nvidia-resume.service), then
+  # emit a synthetic DRM hotplug event via udevadm. KWin's DRM backend processes
+  # the event unconditionally and re-runs output enumeration + configuration —
+  # at which point the PRIME sync link is fully restored and calls succeed.
+  #
+  # Note: "Compositing.resume" was removed — the method does not exist in KWin 6.
+  # "KWin.reconfigure" was also removed — it reloads config files and then
+  # triggers the same DRM ops, but since it doesn't produce a uevent it only
+  # works when KWin is already healthy (no help when KWin is in error state).
   systemd.services.kwin-resume-fix = {
-    description = "Restore KWin display state after suspend/resume";
+    description = "Trigger DRM hotplug re-detection after suspend/resume";
     after = [ "post-resume.service" ];
     wantedBy = [ "post-resume.service" ];
     serviceConfig = {
       Type = "oneshot";
-      User = "rea";
-      # Small delay to let logind finish re-granting DRM master to the session.
+      # Runs as root — udevadm trigger requires elevated privileges.
       ExecStart = pkgs.writeShellScript "kwin-resume-fix" ''
-        sleep 3
-        DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u)/bus"
-        export DBUS_SESSION_BUS_ADDRESS
-        ${pkgs.dbus}/bin/dbus-send \
-          --session \
-          --dest=org.kde.KWin \
-          --print-reply \
-          /KWin \
-          org.kde.KWin.reconfigure 2>/dev/null || true
-        ${pkgs.dbus}/bin/dbus-send \
-          --session \
-          --dest=org.kde.KWin \
-          --print-reply \
-          /Compositor \
-          org.kde.kwin.Compositing.resume 2>/dev/null || true
+        sleep 5
+        ${pkgs.systemd}/bin/udevadm trigger --action=change --subsystem-match=drm
       '';
     };
   };

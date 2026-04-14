@@ -28,6 +28,13 @@
       dbus
       dbus.dev
       gdk-pixbuf
+      librsvg
+      librsvg.dev
+      libayatana-appindicator
+      xdotool
+
+      # Android / Tauri mobile development
+      jdk17
 
       # Media and productivity GUI apps
       vlc
@@ -161,7 +168,10 @@
         pkgs.libsoup_3.dev
         pkgs.openssl.dev
         pkgs.dbus.dev
+        pkgs.librsvg.dev
       ]}";
+      ANDROID_HOME = "$HOME/Android/Sdk";
+      JAVA_HOME = "${pkgs.jdk17}";
       PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
       PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
 

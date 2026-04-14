@@ -796,6 +796,8 @@
       }
     ];
     allowedTCPPorts = [
+      1420 # Tauri dev server
+      1421 # Tauri HMR
       3000
       3389
       5000

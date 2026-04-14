@@ -16,8 +16,8 @@ let
   androidSdk = (pkgs.androidenv.composeAndroidPackages {
     cmdLineToolsVersion = "13.0";
     platformToolsVersion = "35.0.2";
-    buildToolsVersions = [ "34.0.0" ];
-    platformVersions = [ "34" ];
+    buildToolsVersions = [ "34.0.0" "35.0.0" ];
+    platformVersions = [ "34" "35" "36" ];
     includeNDK = true;
     ndkVersions = [ "27.0.12077973" ];
     includeEmulator = false;

@@ -64,7 +64,10 @@
     "nvidia-drm.modeset=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
-    "mem_sleep_default=deep"
+    # S2idle (suspend-to-idle) instead of S3 (deep): keeps DRAM powered so the
+    # NVIDIA GSP firmware state is preserved across suspend. S3 completely powers
+    # off the GPU, causing GSP heartbeat timeout on resume (RTX 4070 SUPER / Ada Lovelace).
+    "mem_sleep_default=s2idle"
     "clearcpuid=rdrand" # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs
     "random.trust_cpu=0" # Don't trust CPU random number generator
     # Prevent NVMe from entering deep power states during suspend.

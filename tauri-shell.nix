@@ -40,6 +40,7 @@ pkgs.mkShell {
     pkg-config
     openssl
     openssl.dev
+    bzip2
 
     # Tauri Linux (GTK/WebKit) dependencies
     glib
@@ -61,6 +62,9 @@ pkgs.mkShell {
     dbus
     dbus.dev
     gdk-pixbuf
+    gdk-pixbuf.dev
+    harfbuzz
+    harfbuzz.dev
     libsoup_3
     libsoup_3.dev
   ];
@@ -76,15 +80,26 @@ pkgs.mkShell {
     pkgs.openssl.dev
     pkgs.dbus.dev
     pkgs.librsvg.dev
+    pkgs.gdk-pixbuf.dev
+    pkgs.harfbuzz.dev
   ];
 
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.openssl
     pkgs.stdenv.cc.cc.lib
     pkgs.zlib
+    pkgs.bzip2
     pkgs.glib
     pkgs.gtk3
     pkgs.webkitgtk_4_1
+    pkgs.gdk-pixbuf
+    pkgs.pango
+    pkgs.cairo
+    pkgs.atk
+    pkgs.harfbuzz
+    pkgs.dbus
+    pkgs.libsoup_3
+    pkgs.librsvg
   ];
 
   OPENSSL_DIR = "${pkgs.openssl.dev}";

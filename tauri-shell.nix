@@ -6,23 +6,37 @@
 #   npm run tauri android init               # first-time Android setup
 #   npm run tauri android dev                # Android (emulator/device)
 {
-  pkgs ? import <nixpkgs> { },
+  pkgs ? import <nixpkgs> {
+    config.allowUnfree = true;
+    config.android_sdk.accept_license = true;
+  },
 }:
 
 let
-  androidHome = builtins.getEnv "HOME" + "/Android/Sdk";
-  # NDK_HOME must point to a specific NDK version directory.
-  # After running `npm run tauri android init`, Tauri installs the NDK via
-  # Android Studio / sdkmanager. Then set NDK_HOME manually or update below.
-  ndkVersion = "27.0.12077973";
-  ndkHome = androidHome + "/ndk/" + ndkVersion;
+  androidSdk = (pkgs.androidenv.composeAndroidPackages {
+    cmdLineToolsVersion = "13.0";
+    platformToolsVersion = "35.0.2";
+    buildToolsVersions = [ "34.0.0" ];
+    platformVersions = [ "34" ];
+    includeNDK = true;
+    ndkVersions = [ "27.0.12077973" ];
+    includeEmulator = false;
+    includeSources = false;
+  }).androidsdk;
+
+  androidHome = "${androidSdk}/libexec/android-sdk";
+  ndkHome = "${androidHome}/ndk/27.0.12077973";
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
     # Tauri CLI
     cargo-tauri
 
-    # Rust (assumes rustup is installed globally via common.nix)
+    # Android SDK (declarative, no manual download needed)
+    androidSdk
+    jdk17
+
+    # Build tools
     pkg-config
     openssl
     openssl.dev
@@ -49,10 +63,6 @@ pkgs.mkShell {
     gdk-pixbuf
     libsoup_3
     libsoup_3.dev
-
-    # Android
-    jdk17
-    android-tools
   ];
 
   PKG_CONFIG_PATH = pkgs.lib.makeSearchPath "lib/pkgconfig" [
@@ -86,18 +96,9 @@ pkgs.mkShell {
 
   shellHook = ''
     echo "Tauri 2.0 development environment"
-    echo "  cargo tauri --version: $(cargo tauri --version 2>/dev/null || echo 'not found — run: cargo install tauri-cli')"
-    echo "  JAVA_HOME:             $JAVA_HOME"
-    echo "  ANDROID_HOME:          $ANDROID_HOME"
-    echo "  NDK_HOME:              $NDK_HOME"
-    echo ""
-    if [ ! -d "$ANDROID_HOME" ]; then
-      echo "  ⚠  ANDROID_HOME does not exist yet."
-      echo "     Open Android Studio → SDK Manager and install SDK + NDK ${ndkVersion}"
-    fi
-    if [ ! -d "$NDK_HOME" ]; then
-      echo "  ⚠  NDK ${ndkVersion} not found at $NDK_HOME"
-      echo "     In Android Studio: SDK Manager → SDK Tools → NDK (Side by side)"
-    fi
+    echo "  cargo tauri: $(cargo tauri --version 2>/dev/null || echo 'not found')"
+    echo "  JAVA_HOME:   $JAVA_HOME"
+    echo "  ANDROID_HOME: $ANDROID_HOME"
+    echo "  NDK_HOME:    $NDK_HOME"
   '';
 }

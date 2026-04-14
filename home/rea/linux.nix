@@ -27,7 +27,6 @@
       libsoup_3.dev
       dbus
       dbus.dev
-      gdk-pixbuf
       librsvg
       librsvg.dev
       libayatana-appindicator

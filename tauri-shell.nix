@@ -34,7 +34,8 @@ pkgs.mkShell {
 
     # Android SDK (declarative, no manual download needed)
     androidSdk
-    jdk17
+    # temurin: pre-built Adoptium JDK, avoids NixOS TLS patches that break dl.google.com
+    temurin-bin-17
 
     # Build tools
     pkg-config
@@ -105,7 +106,7 @@ pkgs.mkShell {
   OPENSSL_DIR = "${pkgs.openssl.dev}";
   OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
 
-  JAVA_HOME = "${pkgs.jdk17}";
+  JAVA_HOME = "${pkgs.temurin-bin-17}";
   ANDROID_HOME = androidHome;
   NDK_HOME = ndkHome;
 

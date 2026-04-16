@@ -109,12 +109,25 @@ pkgs.mkShell {
   JAVA_HOME = "${pkgs.temurin-bin-17}";
   ANDROID_HOME = androidHome;
   NDK_HOME = ndkHome;
+  STUDIO_PATH = "${pkgs.android-studio}/bin/android-studio";
 
   shellHook = ''
+    # Tauri on Linux tries to exec a command literally named "Android Studio"
+    # (with a space). Create a wrapper in a temp dir and prepend it to PATH.
+    _studio_wrapper_dir=$(mktemp -d)
+    cat > "$_studio_wrapper_dir/Android Studio" <<'EOF'
+#!/bin/sh
+exec "${pkgs.android-studio}/bin/android-studio" "$@"
+EOF
+    chmod +x "$_studio_wrapper_dir/Android Studio"
+    export PATH="$_studio_wrapper_dir:$PATH"
+    export STUDIO_PATH="${pkgs.android-studio}/bin/android-studio"
+
     echo "Tauri 2.0 development environment"
     echo "  cargo tauri: $(cargo tauri --version 2>/dev/null || echo 'not found')"
     echo "  JAVA_HOME:   $JAVA_HOME"
     echo "  ANDROID_HOME: $ANDROID_HOME"
     echo "  NDK_HOME:    $NDK_HOME"
+    echo "  STUDIO_PATH: $STUDIO_PATH"
   '';
 }

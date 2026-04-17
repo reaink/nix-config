@@ -102,6 +102,9 @@
           pkgs.wineWow64Packages.full
           pkgs.gamemode
         ];
+        extraLibraries = pkgs: [
+          pkgs.gamemode
+        ];
       })
       prismlauncher
 

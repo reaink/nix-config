@@ -158,6 +158,7 @@
         pkgs.openssl
         pkgs.stdenv.cc.cc.lib
         pkgs.zlib
+        pkgs.gamemode
       ];
 
       # Tauri/GTK PKG_CONFIG

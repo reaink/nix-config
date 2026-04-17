@@ -448,7 +448,7 @@
       enable = true;
 
       workspace = {
-        clickItemTo = "open";
+        clickItemTo = "select";
         lookAndFeel = "org.kde.breezedark.desktop";
         cursor = {
           theme = "breeze_cursors";

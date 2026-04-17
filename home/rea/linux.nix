@@ -100,6 +100,7 @@
       (lutris.override {
         extraPkgs = pkgs: [
           pkgs.wineWow64Packages.full
+          pkgs.gamemode
         ];
       })
       prismlauncher

@@ -13,11 +13,14 @@ self: super: {
 
   claude-code = super.buildNpmPackage (finalAttrs: {
     pname = "claude-code";
-    version = "2.1.114"; # Updated by update-hashes.sh
+    # Pinned to 2.1.112 — last version with cli.js.
+    # v2.1.113+ switched to native platform binaries (cli-wrapper.cjs) which
+    # requires nixpkgs to update its postPatch. Unpin once nixpkgs handles it.
+    version = "2.1.112"; # Updated by update-hashes.sh
 
     src = super.fetchzip {
       url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-      hash = "sha256-r78N6eE/8JQsHP8XTWP9efkbzkmuV+o7JSB1GxrlE3E="; # Updated by update-hashes.sh (src)
+      hash = "sha256-SJJqU7XHbu9IRGPMJNUg6oaMZiQUKqJhI2wm7BnR1gs="; # Updated by update-hashes.sh (src)
     };
 
     inherit (super.claude-code)

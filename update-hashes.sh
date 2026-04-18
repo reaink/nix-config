@@ -78,6 +78,16 @@ update_claude_code() {
         echo "  (version unchanged, re-computing hashes anyway)"
     fi
 
+    # v2.1.113+ switched to native platform binaries (no cli.js).
+    # The inherited nixpkgs postPatch does substituteInPlace cli.js which breaks.
+    # Pin at 2.1.112 until nixpkgs updates its packaging for the new model.
+    if [[ "$(printf '%s\n' 2.1.112 "$latest_version" | sort -V | tail -1)" != "2.1.112" ]]; then
+        echo "  WARNING: latest ($latest_version) > 2.1.112 — new native-binary packaging model."
+        echo "  Staying on 2.1.112 until nixpkgs postPatch is updated for cli-wrapper.cjs."
+        latest_version="2.1.112"
+        tarball_url="https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-2.1.112.tgz"
+    fi
+
     # Compute src hash (fetchzip = recursive NAR SHA256 of unpacked tarball)
     echo "  Downloading tarball to compute hashes..."
     local tmpdir

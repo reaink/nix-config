@@ -18,6 +18,7 @@
 
     # macOS-specific packages (can be added as needed)
     home.packages = with pkgs; [
+      jan
       pokemon-colorscripts-mac
       coreutils
       vlc-bin

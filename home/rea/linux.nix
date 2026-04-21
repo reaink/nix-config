@@ -146,6 +146,24 @@
       jstest-gtk
       linuxConsoleTools
       winboat
+
+      # Jan wrapped to forward CUDA library paths to spawned llama-server child process.
+      # Jan (Electron) clears NIX_LD_LIBRARY_PATH when spawning backends, so we embed
+      # the path directly via makeWrapper to ensure it's always inherited.
+      (pkgs.symlinkJoin {
+        name = "jan";
+        paths = [ pkgs.jan ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/Jan \
+            --set NIX_LD_LIBRARY_PATH /run/current-system/sw/share/nix-ld/lib \
+            --prefix LD_LIBRARY_PATH : /run/current-system/sw/share/nix-ld/lib \
+            --set XMODIFIERS "@im=fcitx" \
+            --set QT_IM_MODULE fcitx \
+            --set GTK_IM_MODULE fcitx \
+            --add-flags "--enable-wayland-ime"
+        '';
+      })
     ];
 
     # Linux-specific environment variables

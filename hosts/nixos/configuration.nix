@@ -335,6 +335,9 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
+    kdePackages.partitionmanager
+    kdePackages.kio-admin
+    kdePackages.sddm-kcm
     efibootmgr
     ntfs3g
     git

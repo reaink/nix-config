@@ -61,7 +61,6 @@
       kdePackages.kcalc
       kdePackages.kamoso
       kdePackages.kdepim-addons
-      kdePackages.sddm-kcm
       kdePackages.ksystemlog
       kdePackages.kontact
       kdePackages.kmail
@@ -75,8 +74,6 @@
       kdePackages.kio-gdrive
       kdePackages.yakuake
       kdePackages.filelight
-      kdePackages.partitionmanager
-      kdePackages.kio-admin
       kdePackages.kio-extras
       kdePackages.kio-fuse
       kdePackages.plasma-workspace

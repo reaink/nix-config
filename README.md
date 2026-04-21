@@ -120,13 +120,37 @@ nix-config/
 - **主机名**: nixos
 - **架构**: x86_64-linux
 - **内核**: Linux latest
-- **显卡**: AMD + NVIDIA (PRIME Sync)
+- **CPU**: AMD Ryzen 9 9950X（Zen 5，16 核 32 线程）
+- **GPU 1**: NVIDIA RTX 4070 Super（discrete，12GB VRAM）
+- **GPU 2**: AMD Radeon 890M（integrated，RDNA 3.5，PRIME Sync 模式下由 NVIDIA 主渲染）
+- **内存**: 64GB
 - **桌面**: KDE Plasma 6 (Wayland)
 
 ### macOS 笔记本
 - **用户**: rea
 - **主机名**: mac
 - **架构**: aarch64-darwin (Apple Silicon)
+- **芯片**: M4 Pro（16 核 CPU，20 核 GPU），24GB 统一内存
+
+## Jan 本地 AI 引擎配置
+
+Settings → Local Engine → Llama.cpp → Backend Selection
+
+### NixOS（Ryzen 9 9950X + RTX 4070 Super）
+
+```
+llama-version/linux-avx512-cuda-cu12.0-x64
+```
+
+- Ryzen 9950X（Zen 5）支持 AVX-512
+- RTX 4070 Super = Ada Lovelace（sm_89），最低需要 CUDA 11.8，推荐 CUDA 12.0
+- **不要选 cu11.7**：不支持 sm_89 架构，无法使用 GPU
+
+### macOS（M4 Pro）
+
+Metal 在 aarch64-darwin 上**自动选中**，确认不是 CPU-only 即可。
+
+或者考虑切换到 **MLX 引擎**（Settings → Local Engine → MLX）：Apple 官方 ML 框架，Apple Silicon 原生支持，推理速度和内存效率均优于 llama.cpp Metal。
 
 ## 密钥管理（NixOS）
 

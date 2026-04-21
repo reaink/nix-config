@@ -574,6 +574,8 @@
     gtk3
     pango
     freerdp
+    # NCCL: required by Jan's bundled llama-server CUDA backend even on single-GPU setups
+    cudaPackages.nccl
   ];
 
   programs.steam = {

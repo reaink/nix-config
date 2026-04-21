@@ -44,6 +44,8 @@
     postgresql_16
     sops
     age
+    # LLM inference - Metal backend auto-enabled on aarch64-darwin (M4 Pro)
+    llama-cpp
   ];
 
   # Define user

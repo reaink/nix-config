@@ -371,6 +371,12 @@
     mangohud
     gamemode
 
+    # LLM inference - CUDA backend for 4070 Super
+    (llama-cpp.override {
+      cudaSupport = true;
+      cudaPackages = pkgs.cudaPackages;
+    })
+
     # Libraries for Electron apps
     stdenv.cc.cc.lib
     libgcc

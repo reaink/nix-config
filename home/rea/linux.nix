@@ -177,7 +177,6 @@
 
     systemd.user.sessionVariables = {
       LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-        pkgs.cudaPackages.nccl
         pkgs.openssl
         pkgs.stdenv.cc.cc.lib
         pkgs.zlib

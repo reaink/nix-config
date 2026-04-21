@@ -574,6 +574,11 @@
     gtk3
     pango
     freerdp
+    # CUDA libraries required by Jan's bundled llama-server binary
+    cudaPackages.nccl
+    cudaPackages.cuda_cudart
+    cudaPackages.libcublas
+    config.hardware.nvidia.package # provides libcuda.so.1
   ];
 
   programs.steam = {

@@ -74,6 +74,7 @@
     cherry-studio
     firefox
     antigravity
+    jan
 
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono

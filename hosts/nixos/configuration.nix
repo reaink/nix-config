@@ -405,7 +405,7 @@
   environment.variables = {
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
-    LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:${pkgs.cudaPackages.nccl}/lib:$LD_LIBRARY_PATH";
+    LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
     # Make GStreamer plugins discoverable by WebKitGTK subprocesses (WebKitWebProcess, etc.)
     # NixOS does not set this automatically; without it createAudioSink crashes with SIGABRT.
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatStringsSep ":" (
@@ -574,8 +574,6 @@
     gtk3
     pango
     freerdp
-    # NCCL: required by Jan's bundled llama-server CUDA backend even on single-GPU setups
-    cudaPackages.nccl
   ];
 
   programs.steam = {

@@ -173,6 +173,16 @@
       ]}";
       ANDROID_HOME = "$HOME/Android/Sdk";
       JAVA_HOME = "${pkgs.jdk17}";
+    };
+
+    systemd.user.sessionVariables = {
+      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
+        pkgs.cudaPackages.nccl
+        pkgs.openssl
+        pkgs.stdenv.cc.cc.lib
+        pkgs.zlib
+        pkgs.gamemode
+      ];
       PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
       PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
 

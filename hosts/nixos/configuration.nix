@@ -49,8 +49,8 @@
       content = ''
         OPENAI_API_KEYS=${config.sops.placeholder."llama-api-key"}
       '';
-      owner = "open-webui";
-      group = "open-webui";
+      owner = "root";
+      group = "root";
       mode = "0400";
     };
   };

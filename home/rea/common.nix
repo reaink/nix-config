@@ -44,6 +44,7 @@
 
     uv
     python3
+    python3Packages.huggingface-hub
     fnm
     pnpm
     bun

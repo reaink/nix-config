@@ -229,7 +229,7 @@
 
     programs.zsh.initContent = ''
       llama-start() {
-        llama-server --port 11110 -ngl 99 -fa --models-dir ~/.llama-models "$@"
+        llama-server --port 11110 -ngl 99 --flash-attn on --models-dir ~/.llama-models "$@"
       }
       llama-stop() {
         pkill -f 'llama-server' && echo 'llama-server stopped'

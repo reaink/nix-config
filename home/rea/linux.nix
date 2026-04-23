@@ -239,14 +239,11 @@
       }
       llama-download-models() {
         mkdir -p ~/.llama-models
-        local base=~/.llama-models
-        echo "==> Qwen3-Coder-Next Q3_K_M (coder, ~7GB)"
-        curl -L -C - -o "$base/Qwen3-Coder-Next-Q3_K_M.gguf" \
-          "https://huggingface.co/bartowski/Qwen3-Coder-Next-GGUF/resolve/main/Qwen3-Coder-Next-Q3_K_M.gguf"
-        echo "==> Qwen3-14B-Instruct Q4_K_M (chat, ~9GB)"
-        curl -L -C - -o "$base/Qwen3-14B-Instruct-Q4_K_M.gguf" \
-          "https://huggingface.co/bartowski/Qwen3-14B-Instruct-GGUF/resolve/main/Qwen3-14B-Instruct-Q4_K_M.gguf"
-        echo "Done. Models in $base"
+        echo "==> Qwen3-Coder-30B-A3B Q2_K (coder, ~11.3GB, full GPU)"
+        hf download unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF Qwen3-Coder-30B-A3B-Instruct-Q2_K.gguf --local-dir ~/.llama-models
+        echo "==> Qwen3-8B Q6_K (chat, ~6.7GB)"
+        hf download Qwen/Qwen3-8B-GGUF Qwen3-8B-Q6_K.gguf --local-dir ~/.llama-models
+        echo "Done. Models in ~/.llama-models"
       }
     '';
 

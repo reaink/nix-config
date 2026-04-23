@@ -38,6 +38,20 @@
         group = "users";
         mode = "0400";
       };
+      llama-api-key = {
+        owner = "rea";
+        group = "users";
+        mode = "0440";
+      };
+    };
+
+    templates."open-webui-env" = {
+      content = ''
+        OPENAI_API_KEYS=${config.sops.placeholder."llama-api-key"}
+      '';
+      owner = "open-webui";
+      group = "open-webui";
+      mode = "0400";
     };
   };
 
@@ -807,6 +821,8 @@
       3000
       3389
       5000
+      11110 # llama-server
+      11111 # open-webui
     ];
     allowedUDPPortRanges = [
       {
@@ -826,13 +842,11 @@
   services.open-webui = {
     enable = true;
     port = 11111;
-    host = "127.0.0.1";
+    host = "0.0.0.0";
+    environmentFile = config.sops.templates."open-webui-env".path;
     environment = {
       OLLAMA_BASE_URL = "";
-      WEBUI_AUTH = "False";
-      # Connect to llama-server (started manually via llama-start alias)
       OPENAI_API_BASE_URLS = "http://127.0.0.1:11110/v1";
-      OPENAI_API_KEYS = "llama-cpp";
     };
   };
 

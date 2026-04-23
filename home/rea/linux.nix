@@ -233,7 +233,7 @@
           echo "llama-server already running (PID $(cat /tmp/llama-server.pid))"
           return
         fi
-        llama-server --port 11110 -ngl 99 --flash-attn on --models-dir ~/.llama-models "$@" &
+        llama-server --host 0.0.0.0 --port 11110 -ngl 99 --flash-attn on --models-dir ~/.llama-models --api-key "$(cat /run/secrets/llama-api-key)" "$@" &
         echo $! > /tmp/llama-server.pid
         disown
         echo "llama-server started in background (PID $!)"

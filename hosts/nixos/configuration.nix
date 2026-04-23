@@ -76,6 +76,7 @@
 
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
+    "nvidia-drm.fbdev=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
     "mem_sleep_default=deep"
@@ -172,6 +173,11 @@
     enable = true;
     videoDrivers = [ "nvidia" ];
     # PRIME sync mode: NVIDIA is primary, NixOS configures NVIDIA display device automatically
+  };
+
+  environment.sessionVariables = {
+    __GL_SYNC_TO_VBLANK = "1";
+    __GL_VRR_ALLOWED = "0";
   };
 
   networking.hostName = "nixos"; # Define your hostname.

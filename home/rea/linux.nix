@@ -229,10 +229,28 @@
 
     programs.zsh.initContent = ''
       llama-start() {
-        llama-server --port 11110 -ngl 99 --flash-attn on --models-dir ~/.llama-models "$@"
+        if [[ -f /tmp/llama-server.pid ]] && kill -0 "$(cat /tmp/llama-server.pid)" 2>/dev/null; then
+          echo "llama-server already running (PID $(cat /tmp/llama-server.pid))"
+          return
+        fi
+        llama-server --port 11110 -ngl 99 --flash-attn on --models-dir ~/.llama-models "$@" &
+        echo $! > /tmp/llama-server.pid
+        disown
+        echo "llama-server started in background (PID $!)"
       }
       llama-stop() {
-        pkill -f 'llama-server' && echo 'llama-server stopped'
+        if [[ -f /tmp/llama-server.pid ]]; then
+          kill "$(cat /tmp/llama-server.pid)" && rm /tmp/llama-server.pid && echo 'llama-server stopped'
+        else
+          pkill -f 'llama-server --port 11110' && echo 'llama-server stopped'
+        fi
+      }
+      llama-status() {
+        if [[ -f /tmp/llama-server.pid ]] && kill -0 "$(cat /tmp/llama-server.pid)" 2>/dev/null; then
+          echo "llama-server running (PID $(cat /tmp/llama-server.pid))"
+        else
+          echo 'llama-server not running'
+        fi
       }
       llama-ls() {
         ls -lh ~/.llama-models/*.gguf 2>/dev/null || echo 'No models found in ~/.llama-models'

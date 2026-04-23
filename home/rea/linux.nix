@@ -234,7 +234,7 @@
           return
         fi
         llama-server --host 0.0.0.0 --port 11110 -ngl 99 --flash-attn on --no-webui \
-          -c 16384 --cache-type-k q4_0 --cache-type-v q4_0 \
+          -c 32768 --parallel 1 --cache-type-k q4_0 --cache-type-v q4_0 \
           --models-dir ~/.llama-models --api-key "$(cat /run/secrets/llama-api-key)" "$@" &
         echo $! > /tmp/llama-server.pid
         disown

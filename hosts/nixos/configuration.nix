@@ -828,10 +828,11 @@
     port = 11111;
     host = "127.0.0.1";
     environment = {
-      # Disable Ollama auto-discovery (we use llama.cpp directly)
       OLLAMA_BASE_URL = "";
-      # Disable login for local single-user use
       WEBUI_AUTH = "False";
+      # Connect to llama-server (started manually via llama-start alias)
+      OPENAI_API_BASE_URLS = "http://127.0.0.1:8081/v1";
+      OPENAI_API_KEYS = "llama-cpp";
     };
   };
 

@@ -227,6 +227,26 @@
       phone = "scrcpy --turn-screen-off --stay-awake --max-size=3088 --video-bit-rate=16M --audio-bit-rate=256K";
     };
 
+    programs.zsh.initContent = ''
+      llama-start() {
+        llama-server --port 8081 -ngl 99 -fa --models-dir ~/.cache/llama.cpp "$@"
+      }
+      llama-stop() {
+        pkill -f 'llama-server' && echo 'llama-server stopped'
+      }
+      llama-download-models() {
+        mkdir -p ~/.cache/llama.cpp
+        local base=~/.cache/llama.cpp
+        echo "==> Qwen3-Coder-Next Q3_K_M (coder, ~7GB)"
+        curl -L -C - -o "$base/Qwen3-Coder-Next-Q3_K_M.gguf" \
+          "https://huggingface.co/bartowski/Qwen3-Coder-Next-GGUF/resolve/main/Qwen3-Coder-Next-Q3_K_M.gguf"
+        echo "==> Qwen3-14B-Instruct Q4_K_M (chat, ~9GB)"
+        curl -L -C - -o "$base/Qwen3-14B-Instruct-Q4_K_M.gguf" \
+          "https://huggingface.co/bartowski/Qwen3-14B-Instruct-GGUF/resolve/main/Qwen3-14B-Instruct-Q4_K_M.gguf"
+        echo "Done. Models in $base"
+      }
+    '';
+
     # GTK theme configuration
     gtk = {
       enable = true;

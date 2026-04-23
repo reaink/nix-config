@@ -574,7 +574,7 @@
     gtk3
     pango
     freerdp
-    # CUDA libraries required by Jan's bundled llama-server binary
+    # CUDA libraries required by llama-server (llama-cpp)
     cudaPackages.nccl
     cudaPackages.cuda_cudart
     cudaPackages.libcublas
@@ -822,6 +822,19 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  # Open WebUI - local AI chat interface, connects to llama-server via OpenAI-compatible API
+  services.open-webui = {
+    enable = true;
+    port = 11111;
+    host = "127.0.0.1";
+    environment = {
+      # Disable Ollama auto-discovery (we use llama.cpp directly)
+      OLLAMA_BASE_URL = "";
+      # Disable login for local single-user use
+      WEBUI_AUTH = "False";
+    };
+  };
+
   system.stateVersion = "25.11";
 
 }

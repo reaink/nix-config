@@ -132,25 +132,53 @@ nix-config/
 - **架构**: aarch64-darwin (Apple Silicon)
 - **芯片**: M4 Pro（16 核 CPU，20 核 GPU），24GB 统一内存
 
-## Jan 本地 AI 引擎配置
+## Open WebUI + llama.cpp 本地 AI 配置
 
-Settings → Local Engine → Llama.cpp → Backend Selection
+open-webui 作为 NixOS 系统服务运行，通过 OpenAI 兼容 API 连接 llama.cpp 推理后端。
 
-### NixOS（Ryzen 9 9950X + RTX 4070 Super）
+### 架构
 
 ```
-llama-version/linux-avx512-cuda-cu12.0-x64
+llama-server（llama-cpp）→ OpenAI 兼容 API → open-webui（浏览器访问）
 ```
 
-- Ryzen 9950X（Zen 5）支持 AVX-512
-- RTX 4070 Super = Ada Lovelace（sm_89），最低需要 CUDA 11.8，推荐 CUDA 12.0
-- **不要选 cu11.7**：不支持 sm_89 架构，无法使用 GPU
+### 访问地址
+
+rebuild 后 open-webui 自动启动：[http://localhost:11111](http://localhost:11111)
+
+### 启动推理后端（NixOS）
+
+```bash
+# 基本启动（CPU）
+llama-server -m /path/to/model.gguf
+
+# GPU 加速（RTX 4070 Super，推荐）
+llama-server -m /path/to/model.gguf \
+  --n-gpu-layers 99 \         # 将所有层卸载到 GPU
+  --port 8081                  # 默认 8080，与 open-webui 冲突时修改
+
+# Ryzen 9950X（Zen 5，AVX-512 优化，CPU 推理）
+llama-server -m /path/to/model.gguf \
+  --threads 16                 # 9950X 有 32 线程，建议留一半给系统
+```
+
+### 在 open-webui 中添加 llama.cpp 连接
+
+1. 打开 [http://localhost:8080](http://localhost:8080)
+2. Settings → Connections → OpenAI API
+3. URL 填 `http://localhost:8081/v1`（llama-server 的端口）
+4. API Key 填任意字符串（如 `none`）
+5. 点击保存，模型列表会自动出现
 
 ### macOS（M4 Pro）
 
-Metal 在 aarch64-darwin 上**自动选中**，确认不是 CPU-only 即可。
+llama-cpp 在 aarch64-darwin 上**自动启用 Metal**，直接运行：
 
-或者考虑切换到 **MLX 引擎**（Settings → Local Engine → MLX）：Apple 官方 ML 框架，Apple Silicon 原生支持，推理速度和内存效率均优于 llama.cpp Metal。
+```bash
+llama-server -m /path/to/model.gguf --n-gpu-layers 99
+```
+
+open-webui 在 macOS 上不作为系统服务，可用 Homebrew 或 Docker 单独安装，或直接使用浏览器访问 NixOS 机器的 open-webui。
 
 ## 密钥管理（NixOS）
 

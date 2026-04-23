@@ -65,14 +65,17 @@
 
     programs.zsh.initContent = ''
       llama-start() {
-        llama-server --port 8081 -ngl 99 -fa --models-dir ~/.cache/llama.cpp "$@"
+        llama-server --port 11110 -ngl 99 -fa --models-dir ~/.llama-models "$@"
       }
       llama-stop() {
         pkill -f 'llama-server' && echo 'llama-server stopped'
       }
+      llama-ls() {
+        ls -lh ~/.llama-models/*.gguf 2>/dev/null || echo 'No models found in ~/.llama-models'
+      }
       llama-download-models() {
-        mkdir -p ~/.cache/llama.cpp
-        local base=~/.cache/llama.cpp
+        mkdir -p ~/.llama-models
+        local base=~/.llama-models
         echo "==> Qwen3-Coder-Next UD-IQ3_S (coder, ~8GB)"
         curl -L -C - -o "$base/Qwen3-Coder-Next-UD-IQ3_S.gguf" \
           "https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF/resolve/main/Qwen3-Coder-Next-UD-IQ3_S.gguf"

@@ -831,7 +831,7 @@
       OLLAMA_BASE_URL = "";
       WEBUI_AUTH = "False";
       # Connect to llama-server (started manually via llama-start alias)
-      OPENAI_API_BASE_URLS = "http://127.0.0.1:8081/v1";
+      OPENAI_API_BASE_URLS = "http://127.0.0.1:11110/v1";
       OPENAI_API_KEYS = "llama-cpp";
     };
   };

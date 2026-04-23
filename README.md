@@ -139,46 +139,45 @@ open-webui 作为 NixOS 系统服务运行，通过 OpenAI 兼容 API 连接 lla
 ### 架构
 
 ```
-llama-server（llama-cpp）→ OpenAI 兼容 API → open-webui（浏览器访问）
+llama-server（llama-cpp）:8081 → OpenAI 兼容 API → open-webui :11111（浏览器访问）
 ```
 
 ### 访问地址
 
 rebuild 后 open-webui 自动启动：[http://localhost:11111](http://localhost:11111)
 
-### 启动推理后端（NixOS）
+open-webui 已预配置连接 `http://127.0.0.1:8081/v1`，无需手动添加连接。
 
-```bash
-# 基本启动（CPU）
-llama-server -m /path/to/model.gguf
+### 快捷命令
 
-# GPU 加速（RTX 4070 Super，推荐）
-llama-server -m /path/to/model.gguf \
-  --n-gpu-layers 99 \         # 将所有层卸载到 GPU
-  --port 8081                  # 默认 8080，与 open-webui 冲突时修改
+| 命令 | 说明 |
+|------|------|
+| `llama-download-models` | 下载所有模型到 `~/.llama-models/`（首次运行，支持断点续传） |
+| `llama-start` | 启动推理服务（路由模式，自动加载 `~/.llama-models/` 内所有模型） |
+| `llama-stop` | 关闭推理服务 |
+| `llama-ls` | 查看已下载的模型列表 |
 
-# Ryzen 9950X（Zen 5，AVX-512 优化，CPU 推理）
-llama-server -m /path/to/model.gguf \
-  --threads 16                 # 9950X 有 32 线程，建议留一半给系统
-```
+### 模型配置
 
-### 在 open-webui 中添加 llama.cpp 连接
+**NixOS（RTX 4070 Super 12GB，CUDA）**
 
-1. 打开 [http://localhost:8080](http://localhost:8080)
-2. Settings → Connections → OpenAI API
-3. URL 填 `http://localhost:8081/v1`（llama-server 的端口）
-4. API Key 填任意字符串（如 `none`）
-5. 点击保存，模型列表会自动出现
+| 用途 | 模型 | 大小 |
+|------|------|------|
+| 代码 | Qwen3-Coder-Next Q3_K_M | ~7GB |
+| 聊天 | Qwen3-14B-Instruct Q4_K_M | ~9GB |
 
-### macOS（M4 Pro）
+**macOS（M4 Pro 24GB，Metal）**
 
-llama-cpp 在 aarch64-darwin 上**自动启用 Metal**，直接运行：
+| 用途 | 模型 | 大小 |
+|------|------|------|
+| 代码 | Qwen3-Coder-Next UD-IQ3_S | ~8GB |
+| 聊天 | Qwen3-14B-Instruct Q6_K | ~12GB |
 
-```bash
-llama-server -m /path/to/model.gguf --n-gpu-layers 99
-```
+### macOS 使用
 
-open-webui 在 macOS 上不作为系统服务，可用 Homebrew 或 Docker 单独安装，或直接使用浏览器访问 NixOS 机器的 open-webui。
+macOS 无 open-webui 系统服务，可直接访问 NixOS 机器的 open-webui，或浏览器打开 `http://nixos-ip:11111`。
+
+`llama-download-models` / `llama-start` / `llama-stop` 同样可用。
 
 ## 密钥管理（NixOS）
 

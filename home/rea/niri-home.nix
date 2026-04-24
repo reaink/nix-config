@@ -7,15 +7,46 @@
 }:
 
 let
-  noctalia = cmd: [ "noctalia-shell" "ipc" "call" ] ++ (lib.splitString " " cmd);
+  noctalia =
+    cmd:
+    [
+      "noctalia-shell"
+      "ipc"
+      "call"
+    ]
+    ++ (lib.splitString " " cmd);
 in
 {
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
-      { command = [ "fcitx5" "-d" "--replace" ]; }
-      { command = [ "wl-paste" "--type" "text" "--watch" "cliphist" "store" ]; }
-      { command = [ "wl-paste" "--type" "image" "--watch" "cliphist" "store" ]; }
+      {
+        command = [
+          "fcitx5"
+          "-d"
+          "--replace"
+        ];
+      }
+      {
+        command = [
+          "wl-paste"
+          "--type"
+          "text"
+          "--watch"
+          "cliphist"
+          "store"
+        ];
+      }
+      {
+        command = [
+          "wl-paste"
+          "--type"
+          "image"
+          "--watch"
+          "cliphist"
+          "store"
+        ];
+      }
       { command = [ "xwayland-satellite" ]; }
     ];
 
@@ -89,7 +120,12 @@ in
         clip-to-geometry = true;
       }
       {
-        matches = [ { app-id = "^org.gnome.Nautilus$"; title = "Properties$"; } ];
+        matches = [
+          {
+            app-id = "^org.gnome.Nautilus$";
+            title = "Properties$";
+          }
+        ];
         open-floating = true;
       }
       {
@@ -163,8 +199,16 @@ in
       "XF86AudioRaiseVolume".action.spawn = noctalia "volume increase";
       "XF86AudioLowerVolume".action.spawn = noctalia "volume decrease";
       "XF86AudioMute".action.spawn = noctalia "volume muteOutput";
-      "XF86MonBrightnessUp".action.spawn = [ "brightnessctl" "s" "10%+" ];
-      "XF86MonBrightnessDown".action.spawn = [ "brightnessctl" "s" "10%-" ];
+      "XF86MonBrightnessUp".action.spawn = [
+        "brightnessctl"
+        "s"
+        "10%+"
+      ];
+      "XF86MonBrightnessDown".action.spawn = [
+        "brightnessctl"
+        "s"
+        "10%-"
+      ];
 
       "Mod+Shift+Q".action.quit = { };
       "Mod+Shift+Slash".action.show-hotkey-overlay = { };

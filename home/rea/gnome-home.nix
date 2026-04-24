@@ -9,6 +9,7 @@
   home.packages = with pkgs; [
     gnomeExtensions.appindicator # system tray icon support for non-native apps
     gnomeExtensions.gsconnect # KDE Connect protocol for GNOME Shell
+    gnomeExtensions.kimpanel # input method popup panel for fcitx5 on GNOME Wayland
   ];
 
   # Qt theme for GNOME
@@ -39,6 +40,7 @@
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
         "gsconnect@andyholmes.github.io"
+        "kimpanel@kde.org"
       ];
     };
 

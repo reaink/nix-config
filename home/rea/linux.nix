@@ -7,6 +7,8 @@
 }:
 
 {
+  imports = [ ./gnome-home.nix ];
+
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
     home.packages = with pkgs; [
@@ -45,39 +47,6 @@
       waydroid-helper
       libreoffice-fresh
       todesk
-
-      # KDE packages
-      kdePackages.breeze
-      kdePackages.breeze-gtk
-      kdePackages.breeze-icons
-      kdePackages.akonadi
-      kdePackages.akonadi-import-wizard
-      kdePackages.akonadi-calendar
-      kdePackages.akonadi-contacts
-      kdePackages.akonadi-mime
-      kdePackages.akonadi-search
-      kdePackages.kdepim-runtime
-      kdePackages.dragon
-      kdePackages.kcalc
-      kdePackages.kamoso
-      kdePackages.kdepim-addons
-      kdePackages.ksystemlog
-      kdePackages.kontact
-      kdePackages.kmail
-      kdePackages.kmail-account-wizard
-      kdePackages.libkdepim
-      kdePackages.pimcommon
-      kdePackages.pim-data-exporter
-      kdePackages.korganizer
-      kdePackages.kaccounts-integration
-      kdePackages.kaccounts-providers
-      kdePackages.kio-gdrive
-      kdePackages.yakuake
-      kdePackages.filelight
-      kdePackages.kio-extras
-      kdePackages.kio-fuse
-      kdePackages.plasma-workspace
-      kdePackages.kweather
 
       # Linux-specific GUI apps
       wechat
@@ -205,7 +174,7 @@
       GTK_OVERLAY_SCROLLING = "0";
       WLR_NO_HARDWARE_CURSORS = "1";
 
-      # Flatpak app discovery — KDE/Plasma reads XDG_DATA_DIRS for .desktop files
+      # Flatpak app discovery — ensure flatpak .desktop files are visible
       XDG_DATA_DIRS = "$HOME/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share\${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}";
 
       # Chromium hardware acceleration
@@ -281,18 +250,12 @@
         package = pkgs.papirus-icon-theme;
       };
 
-      cursorTheme = {
-        name = "breeze_cursors";
-        package = pkgs.kdePackages.breeze;
-        size = 24;
-      };
-
       gtk3.extraConfig = {
         gtk-application-prefer-dark-theme = true;
         gtk-icon-theme-name = "Papirus-Dark";
         gtk-button-images = true;
         gtk-menu-images = true;
-        gtk-enable-animations = false;
+        gtk-enable-animations = true;
         gtk-cursor-theme-size = 24;
       };
 
@@ -301,7 +264,7 @@
       gtk4.extraConfig = {
         gtk-application-prefer-dark-theme = true;
         gtk-icon-theme-name = "Papirus-Dark";
-        gtk-enable-animations = false;
+        gtk-enable-animations = true;
       };
 
       gtk2 = {
@@ -311,20 +274,13 @@
       };
     };
 
-    # Qt/KDE configuration
-    qt = {
-      enable = true;
-      platformTheme.name = "kde";
-      style.name = "breeze";
-    };
-
     # GTK settings files
     xdg.configFile."gtk-3.0/settings.ini".text = ''
       [Settings]
       gtk-theme-name=Arc-Dark
       gtk-icon-theme-name=Papirus-Dark
       gtk-font-name=Noto Sans 10
-      gtk-cursor-theme-name=breeze_cursors
+      gtk-cursor-theme-name=Adwaita
       gtk-cursor-theme-size=24
       gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ
       gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
@@ -337,7 +293,7 @@
       gtk-xft-hintstyle=hintslight
       gtk-xft-rgba=rgb
       gtk-application-prefer-dark-theme=1
-      gtk-enable-animations=0
+      gtk-enable-animations=1
       gtk-icon-sizes=panel-menu=24,24:panel=24,24:gtk-button=16,16:gtk-large-toolbar=24,24
     '';
 
@@ -346,10 +302,10 @@
       gtk-theme-name=Arc-Dark
       gtk-icon-theme-name=Papirus-Dark
       gtk-font-name=Noto Sans 10
-      gtk-cursor-theme-name=breeze_cursors
+      gtk-cursor-theme-name=Adwaita
       gtk-cursor-theme-size=24
       gtk-application-prefer-dark-theme=1
-      gtk-enable-animations=0
+      gtk-enable-animations=1
     '';
 
     # Cherry Studio - override desktop file to use absolute icon path
@@ -484,260 +440,6 @@
           </alias>
         </fontconfig>
       '';
-    };
-
-    # KDE Connect
-    services.kdeconnect.enable = true;
-
-    # Plasma Manager - declarative KDE configuration
-    programs.plasma = {
-      enable = true;
-
-      workspace = {
-        clickItemTo = "select";
-        lookAndFeel = "org.kde.breezedark.desktop";
-        cursor = {
-          theme = "breeze_cursors";
-          size = 24;
-        };
-        theme = "breeze-dark";
-        colorScheme = "BreezeDark";
-      };
-
-      hotkeys.commands = {
-        "launch-yakuake" = {
-          name = "Launch Yakuake";
-          key = "Meta+`";
-          command = "yakuake";
-        };
-      };
-
-      shortcuts = {
-        "kwin" = {
-          "Switch to Desktop 1" = "Meta+1";
-          "Switch to Desktop 2" = "Meta+2";
-          "Switch to Desktop 3" = "Meta+3";
-          "Switch to Desktop 4" = "Meta+4";
-          "Switch to Next Desktop" = "Meta+Ctrl+Right";
-          "Switch to Previous Desktop" = "Meta+Ctrl+Left";
-          "Switch One Desktop Down" = "Meta+Ctrl+Down";
-          "Switch One Desktop Up" = "Meta+Ctrl+Up";
-          "Window Close" = "Meta+Q";
-          "Window Maximize" = "Meta+Up";
-          "Window Minimize" = "Meta+M";
-          "Window Quick Tile Bottom" = "Meta+Down";
-          "Window Quick Tile Left" = "Meta+Left";
-          "Window Quick Tile Right" = "Meta+Right";
-          "Window Quick Tile Top Left" = "Meta+U";
-          "Window Quick Tile Top Right" = "Meta+I";
-          "Window Quick Tile Bottom Left" = "Meta+N";
-          "Window Quick Tile Bottom Right" = "Meta+.";
-          "Window to Desktop 1" = "Meta+Shift+1";
-          "Window to Desktop 2" = "Meta+Shift+2";
-          "Window to Desktop 3" = "Meta+Shift+3";
-          "Window to Desktop 4" = "Meta+Shift+4";
-          "Window to Next Desktop" = "Meta+Shift+Right";
-          "Window to Previous Desktop" = "Meta+Shift+Left";
-        };
-        "org.kde.konsole.desktop" = {
-          "_launch" = "Meta+Return";
-        };
-      };
-
-      kwin = {
-        edgeBarrier = 0;
-        cornerBarrier = false;
-        borderlessMaximizedWindows = false;
-
-        effects = {
-          blur.enable = true;
-          desktopSwitching.animation = "slide";
-          dimInactive.enable = false;
-          translucency.enable = true;
-        };
-
-        virtualDesktops = {
-          rows = 2;
-          number = 4;
-          names = [
-            "Main"
-            "Code"
-            "Web"
-            "Media"
-          ];
-        };
-      };
-
-      window-rules = [
-        {
-          description = "Force Steam title bar and frame";
-          match = {
-            window-class = {
-              value = "steam";
-              type = "exact";
-            };
-            window-types = [ "normal" ];
-          };
-          apply = {
-            noborder = {
-              value = false;
-              apply = "force";
-            };
-          };
-        }
-      ];
-
-      krunner = {
-        position = "center";
-        historyBehavior = "enableSuggestions";
-      };
-
-      kscreenlocker = {
-        autoLock = true;
-        timeout = 15;
-        # Pre-sleep lock is handled by the kscreenlocker-pre-sleep systemd service.
-        # Keeping this false avoids launching a second kscreenlocker_greet on resume
-        # before KWin has DRM master — which would cause an error dialog.
-        lockOnResume = false;
-      };
-
-      powerdevil = {
-        AC = {
-          autoSuspend = {
-            action = "nothing";
-          };
-          dimDisplay = {
-            enable = true;
-            idleTimeout = 600;
-          };
-          turnOffDisplay = {
-            idleTimeout = 900;
-            idleTimeoutWhenLocked = 180;
-          };
-          powerButtonAction = "showLogoutScreen";
-        };
-
-        battery = {
-          autoSuspend = {
-            action = "nothing";
-          };
-          dimDisplay = {
-            enable = true;
-            idleTimeout = 180;
-          };
-          turnOffDisplay = {
-            idleTimeout = 300;
-            idleTimeoutWhenLocked = 60;
-          };
-          powerButtonAction = "sleep";
-        };
-
-        lowBattery = {
-          autoSuspend = {
-            action = "nothing";
-          };
-          dimDisplay = {
-            enable = true;
-            idleTimeout = 120;
-          };
-          turnOffDisplay = {
-            idleTimeout = 180;
-            idleTimeoutWhenLocked = 30;
-          };
-          powerButtonAction = "sleep";
-        };
-      };
-
-      panels = [
-        {
-          location = "bottom";
-          height = 44;
-          floating = true;
-          hiding = "none";
-          alignment = "center";
-
-          widgets = [
-            {
-              name = "org.kde.plasma.kickoff";
-              config = {
-                General = {
-                  icon = "start-here-kde";
-                };
-              };
-            }
-            {
-              name = "org.kde.plasma.icontasks";
-              config = {
-                General = {
-                  launchers = [
-                    "applications:org.kde.konsole.desktop"
-                    "applications:google-chrome.desktop"
-                    "applications:code-insiders.desktop"
-                    "applications:org.kde.dolphin.desktop"
-                  ];
-                };
-              };
-            }
-            "org.kde.plasma.marginsseparator"
-            "org.kde.plasma.pager"
-            {
-              systemTray.items = {
-                shown = [
-                  "org.kde.plasma.networkmanagement"
-                  "org.kde.plasma.bluetooth"
-                  "org.kde.plasma.volume"
-                ];
-                hidden = [
-                  "org.kde.plasma.brightness"
-                ];
-              };
-            }
-            {
-              name = "org.kde.plasma.weather";
-              config = {
-                General = {
-                  source = "bbcukmet|weather|Xi'an, Shaanxi, CN|2657896";
-                };
-              };
-            }
-            {
-              digitalClock = {
-                calendar = {
-                  firstDayOfWeek = "monday";
-                  plugins = [
-                    "holidaysevents"
-                    "alternatecalendar"
-                  ];
-                };
-                time.format = "24h";
-                date = {
-                  enable = true;
-                  format = "isoDate";
-                };
-              };
-            }
-            "org.kde.plasma.showdesktop"
-          ];
-        }
-      ];
-
-      desktop.icons = {
-        arrangement = "leftToRight";
-        lockInPlace = false;
-        size = 2;
-        alignment = "left";
-      };
-
-      configFile = {
-        "dolphinrc"."General"."ShowFullPath" = true;
-        "dolphinrc"."General"."RememberOpenedTabs" = false;
-        "konsolerc"."Desktop Entry"."DefaultProfile" = "Default.profile";
-        "yakuakerc"."Animation"."Frames" = 20;
-        "yakuakerc"."Window"."Height" = 50;
-        "yakuakerc"."Window"."Width" = 100;
-        "yakuakerc"."Window"."ShowTabBar" = "ShowTabBarWhenNeeded";
-        "yakuakerc"."Dialogs"."FirstRun" = false;
-      };
     };
 
     # VSCode marketplace extensions ship native binaries without execute permissions.

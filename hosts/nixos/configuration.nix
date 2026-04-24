@@ -11,9 +11,9 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./sunshine.nix
+    ./desktop.nix
   ];
 
   # sops secrets configuration
@@ -224,32 +224,6 @@
     };
   };
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager = {
-    plasma-login-manager.enable = true;
-
-    autoLogin = {
-      enable = true;
-      user = "rea";
-    };
-  };
-
-  services.desktopManager.plasma6.enable = true;
-
-  # KDE Plasma font configuration - optimized for readability
-  environment.etc."xdg/kdeglobals".text = lib.generators.toINI { } {
-    General = {
-      font = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0"; # General UI font - best for Chinese display
-      fixed = "Maple Mono NF CN,10,-1,5,50,0,0,0,0,0"; # Fixed-width font (terminal, code)
-      menuFont = "Noto Sans CJK SC,11,-1,5,50,0,0,0,0,0"; # Menu font
-      smallestReadableFont = "Noto Sans CJK SC,9,-1,5,50,0,0,0,0,0"; # Smallest readable font
-      toolBarFont = "Noto Sans CJK SC,10,-1,5,50,0,0,0,0,0"; # Toolbar font
-    };
-    WM = {
-      activeFont = "Noto Sans CJK SC,11,-1,5,75,0,0,0,0,0"; # Window title font (bold)
-    };
-  };
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -296,9 +270,7 @@
       "video"
       "render"
     ];
-    packages = with pkgs; [
-      kdePackages.kate
-    ];
+    packages = with pkgs; [ ];
     shell = pkgs.zsh;
   };
 
@@ -355,9 +327,6 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    kdePackages.partitionmanager
-    kdePackages.kio-admin
-    kdePackages.sddm-kcm
     efibootmgr
     ntfs3g
     git
@@ -617,8 +586,6 @@
   };
   programs.gamemode.enable = true;
 
-  programs.kdeconnect.enable = true;
-
   services.hardware.openrgb.enable = true;
 
   # AppImage support
@@ -701,80 +668,6 @@
       '';
     };
   };
-
-  # https://github.com/NixOS/nixpkgs/issues/462935
-  # nixos/orca: Screen reader on by default on non-GNOME desktops, cannot be disabled
-  systemd.user.services.orca.wantedBy = lib.mkForce [ ];
-
-  # Fix: KWin loses DRM master permission after suspend/resume on NVIDIA PRIME offload.
-  #
-  # Root cause: post-resume.service has `After=sleep.target`, but sleep.target is
-  # already active when suspend begins, so logind triggers post-resume immediately
-  # upon wakeup — before nvidia-resume.service finishes restoring GPU state and before
-  # logind re-grants DRM master to the user session. KWin then gets Permission denied
-  # on all DRM/modeset calls, leaving the screen black or at minimum brightness.
-  #
-  # Fix (system level): ensure post-resume.service waits for nvidia-resume.service.
-  systemd.services.post-resume = {
-    after = lib.mkAfter [ "nvidia-resume.service" ];
-    requires = lib.mkAfter [ "nvidia-resume.service" ];
-  };
-
-  # Lock the screen BEFORE entering sleep, so kscreenlocker_greet is already
-  # running when the system resumes. This avoids the race condition where
-  # lockOnResume=true tries to start a new greeter before KWin has DRM master,
-  # which causes an error dialog instead of a lock screen.
-  systemd.services.kscreenlocker-pre-sleep = {
-    description = "Lock all sessions before sleep";
-    before = [ "sleep.target" ];
-    wantedBy = [ "sleep.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.systemd}/bin/loginctl lock-sessions";
-    };
-  };
-
-  # Fix (system level, post-resume): after nvidia-resume and post-resume complete,
-  # synthesize a DRM "change" uevent so KWin re-enumerates its outputs.
-  #
-  # Root cause: in NVIDIA PRIME sync mode, the AMD card (card0, scanout) depends
-  # on the NVIDIA card (card1, render) being ready. nvidia-resume.service restores
-  # NVIDIA state for ~1.2s and during that window KWin's modeset calls on card0
-  # fail with EACCES. KWin enters an error state and never self-recovers.
-  #
-  # Fix: wait for post-resume.service (which waits for nvidia-resume.service), then
-  # emit a synthetic DRM hotplug event via udevadm. KWin's DRM backend processes
-  # the event unconditionally and re-runs output enumeration + configuration —
-  # at which point the PRIME sync link is fully restored and calls succeed.
-  #
-  # Note: "Compositing.resume" was removed — the method does not exist in KWin 6.
-  # "KWin.reconfigure" was also removed — it reloads config files and then
-  # triggers the same DRM ops, but since it doesn't produce a uevent it only
-  # works when KWin is already healthy (no help when KWin is in error state).
-  systemd.services.kwin-resume-fix = {
-    description = "Trigger DRM hotplug re-detection after suspend/resume";
-    after = [ "post-resume.service" ];
-    wantedBy = [ "post-resume.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      # Runs as root — udevadm trigger requires elevated privileges.
-      ExecStart = pkgs.writeShellScript "kwin-resume-fix" ''
-        sleep 5
-        ${pkgs.systemd}/bin/udevadm trigger --action=change --subsystem-match=drm
-      '';
-    };
-  };
-
-  # XDG Desktop Portal configuration for GTK apps in KDE
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      kdePackages.xdg-desktop-portal-kde
-    ];
-    config.common.default = "*";
-  };
-
-  programs.dconf.enable = true;
 
   services.redis.servers.my-redis = {
     enable = true;

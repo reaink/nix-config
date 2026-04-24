@@ -24,13 +24,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Plasma Manager for KDE configuration (Linux only)
-    plasma-manager = {
-      url = "github:pjones/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-
     # Rime input method configuration
     rime-keytao = {
       url = "github:xkinput/KeyTao";
@@ -97,7 +90,6 @@
               home-manager.users.rea = {
                 imports = [
                   ./home/rea/linux-home.nix
-                  inputs.plasma-manager.homeModules.plasma-manager
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                 ];

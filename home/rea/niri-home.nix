@@ -211,16 +211,12 @@ in
   programs.noctalia-shell.enable = true;
 
   # Hide fcitx5 helper apps from launcher
-  xdg.dataFile."applications/kbd-layout-viewer5.desktop".text = ''[Desktop Entry]
-NoDisplay=true
-Type=Application
-Name=Keyboard Layout Viewer
-'';
-
-  gtk.iconTheme = {
-    name = "Papirus-Dark";
-    package = pkgs.papirus-icon-theme;
-  };
+  xdg.dataFile."applications/kbd-layout-viewer5.desktop".text = ''
+    [Desktop Entry]
+    NoDisplay=true
+    Type=Application
+    Name=Keyboard Layout Viewer
+  '';
 
   systemd.user.services.fcitx5 = {
     Unit = {

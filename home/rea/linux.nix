@@ -7,7 +7,7 @@
 }:
 
 {
-  imports = [ ./gnome-home.nix ];
+  imports = [ ./niri-home.nix ];
 
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
@@ -56,6 +56,7 @@
 
       # System tools
       gparted
+      seahorse
       appimage-run
       gearlever
 
@@ -236,6 +237,13 @@
       }
     '';
 
+    # Qt icon theme (used by Qt/QML apps like Noctalia for tray icon rendering)
+    qt = {
+      enable = true;
+      platformTheme.name = "adwaita";
+      style.name = "adwaita-dark";
+    };
+
     # GTK theme configuration
     gtk = {
       enable = true;
@@ -306,22 +314,6 @@
       gtk-cursor-theme-size=24
       gtk-application-prefer-dark-theme=1
       gtk-enable-animations=1
-    '';
-
-    # Cherry Studio - override desktop file to use absolute icon path
-    # The package's desktop file uses Icon=cherry-studio which KDE Plasma can't resolve
-    xdg.dataFile."applications/cherry-studio.desktop".text = ''
-      [Desktop Entry]
-      Categories=Utility
-      Comment=A powerful AI assistant for producer.
-      Exec=cherry-studio --no-sandbox %U
-      Icon=${pkgs.cherry-studio}/share/icons/hicolor/1024x1024/apps/cherry-studio.png
-      MimeType=x-scheme-handler/cherrystudio
-      Name=Cherry Studio
-      StartupWMClass=CherryStudio
-      Terminal=false
-      Type=Application
-      Version=1.5
     '';
 
     # ToDesk desktop launcher

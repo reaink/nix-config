@@ -72,7 +72,6 @@
     discord
     vscode-latest
     obsidian
-    cherry-studio
     firefox
     antigravity
 

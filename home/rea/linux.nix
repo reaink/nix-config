@@ -55,6 +55,7 @@
       wpsoffice-cn
 
       # System tools
+      adwaita-qt6
       gparted
       seahorse
       appimage-run
@@ -237,12 +238,18 @@
       }
     '';
 
-    # Qt icon theme (used by Qt/QML apps like Noctalia for tray icon rendering)
+    # Qt icon theme - qt6ct reads from config file, no GSettings/gnome-settings-daemon needed
     qt = {
       enable = true;
-      platformTheme.name = "adwaita";
-      style.name = "adwaita-dark";
+      platformTheme.name = "qt6ct";
     };
+
+    xdg.configFile."qt6ct/qt6ct.conf".text = ''
+      [Appearance]
+      icon_theme=Papirus-Dark
+      style=adwaita-dark
+      custom_palette=false
+    '';
 
     # GTK theme configuration
     gtk = {

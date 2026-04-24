@@ -222,7 +222,8 @@ in
 
   # fcitx5-with-addons wrapper ensures rime/mozc addons are found at the same $out/lib/fcitx5
   i18n.inputMethod = {
-    enabled = "fcitx5";
+    enable = true;
+    type = "fcitx5";
     fcitx5.addons = with pkgs; [
       fcitx5-rime
       fcitx5-mozc

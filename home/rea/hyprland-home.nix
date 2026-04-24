@@ -283,7 +283,11 @@
           format = "{icon}";
           format-muted = "󰝟";
           format-icons = {
-            default = [ "󰕿" "󰖀" "󰕾" ];
+            default = [
+              "󰕿"
+              "󰖀"
+              "󰕾"
+            ];
           };
           tooltip-format = "{volume}%";
           on-click = "pavucontrol";

@@ -7,7 +7,7 @@
 }:
 
 {
-  imports = [ ./hyprland-home.nix ];
+  imports = [ ./niri-home.nix ];
 
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages

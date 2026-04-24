@@ -13,6 +13,9 @@
 
   programs.dconf.enable = true;
 
+  # Unlock gnome-keyring via PAM on SDDM autologin so secrets component is available
+  security.pam.services.sddm-autologin.enableGnomeKeyring = true;
+
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;

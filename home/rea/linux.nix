@@ -56,6 +56,7 @@
 
       # System tools
       gparted
+      seahorse
       appimage-run
       gearlever
 

@@ -43,12 +43,11 @@
     };
 
     "org/gnome/desktop/wm/preferences" = {
-      num-workspaces = 4;
       focus-mode = "click";
     };
 
     "org/gnome/mutter" = {
-      dynamic-workspaces = false;
+      dynamic-workspaces = true;
       workspaces-only-on-primary = true;
     };
 

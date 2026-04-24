@@ -212,7 +212,11 @@ in
     components = [ "secrets" ];
   };
 
-  # Hide fcitx5 helper apps from launcher
+  # Electron (VSCode, Chromium, etc.) selects gnome-libsecret only when XDG_CURRENT_DESKTOP
+  # contains a recognized name. Appending ":GNOME" makes all Electron apps use gnome-keyring
+  # automatically without per-app --password-store flags.
+  # niri-flake already runs xdg-desktop-portal-gnome, so this is safe.
+  systemd.user.sessionVariables.XDG_CURRENT_DESKTOP = lib.mkForce "niri:GNOME";
   xdg.dataFile."applications/kbd-layout-viewer5.desktop".text = ''
     [Desktop Entry]
     NoDisplay=true
@@ -243,7 +247,6 @@ in
     nautilus
     pavucontrol
     brightnessctl
-    blueman
     wlsunset
     imagemagick
     xwayland-satellite

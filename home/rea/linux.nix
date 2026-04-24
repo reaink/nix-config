@@ -236,6 +236,13 @@
       }
     '';
 
+    # Qt icon theme (used by Qt/QML apps like Noctalia for tray icon rendering)
+    qt = {
+      enable = true;
+      platformTheme.name = "adwaita";
+      style.name = "adwaita-dark";
+    };
+
     # GTK theme configuration
     gtk = {
       enable = true;

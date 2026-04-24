@@ -22,13 +22,6 @@ in
       { command = [ "noctalia-shell" ]; }
       {
         command = [
-          "fcitx5"
-          "-d"
-          "--replace"
-        ];
-      }
-      {
-        command = [
           "wl-paste"
           "--type"
           "text"
@@ -217,6 +210,28 @@ in
 
   programs.noctalia-shell.enable = true;
 
+  systemd.user.services.fcitx5 = {
+    Unit = {
+      Description = "Fcitx5 input method";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.fcitx5}/bin/fcitx5 -d --replace";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+  };
+
+  systemd.user.sessionVariables = {
+    XMODIFIERS = "@im=fcitx";
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+    INPUT_METHOD = "fcitx";
+    SDL_IM_MODULE = "fcitx";
+  };
+
   home.packages = with pkgs; [
     cliphist
     wl-clipboard
@@ -228,5 +243,10 @@ in
     wlsunset
     imagemagick
     xwayland-satellite
+    fcitx5
+    fcitx5-rime
+    fcitx5-mozc
+    fcitx5-gtk
+    qt6Packages.fcitx5-configtool
   ];
 }

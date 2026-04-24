@@ -87,7 +87,7 @@
           enabled = true;
           range = 8;
           render_power = 3;
-          color = "rgba(1a1a1aee)";
+          "col.shadow" = "rgba(1a1a1aee)";
         };
       };
 
@@ -210,11 +210,11 @@
         ", XF86MonBrightnessDown, exec, brightnessctl set 10%-"
       ];
 
-      windowrule = [
+      windowrulev2 = [
         "float, class:^(nm-connection-editor)$"
         "float, class:^(blueman-manager)$"
         "float, class:^(pavucontrol)$"
-        "float, class:^(org.gnome.Nautilus)$, title:Properties$"
+        "float, class:^(org.gnome.Nautilus)$, title:^Properties$"
       ];
     };
   };
@@ -224,66 +224,75 @@
     settings = {
       mainBar = {
         layer = "top";
-        position = "top";
-        height = 36;
-        spacing = 4;
+        position = "bottom";
+        height = 46;
+        # No fixed width — let CSS center it via margin
+        spacing = 0;
+        margin-bottom = 12;
+        margin-left = 0;
+        margin-right = 0;
+        exclusive = true;
+
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/window"
         ];
         modules-center = [ "clock" ];
         modules-right = [
-          "tray"
           "pulseaudio"
           "network"
           "bluetooth"
+          "tray"
           "custom/notification"
         ];
 
         "hyprland/workspaces" = {
-          format = "{id}";
+          format = "{icon}";
+          format-icons = {
+            default = "󰊠";
+            active = "󰮯";
+            urgent = "󰀦";
+          };
           on-click = "activate";
-        };
-
-        "hyprland/window" = {
-          max-length = 60;
+          sort-by-number = true;
         };
 
         "clock" = {
-          format = "{:%Y-%m-%d %H:%M}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format = "  {:%H:%M}";
+          format-alt = "  {:%Y-%m-%d}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
         };
 
         "network" = {
-          format-wifi = "󰤨 {signalStrength}%";
-          format-ethernet = "󰈀 {ipaddr}";
+          format-wifi = "󰤨";
+          format-ethernet = "󰈀";
           format-disconnected = "󰤭";
-          tooltip-format = "{ifname}: {ipaddr}";
+          tooltip-format-wifi = "{essid} {signalStrength}%";
+          tooltip-format-ethernet = "{ipaddr}";
           on-click = "nm-connection-editor";
         };
 
         "bluetooth" = {
           format = "󰂯";
           format-disabled = "󰂲";
-          format-connected = "󰂱 {num_connections}";
+          format-connected = "󰂱";
+          tooltip-format = "{controller_alias}: {num_connections} connected";
           on-click = "blueman-manager";
         };
 
         "pulseaudio" = {
-          format = "{icon} {volume}%";
+          format = "{icon}";
           format-muted = "󰝟";
           format-icons = {
-            default = [
-              "󰕿"
-              "󰖀"
-              "󰕾"
-            ];
+            default = [ "󰕿" "󰖀" "󰕾" ];
           };
+          tooltip-format = "{volume}%";
           on-click = "pavucontrol";
+          scroll-step = 5;
         };
 
         "tray" = {
-          spacing = 10;
+          icon-size = 16;
+          spacing = 8;
         };
 
         "custom/notification" = {
@@ -307,36 +316,88 @@
     style = ''
       * {
         font-family: "Maple Mono NF CN", "Noto Sans CJK SC", monospace;
-        font-size: 13px;
+        font-size: 14px;
+        border: none;
+        border-radius: 0;
+        min-height: 0;
+        padding: 0;
+        margin: 0;
       }
+
       window#waybar {
-        background-color: rgba(46, 52, 64, 0.92);
-        color: #d8dee9;
-        border-bottom: 2px solid rgba(136, 192, 208, 0.4);
+        background: transparent;
+        color: #cdd6f4;
       }
-      .modules-left, .modules-center, .modules-right {
-        padding: 0 8px;
+
+      /* Three floating islands */
+      .modules-left,
+      .modules-center,
+      .modules-right {
+        background: rgba(24, 24, 37, 0.88);
+        border: 1px solid rgba(137, 180, 250, 0.15);
+        border-radius: 14px;
+        padding: 0 14px;
+        margin: 4px 6px;
+      }
+
+      /* Workspaces */
+      #workspaces {
+        padding: 0;
       }
       #workspaces button {
-        padding: 0 6px;
-        color: #4c566a;
-        border-radius: 4px;
-        margin: 4px 2px;
+        color: #585b70;
+        font-size: 16px;
+        padding: 4px 6px;
+        margin: 6px 2px;
+        border-radius: 8px;
+        transition: all 0.15s ease;
+        background: transparent;
       }
       #workspaces button.active {
-        color: #88c0d0;
-        background-color: rgba(136, 192, 208, 0.15);
+        color: #89b4fa;
+        background: rgba(137, 180, 250, 0.15);
+      }
+      #workspaces button.urgent {
+        color: #f38ba8;
+        background: rgba(243, 139, 168, 0.15);
       }
       #workspaces button:hover {
-        background-color: rgba(216, 222, 233, 0.1);
+        color: #cdd6f4;
+        background: rgba(205, 214, 244, 0.1);
       }
-      #window { color: #d8dee9; }
-      #clock { color: #ebcb8b; }
-      #network { color: #88c0d0; }
-      #bluetooth { color: #81a1c1; }
-      #pulseaudio { color: #b48ead; }
-      #tray { padding: 0 4px; }
-      #custom-notification { color: #a3be8c; }
+
+      #clock {
+        color: #f9e2af;
+        font-weight: 600;
+        padding: 0 4px;
+      }
+
+      #network {
+        color: #89dceb;
+        font-size: 16px;
+        padding: 0 6px;
+      }
+      #bluetooth {
+        color: #89b4fa;
+        font-size: 16px;
+        padding: 0 6px;
+      }
+      #pulseaudio {
+        color: #cba6f7;
+        font-size: 16px;
+        padding: 0 6px;
+      }
+      #tray {
+        padding: 0 4px;
+      }
+      #tray > .passive {
+        -gtk-icon-effect: dim;
+      }
+      #custom-notification {
+        color: #a6e3a1;
+        font-size: 16px;
+        padding: 0 6px;
+      }
     '';
   };
 

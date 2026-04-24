@@ -207,6 +207,11 @@ in
 
   programs.noctalia-shell.enable = true;
 
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" ];
+  };
+
   # Hide fcitx5 helper apps from launcher
   xdg.dataFile."applications/kbd-layout-viewer5.desktop".text = ''
     [Desktop Entry]

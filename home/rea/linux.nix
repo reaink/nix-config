@@ -56,6 +56,7 @@
 
       # System tools
       adwaita-qt6
+      kdePackages.qt6ct
       gparted
       seahorse
       appimage-run

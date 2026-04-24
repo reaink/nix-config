@@ -232,6 +232,11 @@ in
     ];
   };
 
+  # On Wayland, fcitx5 uses the text-input protocol directly.
+  # GTK_IM_MODULE/QT_IM_MODULE are legacy X11 hooks that conflict and cause warnings.
+  home.sessionVariables.GTK_IM_MODULE = lib.mkForce "";
+  home.sessionVariables.QT_IM_MODULE = lib.mkForce "";
+
   home.packages = with pkgs; [
     cliphist
     wl-clipboard

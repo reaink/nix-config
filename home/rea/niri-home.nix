@@ -210,6 +210,18 @@ in
 
   programs.noctalia-shell.enable = true;
 
+  # Hide fcitx5 helper apps from launcher
+  xdg.dataFile."applications/kbd-layout-viewer5.desktop".text = ''[Desktop Entry]
+NoDisplay=true
+Type=Application
+Name=Keyboard Layout Viewer
+'';
+
+  gtk.iconTheme = {
+    name = "Papirus-Dark";
+    package = pkgs.papirus-icon-theme;
+  };
+
   systemd.user.services.fcitx5 = {
     Unit = {
       Description = "Fcitx5 input method";
@@ -221,7 +233,9 @@ in
       Restart = "on-failure";
       RestartSec = 1;
     };
-    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
   };
 
   systemd.user.sessionVariables = {
@@ -238,7 +252,6 @@ in
     nautilus
     pavucontrol
     brightnessctl
-    networkmanagerapplet
     blueman
     wlsunset
     imagemagick

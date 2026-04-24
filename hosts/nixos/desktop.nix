@@ -6,31 +6,41 @@
 }:
 
 {
-  # GNOME display manager
-  services.displayManager.gdm = {
+  programs.hyprland = {
     enable = true;
-    wayland = true;
+    withUWSM = true;
+    xwayland.enable = true;
   };
+
+  programs.kdeconnect.enable = true;
+
+  programs.dconf.enable = true;
+
+  # SDDM — GDM crashes Hyprland on first launch
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+
+  services.displayManager.defaultSession = "hyprland-uwsm";
 
   services.displayManager.autoLogin = {
     enable = true;
     user = "rea";
   };
 
-  # GNOME desktop environment
-  services.desktopManager.gnome.enable = true;
-
-  programs.dconf.enable = true;
-
-  # XDG desktop portal for GNOME (file pickers, screen sharing, etc.)
+  # XDG portal for Hyprland (screen sharing, file pickers)
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
     config.common.default = "*";
   };
 
-  environment.systemPackages = with pkgs; [
-    gnome-tweaks
-    gnome-extension-manager
-  ];
+  # NVIDIA-specific env vars needed at session level
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    NVD_BACKEND = "direct";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+  };
 }

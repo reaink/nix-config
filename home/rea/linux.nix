@@ -7,7 +7,7 @@
 }:
 
 {
-  imports = [ ./gnome-home.nix ];
+  imports = [ ./hyprland-home.nix ];
 
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages

@@ -48,9 +48,6 @@ in
       "ELECTRON_OZONE_PLATFORM_HINT" = "auto";
       "GDK_BACKEND" = "wayland,x11";
       "QT_QPA_PLATFORM" = "wayland;xcb";
-      "XMODIFIERS" = "@im=fcitx";
-      "GTK_IM_MODULE" = "fcitx";
-      "QT_IM_MODULE" = "fcitx";
     };
 
     input = {
@@ -218,28 +215,15 @@ in
     Name=Keyboard Layout Viewer
   '';
 
-  systemd.user.services.fcitx5 = {
-    Unit = {
-      Description = "Fcitx5 input method";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${pkgs.fcitx5}/bin/fcitx5 -d --replace";
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
-  };
-
-  systemd.user.sessionVariables = {
-    XMODIFIERS = "@im=fcitx";
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    INPUT_METHOD = "fcitx";
-    SDL_IM_MODULE = "fcitx";
+  # fcitx5-with-addons wrapper ensures rime/mozc addons are found at the same $out/lib/fcitx5
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-rime
+      fcitx5-mozc
+      fcitx5-gtk
+      qt6Packages.fcitx5-configtool
+    ];
   };
 
   home.packages = with pkgs; [
@@ -252,10 +236,5 @@ in
     wlsunset
     imagemagick
     xwayland-satellite
-    fcitx5
-    fcitx5-rime
-    fcitx5-mozc
-    fcitx5-gtk
-    qt6Packages.fcitx5-configtool
   ];
 }

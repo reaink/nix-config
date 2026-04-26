@@ -154,10 +154,10 @@
     forceFullCompositionPipeline = false;
 
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    # PRIME sync mode: NVIDIA is primary GPU, handles all rendering.
-    # AMD GPU outputs frames to the display (internal panel or connected monitors).
+    # Display is connected directly to NVIDIA DP output.
+    # PRIME sync is X11-only and causes Wayland flickering; disabled.
     prime = {
-      sync.enable = true;
+      sync.enable = false;
 
       offload = {
         enable = false;
@@ -172,11 +172,10 @@
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
-    # PRIME sync mode: NVIDIA is primary, NixOS configures NVIDIA display device automatically
   };
 
   environment.sessionVariables = {
-    __GL_SYNC_TO_VBLANK = "1";
+    # __GL_SYNC_TO_VBLANK is X11/TwinView-only; removed to avoid double VSync on Wayland.
     __GL_VRR_ALLOWED = "0";
   };
 

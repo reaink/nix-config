@@ -45,7 +45,7 @@ in
 
     environment = {
       "NIXOS_OZONE_WL" = "1";
-      "ELECTRON_OZONE_PLATFORM_HINT" = "auto";
+      "ELECTRON_OZONE_PLATFORM_HINT" = "wayland";
       "GDK_BACKEND" = "wayland,x11";
       "QT_QPA_PLATFORM" = "wayland;xcb";
       "XDG_CURRENT_DESKTOP" = "niri:GNOME";
@@ -137,7 +137,7 @@ in
     ];
 
     binds = {
-      "Mod+Return".action.spawn = [ "ghostty" ];
+      "Mod+Return".action.spawn = [ "kitty" ];
       "Mod+E".action.spawn = [ "nautilus" ];
       "Mod+Space".action.spawn = noctalia "launcher toggle";
       "Mod+Shift+E".action.spawn = noctalia "sessionMenu toggle";
@@ -238,6 +238,7 @@ in
   home.sessionVariables.QT_IM_MODULE = lib.mkForce "";
 
   home.packages = with pkgs; [
+    kitty
     cliphist
     wl-clipboard
     nautilus

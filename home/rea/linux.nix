@@ -273,6 +273,16 @@
         gtk-menu-images = true;
         gtk-enable-animations = true;
         gtk-cursor-theme-size = 24;
+        gtk-cursor-theme-name = "Adwaita";
+        gtk-font-name = "Noto Sans 10";
+        gtk-toolbar-style = "GTK_TOOLBAR_BOTH_HORIZ";
+        gtk-toolbar-icon-size = "GTK_ICON_SIZE_LARGE_TOOLBAR";
+        gtk-enable-event-sounds = 0;
+        gtk-enable-input-feedback-sounds = 0;
+        gtk-xft-antialias = 1;
+        gtk-xft-hinting = 1;
+        gtk-xft-hintstyle = "hintslight";
+        gtk-xft-rgba = "rgb";
       };
 
       gtk4.theme = null; # noctalia GTK template manages gtk-4.0/gtk.css at runtime
@@ -281,6 +291,9 @@
         gtk-application-prefer-dark-theme = true;
         gtk-icon-theme-name = "Papirus-Dark";
         gtk-enable-animations = true;
+        gtk-cursor-theme-name = "Adwaita";
+        gtk-cursor-theme-size = 24;
+        gtk-font-name = "Noto Sans 10";
       };
 
       gtk2 = {
@@ -289,40 +302,6 @@
         extraConfig = "";
       };
     };
-
-    # GTK settings files
-    xdg.configFile."gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme-name=Arc-Dark
-      gtk-icon-theme-name=Papirus-Dark
-      gtk-font-name=Noto Sans 10
-      gtk-cursor-theme-name=Adwaita
-      gtk-cursor-theme-size=24
-      gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ
-      gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
-      gtk-button-images=1
-      gtk-menu-images=1
-      gtk-enable-event-sounds=0
-      gtk-enable-input-feedback-sounds=0
-      gtk-xft-antialias=1
-      gtk-xft-hinting=1
-      gtk-xft-hintstyle=hintslight
-      gtk-xft-rgba=rgb
-      gtk-application-prefer-dark-theme=1
-      gtk-enable-animations=1
-      gtk-icon-sizes=panel-menu=24,24:panel=24,24:gtk-button=16,16:gtk-large-toolbar=24,24
-    '';
-
-    xdg.configFile."gtk-4.0/settings.ini".text = ''
-      [Settings]
-      gtk-theme-name=Arc-Dark
-      gtk-icon-theme-name=Papirus-Dark
-      gtk-font-name=Noto Sans 10
-      gtk-cursor-theme-name=Adwaita
-      gtk-cursor-theme-size=24
-      gtk-application-prefer-dark-theme=1
-      gtk-enable-animations=1
-    '';
 
     # ToDesk desktop launcher
     xdg.dataFile."applications/todesk.desktop".text = ''
@@ -345,7 +324,7 @@
       Categories=Utility;
       Comment=WeChat Desktop
       Comment[zh_CN]=微信桌面版
-      Exec=env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" /etc/profiles/per-user/rea/bin/wechat %U
+      Exec=/run/current-system/sw/bin/env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" /etc/profiles/per-user/rea/bin/wechat %U
       Icon=wechat
       Name=WeChat
       Name[zh_CN]=微信

@@ -455,10 +455,11 @@ in
         pinnedApps = [
           "code"
           "google-chrome"
+          "wechat"
         ];
         colorizeIcons = false;
         showLauncherIcon = true;
-        launcherPosition = "end";
+        launcherPosition = "start";
         launcherUseDistroLogo = false;
         pinnedStatic = false;
         inactiveIndicators = true;
@@ -598,10 +599,8 @@ in
       colorSchemes = {
         useWallpaperColors = false;
         predefinedScheme = "Catppuccin";
-        darkMode = true; # use Mocha dark
-        schedulingMode = "manual";
-        manualSunrise = "08:00";
-        manualSunset = "18:00";
+        darkMode = true;
+        schedulingMode = "off";
         generationMethod = "fruit-salad";
         syncGsettings = true;
       };

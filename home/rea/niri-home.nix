@@ -443,6 +443,10 @@ in
         density = "default";
       };
 
+      sessionMenu = {
+        viewMode = "grid";
+      };
+
       dock = {
         enabled = true;
         position = "bottom";

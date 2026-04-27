@@ -40,7 +40,6 @@ in
           "store"
         ];
       }
-      { command = [ "xwayland-satellite" ]; }
     ];
 
     environment = {
@@ -751,9 +750,6 @@ in
     # Then in noctalia: Settings → Color Scheme → Templates → enable GTK
     adw-gtk3
     nwg-look
-
-    # Pixiv / image collection manager with built-in downloader GUI
-    hydrus
   ];
 
   # gvfs-daemon: required by Nautilus for rename, trash, and metadata operations.

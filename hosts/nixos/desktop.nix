@@ -2,12 +2,17 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
 {
   # niri Wayland compositor (module provided by niri-flake)
+  # Using niri-unstable (niri git, Apr 2026) which includes the fix for issue #454:
+  # "GTK popup grab + IME grab conflict causes Nautilus rename popover to not appear"
+  # Fix was merged 2025-12-20 (commit d9ceff7), not yet in stable (v25.08), included in v26.04+.
   programs.niri.enable = true;
+  programs.niri.package = inputs.niri-flake.packages.${pkgs.stdenv.hostPlatform.system}.niri-unstable;
 
   # XDG Desktop Portal — required for file-chooser, screen capture, etc.
   # xdg-desktop-portal-gnome handles the GTK file picker used by browsers.

@@ -380,7 +380,7 @@ in
         fontDefault = "Noto Sans";
         fontFixed = "Maple Mono";
         tooltipsEnabled = true;
-        panelBackgroundOpacity = 0;
+        panelBackgroundOpacity = 0.7;
         panelsAttachedToBar = true;
         scrollbarAlwaysVisible = true;
         boxBorderEnabled = true;

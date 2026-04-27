@@ -11,8 +11,8 @@
 
   # XDG Desktop Portal — required for file-chooser, screen capture, etc.
   # xdg-desktop-portal-gnome handles the GTK file picker used by browsers.
-  # xdg-desktop-portal-gtk is the fallback for anything not handled by gnome portal.
-  # Without explicit portal config niri falls back to no implementation → silent failure.
+  # xdg-desktop-portal-gnome: provides Settings, Secret, Screenshot, ScreenCast (requires gnome-shell for FileChooser — NOT available without gnome-shell)
+  # xdg-desktop-portal-gtk: provides FileChooser (GTK native picker, works without gnome-shell)
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -24,7 +24,7 @@
         "gnome"
         "gtk"
       ];
-      "org.freedesktop.impl.portal.FileChooser" = [ "gnome" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
       "org.freedesktop.impl.portal.Secret" = [ "gnome" ];
       "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
       "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];

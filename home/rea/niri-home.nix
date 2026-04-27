@@ -755,4 +755,22 @@ in
     # Pixiv / image collection manager with built-in downloader GUI
     hydrus
   ];
+
+  # gvfs-daemon: required by Nautilus for rename, trash, and metadata operations.
+  # The linked-runtime unit has no [Install] section so it won't auto-start without this.
+  systemd.user.services.gvfs-daemon = {
+    Unit = {
+      Description = "Virtual filesystem service";
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "dbus";
+      BusName = "org.gtk.vfs.Daemon";
+      ExecStart = "${pkgs.gvfs}/libexec/gvfsd";
+      Slice = "session.slice";
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 }

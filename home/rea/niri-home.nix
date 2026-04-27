@@ -65,9 +65,10 @@ in
     };
 
     layout = {
-      gaps = 8;
+      gaps = 12;
       center-focused-column = "on-overflow";
       preset-column-widths = [
+        { proportion = 0.333; }
         { proportion = 0.5; }
         { proportion = 0.667; }
         { proportion = 1.0; }
@@ -76,7 +77,7 @@ in
         enable = true;
         width = 2;
         active.color = "#c4a7e7";
-        inactive.color = "#393552";
+        inactive.color = "#26233a";
       };
       focus-ring.enable = false;
       # shadow disabled: causes flickering on NVIDIA due to extra render pass buffer sync
@@ -147,15 +148,32 @@ in
     ];
 
     binds = {
+      # --- Apps ---
       "Mod+Return".action.spawn = [ "kitty" ];
       "Mod+E".action.spawn = [ "nautilus" ];
+
+      # --- Shell (noctalia) ---
       "Mod+Space".action.spawn = noctalia "launcher toggle";
+      "Mod+V".action.spawn = noctalia "launcher clipboard"; # clipboard history (supports images)
+      "Mod+Period".action.spawn = noctalia "launcher emoji";
+      "Mod+S".action.spawn = noctalia "controlCenter toggle";
+      "Mod+Comma".action.spawn = noctalia "settings toggle";
+      "Mod+N".action.spawn = noctalia "notifications toggleHistory";
+      "Mod+Shift+N".action.spawn = noctalia "notifications toggleDND";
       "Mod+Shift+E".action.spawn = noctalia "sessionMenu toggle";
-      "Mod+N".action.spawn = noctalia "notifications toggle";
       "Mod+Alt+L".action.spawn = noctalia "lockScreen lock";
 
+      # --- Window management ---
       "Mod+Q".action.close-window = { };
+      "Mod+F".action.fullscreen-window = { };
+      "Mod+Shift+V".action.toggle-window-floating = { };
+      "Mod+C".action.center-column = { };
 
+      # column management: merge window below into current column / split out
+      "Mod+I".action.consume-window-into-column = { };
+      "Mod+O".action.expel-window-from-column = { };
+
+      # --- Focus ---
       "Mod+Left".action.focus-column-left = { };
       "Mod+Right".action.focus-column-right = { };
       "Mod+Up".action.focus-window-up = { };
@@ -165,6 +183,7 @@ in
       "Mod+K".action.focus-window-up = { };
       "Mod+J".action.focus-window-down = { };
 
+      # --- Move ---
       "Mod+Shift+Left".action.move-column-left = { };
       "Mod+Shift+Right".action.move-column-right = { };
       "Mod+Shift+Up".action.move-window-up = { };
@@ -173,6 +192,21 @@ in
       "Mod+Shift+L".action.move-column-right = { };
       "Mod+Shift+K".action.move-window-up = { };
       "Mod+Shift+J".action.move-window-down = { };
+
+      # --- Resize ---
+      "Mod+R".action.switch-preset-column-width = { };
+      "Mod+Shift+R".action.reset-window-height = { };
+      "Mod+Minus".action.set-column-width = "-10%";
+      "Mod+Equal".action.set-column-width = "+10%";
+      "Mod+Shift+Minus".action.set-window-height = "-10%";
+      "Mod+Shift+Equal".action.set-window-height = "+10%";
+
+      # --- Workspaces ---
+      "Mod+Tab".action.focus-workspace-previous = { };
+      "Mod+BracketLeft".action.focus-workspace-up = { };
+      "Mod+BracketRight".action.focus-workspace-down = { };
+      "Mod+Shift+BracketLeft".action.move-column-to-workspace-up = { };
+      "Mod+Shift+BracketRight".action.move-column-to-workspace-down = { };
 
       "Mod+1".action.focus-workspace = 1;
       "Mod+2".action.focus-workspace = 2;
@@ -188,29 +222,23 @@ in
       "Mod+Shift+5".action.move-column-to-workspace = 5;
       "Mod+Shift+6".action.move-column-to-workspace = 6;
 
-      "Mod+F".action.fullscreen-window = { };
-      "Mod+Shift+V".action.toggle-window-floating = { };
-      "Mod+C".action.center-column = { };
-      "Mod+R".action.switch-preset-column-width = { };
-      "Mod+Shift+R".action.reset-window-height = { };
-
+      # --- Screenshots ---
       "Print".action.screenshot = { };
       "Mod+Print".action.screenshot-window = { };
+      "Shift+Print".action.screenshot-screen = { };
 
+      # --- Media ---
+      "XF86AudioPlay".action.spawn = noctalia "media playPause";
+      "XF86AudioNext".action.spawn = noctalia "media next";
+      "XF86AudioPrev".action.spawn = noctalia "media previous";
       "XF86AudioRaiseVolume".action.spawn = noctalia "volume increase";
       "XF86AudioLowerVolume".action.spawn = noctalia "volume decrease";
       "XF86AudioMute".action.spawn = noctalia "volume muteOutput";
-      "XF86MonBrightnessUp".action.spawn = [
-        "brightnessctl"
-        "s"
-        "10%+"
-      ];
-      "XF86MonBrightnessDown".action.spawn = [
-        "brightnessctl"
-        "s"
-        "10%-"
-      ];
+      "XF86AudioMicMute".action.spawn = noctalia "volume muteInput";
+      "XF86MonBrightnessUp".action.spawn = noctalia "brightness increase";
+      "XF86MonBrightnessDown".action.spawn = noctalia "brightness decrease";
 
+      # --- Session ---
       "Mod+Shift+Q".action.quit = { };
       "Mod+Shift+Slash".action.show-hotkey-overlay = { };
     };
@@ -244,5 +272,17 @@ in
     wlsunset
     imagemagick
     xwayland-satellite
+
+    # Image viewer
+    loupe
+
+    # Screenshot annotation (open with swappy after Print)
+    swappy
+
+    # Screen recording
+    wf-recorder
+
+    # Calculator
+    gnome-calculator
   ];
 }

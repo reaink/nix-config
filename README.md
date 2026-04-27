@@ -124,13 +124,110 @@ nix-config/
 - **GPU 1**: NVIDIA RTX 4070 Super（discrete，12GB VRAM）
 - **GPU 2**: AMD Radeon 890M（integrated，RDNA 3.5，PRIME Sync 模式下由 NVIDIA 主渲染）
 - **内存**: 64GB
-- **桌面**: KDE Plasma 6 (Wayland)
+- **桌面**: niri (Wayland, scrollable tiling) + Noctalia Shell
 
 ### macOS 笔记本
 - **用户**: rea
 - **主机名**: mac
 - **架构**: aarch64-darwin (Apple Silicon)
 - **芯片**: M4 Pro（16 核 CPU，20 核 GPU），24GB 统一内存
+
+## Niri 快捷键
+
+`Mod` = Super 键。
+
+### 应用
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Return` | 打开终端（kitty） |
+| `Mod+E` | 文件管理器（Nautilus） |
+
+### Noctalia Shell
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Space` | 应用启动器 |
+| `Mod+V` | 剪贴板历史（支持图片） |
+| `Mod+.` | Emoji 选择器 |
+| `Mod+S` | 控制中心（Wi-Fi / 蓝牙 / 音量等） |
+| `Mod+,` | Noctalia 设置 |
+| `Mod+N` | 通知历史 |
+| `Mod+Shift+N` | 切换免打扰模式 |
+| `Mod+Shift+E` | 会话菜单（注销 / 重启 / 关机） |
+| `Mod+Alt+L` | 锁屏 |
+
+### 窗口管理
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Q` | 关闭窗口 |
+| `Mod+F` | 全屏 |
+| `Mod+Shift+V` | 切换浮动 |
+| `Mod+C` | 居中当前列 |
+| `Mod+I` | 将下方窗口合并入当前列 |
+| `Mod+O` | 将窗口从列中分离 |
+
+### 焦点移动
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+H/J/K/L` | 移动焦点（左/下/上/右） |
+| `Mod+←/↓/↑/→` | 同上（方向键版） |
+
+### 窗口/列移动
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Shift+H/J/K/L` | 移动窗口/列（左/下/上/右） |
+| `Mod+Shift+←/↓/↑/→` | 同上（方向键版） |
+
+### 调整大小
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+R` | 循环切换预设列宽（1/3 → 1/2 → 2/3 → 全宽） |
+| `Mod+Shift+R` | 重置窗口高度 |
+| `Mod+-` / `Mod+=` | 列宽 -10% / +10% |
+| `Mod+Shift+-` / `Mod+Shift+=` | 窗口高度 -10% / +10% |
+
+### 工作区
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Tab` | 切回上一个工作区 |
+| `Mod+[` / `Mod+]` | 切换到上/下个工作区 |
+| `Mod+Shift+[` / `Mod+Shift+]` | 把当前列移到上/下个工作区 |
+| `Mod+1~6` | 跳转到工作区 1~6 |
+| `Mod+Shift+1~6` | 把当前列移到工作区 1~6 |
+
+### 截图
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Print` | 圈选截图（自动复制剪贴板 + 保存到 `~/Pictures/Screenshots/`） |
+| `Mod+Print` | 截当前窗口 |
+| `Shift+Print` | 截整个屏幕 |
+
+### 媒体
+
+| 快捷键 | 功能 |
+|--------|------|
+| `XF86AudioPlay` | 播放 / 暂停 |
+| `XF86AudioNext` / `XF86AudioPrev` | 下一首 / 上一首 |
+| `XF86AudioRaiseVolume` / `XF86AudioLowerVolume` | 音量 +/- |
+| `XF86AudioMute` | 静音输出 |
+| `XF86AudioMicMute` | 静音麦克风 |
+| `XF86MonBrightnessUp` / `XF86MonBrightnessDown` | 亮度 +/- |
+
+### 系统
+
+| 快捷键 | 功能 |
+|--------|------|
+| `Mod+Shift+Q` | 退出 niri |
+| `Mod+Shift+?` | 显示快捷键提示 |
+
+---
 
 ## Open WebUI + llama.cpp 本地 AI 配置
 

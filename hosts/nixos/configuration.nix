@@ -77,7 +77,8 @@
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    # NVreg_PreserveVideoMemoryAllocations is ignored on driver >= 595;
+    # powerManagement.enable sets NVreg_UseKernelSuspendNotifiers=1 via modprobe.d automatically.
     "nvidia.NVreg_TemporaryFilePath=/var/tmp"
     "mem_sleep_default=deep"
     "clearcpuid=rdrand" # Disable RDRAND to avoid broken RDSEED32 issue on AMD CPUs

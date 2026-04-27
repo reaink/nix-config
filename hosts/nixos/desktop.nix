@@ -9,6 +9,28 @@
   # niri Wayland compositor (module provided by niri-flake)
   programs.niri.enable = true;
 
+  # XDG Desktop Portal — required for file-chooser, screen capture, etc.
+  # xdg-desktop-portal-gnome handles the GTK file picker used by browsers.
+  # xdg-desktop-portal-gtk is the fallback for anything not handled by gnome portal.
+  # Without explicit portal config niri falls back to no implementation → silent failure.
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+    config.niri = {
+      default = [
+        "gnome"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "gnome" ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome" ];
+      "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+    };
+  };
+
   programs.kdeconnect.enable = true;
 
   programs.dconf.enable = true;

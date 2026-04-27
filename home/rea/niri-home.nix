@@ -79,7 +79,8 @@ in
         inactive.color = "#393552";
       };
       focus-ring.enable = false;
-      shadow.enable = true;
+      # shadow disabled: causes flickering on NVIDIA due to extra render pass buffer sync
+      shadow.enable = false;
     };
 
     cursor = {

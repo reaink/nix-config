@@ -252,7 +252,7 @@ in
       settingsVersion = 59;
 
       bar = {
-        barType = "floating";
+        barType = "simple";
         position = "top";
         density = "default";
         showOutline = true;
@@ -261,7 +261,7 @@ in
         widgetSpacing = 6;
         contentPadding = 2;
         enableExclusionZoneInset = true;
-        backgroundOpacity = 0.93;
+        backgroundOpacity = 1;
         marginVertical = 4;
         marginHorizontal = 4;
         frameThickness = 8;

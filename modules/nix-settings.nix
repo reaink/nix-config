@@ -29,6 +29,11 @@
     "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
   ];
 
+  nix.settings.trusted-users = [
+    "root"
+    "rea"
+  ];
+
   # Auto-optimize store to save space (nix-darwin uses optimise.automatic)
   nix.optimise.automatic = true;
 

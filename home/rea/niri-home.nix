@@ -285,6 +285,7 @@ in
               iconScale = 0.8;
               groupedBorderOpacity = 1;
               unfocusedIconsOpacity = 1;
+              colorizeIcons = false;
             }
             {
               id = "SystemMonitor";
@@ -303,6 +304,7 @@ in
               showText = true;
               scrollingMode = "hover";
               hideMode = "hidden";
+              colorizeIcons = false;
             }
             {
               id = "MediaMini";
@@ -335,6 +337,7 @@ in
               id = "Tray";
               drawerEnabled = false;
               hidePassive = false;
+              colorizeIcons = false;
             }
             {
               id = "Battery";
@@ -404,15 +407,15 @@ in
         enabled = true;
         directory = "/home/rea/Pictures/Wallpapers";
         fillMode = "stretch";
-        automationEnabled = false;
+        automationEnabled = true;
         wallpaperChangeMode = "random";
-        randomIntervalSec = 300;
+        randomIntervalSec = 3600;
         transitionDuration = 1500;
         transitionEdgeSmoothness = 0.05;
         skipStartupTransition = false;
         overviewBlur = 0.4;
         overviewTint = 0.6;
-        useWallhaven = true;
+        useWallhaven = false;
         wallhavenSorting = "relevance";
         wallhavenOrder = "desc";
         wallhavenCategories = "111";

@@ -275,7 +275,7 @@
         gtk-cursor-theme-size = 24;
       };
 
-      gtk4.theme = config.gtk.theme;
+      gtk4.theme = null; # noctalia GTK template manages gtk-4.0/gtk.css at runtime
 
       gtk4.extraConfig = {
         gtk-application-prefer-dark-theme = true;
@@ -357,9 +357,11 @@
     # Chrome flags: force native Wayland and enable GPU zero-copy for NVIDIA
     # --ozone-platform=wayland: explicit (not hint=auto) avoids race condition edge cases
     # --enable-zero-copy: reduces GPU memory copies, alleviates tab-switch flicker on NVIDIA
+    # --enable-features=WebUIDarkMode: read GSettings color-scheme (prefer-dark) on Wayland
     xdg.configFile."chrome-flags.conf".text = ''
       --ozone-platform=wayland
       --enable-zero-copy
+      --enable-features=WebUIDarkMode
     '';
 
     # Steam font support

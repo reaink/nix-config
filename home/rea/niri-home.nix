@@ -543,7 +543,7 @@ in
       notifications = {
         enabled = true;
         density = "default";
-        location = "top_right";
+        location = "top_center";
         overlayLayer = true;
         backgroundOpacity = 1;
         lowUrgencyDuration = 3;
@@ -699,7 +699,6 @@ in
   # gtk.css is also overwritten by nwg-look (symlink) or noctalia's GTK template at runtime.
   home.activation.cleanNoctaliaConflicts = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
     rm -f "${config.xdg.configHome}/noctalia/settings.json.backup"
-    rm -f "${config.xdg.configHome}/gtk-4.0/gtk.css"
   '';
 
   services.gnome-keyring = {

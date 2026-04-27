@@ -66,7 +66,7 @@ in
     };
 
     layout = {
-      gaps = 12;
+      gaps = 8; # match noctalia bar frameThickness
       center-focused-column = "on-overflow";
       preset-column-widths = [
         { proportion = 0.333; }
@@ -247,9 +247,432 @@ in
 
   programs.noctalia-shell = {
     enable = true;
-    # Catppuccin Mocha — dark variant from noctalia-colorschemes community repo.
-    # These override noctalia's built-in color generation; switch to
-    # colorScheme.scheme = "Catppuccin Lavender" in the GUI if you prefer runtime switching.
+
+    settings = {
+      settingsVersion = 59;
+
+      bar = {
+        barType = "floating";
+        position = "top";
+        density = "default";
+        showOutline = true;
+        showCapsule = true;
+        capsuleOpacity = 0.85;
+        widgetSpacing = 6;
+        contentPadding = 2;
+        enableExclusionZoneInset = true;
+        backgroundOpacity = 0.93;
+        marginVertical = 4;
+        marginHorizontal = 4;
+        frameThickness = 8;
+        frameRadius = 12;
+        outerCorners = true;
+        displayMode = "always_visible";
+        rightClickAction = "controlCenter";
+        widgets = {
+          left = [
+            {
+              id = "Workspace";
+              hideUnoccupied = false;
+              labelMode = "index";
+              fontWeight = "bold";
+              showBadge = true;
+              showLabelsOnlyWhenOccupied = true;
+              focusedColor = "primary";
+              occupiedColor = "secondary";
+              enableScrollWheel = true;
+              pillSize = 0.6;
+              iconScale = 0.8;
+              groupedBorderOpacity = 1;
+              unfocusedIconsOpacity = 1;
+            }
+            {
+              id = "SystemMonitor";
+              compactMode = true;
+              diskPath = "/";
+              showCpuUsage = true;
+              showCpuTemp = true;
+              showMemoryUsage = true;
+              useMonospaceFont = true;
+              usePadding = false;
+            }
+            {
+              id = "ActiveWindow";
+              maxWidth = 145;
+              showIcon = true;
+              showText = true;
+              scrollingMode = "hover";
+              hideMode = "hidden";
+            }
+            {
+              id = "MediaMini";
+              hideMode = "hidden";
+              hideWhenIdle = false;
+              maxWidth = 145;
+              showAlbumArt = true;
+              showArtistFirst = true;
+              showProgressRing = true;
+              scrollingMode = "hover";
+              showVisualizer = false;
+              visualizerType = "linear";
+            }
+          ];
+          center = [
+            {
+              id = "Clock";
+              formatHorizontal = "HH:mm ddd, MMM dd";
+              formatVertical = "HH mm - dd MM";
+              tooltipFormat = "HH:mm ddd, MMM dd";
+            }
+            {
+              id = "NotificationHistory";
+              showUnreadBadge = true;
+              unreadBadgeColor = "primary";
+            }
+          ];
+          right = [
+            {
+              id = "Tray";
+              drawerEnabled = false;
+              hidePassive = false;
+            }
+            {
+              id = "Battery";
+              displayMode = "graphic-clean";
+              hideIfNotDetected = true;
+              showPowerProfiles = false;
+            }
+            {
+              id = "Volume";
+              displayMode = "onhover";
+              middleClickCommand = "pwvucontrol || pavucontrol";
+            }
+            {
+              id = "Brightness";
+              displayMode = "onhover";
+            }
+            {
+              id = "ControlCenter";
+              icon = "noctalia";
+              useDistroLogo = false;
+            }
+          ];
+        };
+      };
+
+      general = {
+        avatarImage = "/home/rea/.face";
+        enableShadows = false;
+        enableBlurBehind = false;
+        lockOnSuspend = true;
+        showSessionButtonsOnLockScreen = true;
+        clockStyle = "custom";
+        clockFormat = "hh\\nmm";
+        telemetryEnabled = false;
+        showChangelogOnStartup = true;
+        smoothScrollEnabled = true;
+        autoStartAuth = true;
+      };
+
+      ui = {
+        fontDefault = "Noto Sans";
+        fontFixed = "Maple Mono";
+        tooltipsEnabled = true;
+        panelBackgroundOpacity = 0;
+        panelsAttachedToBar = true;
+        scrollbarAlwaysVisible = true;
+        boxBorderEnabled = true;
+        settingsPanelMode = "attached";
+        settingsPanelSideBarCardStyle = true;
+      };
+
+      location = {
+        name = "Xi'an, Shaanxi";
+        weatherEnabled = true;
+        weatherShowEffects = true;
+        autoLocate = false;
+        useFahrenheit = false;
+        use12hourFormat = false;
+        showWeekNumberInCalendar = true;
+        showCalendarEvents = true;
+        showCalendarWeather = true;
+        analogClockInCalendar = true;
+        firstDayOfWeek = -1;
+      };
+
+      wallpaper = {
+        enabled = true;
+        directory = "/home/rea/Pictures/Wallpapers";
+        fillMode = "stretch";
+        automationEnabled = false;
+        wallpaperChangeMode = "random";
+        randomIntervalSec = 300;
+        transitionDuration = 1500;
+        transitionEdgeSmoothness = 0.05;
+        skipStartupTransition = false;
+        overviewBlur = 0.4;
+        overviewTint = 0.6;
+        useWallhaven = true;
+        wallhavenSorting = "relevance";
+        wallhavenOrder = "desc";
+        wallhavenCategories = "111";
+        wallhavenPurity = "100";
+        wallhavenResolutionMode = "atleast";
+        panelPosition = "follow_bar";
+        sortOrder = "name";
+      };
+
+      appLauncher = {
+        enableClipboardHistory = true;
+        autoPasteClipboard = false;
+        enableClipPreview = true;
+        clipboardWrapText = true;
+        enableClipboardSmartIcons = true;
+        enableClipboardChips = true;
+        clipboardWatchTextCommand = "wl-paste --type text --watch cliphist store";
+        clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";
+        sortByMostUsed = true;
+        terminalCommand = "kitty";
+        viewMode = "grid";
+        showCategories = true;
+        iconMode = "tabler";
+        showIconBackground = true;
+        enableSettingsSearch = true;
+        enableWindowsSearch = true;
+        enableSessionSearch = true;
+        density = "default";
+      };
+
+      dock = {
+        enabled = true;
+        position = "bottom";
+        displayMode = "always_visible";
+        dockType = "floating";
+        backgroundOpacity = 0.8;
+        floatingRatio = 1;
+        size = 0.7;
+        onlySameOutput = true;
+        pinnedApps = [
+          "code"
+          "google-chrome"
+        ];
+        colorizeIcons = false;
+        showLauncherIcon = true;
+        launcherPosition = "end";
+        launcherUseDistroLogo = false;
+        pinnedStatic = false;
+        inactiveIndicators = true;
+        groupApps = true;
+        groupContextMenuMode = "extended";
+        groupClickAction = "cycle";
+        groupIndicatorStyle = "dots";
+        deadOpacity = 0.6;
+        animationSpeed = 1;
+        sitOnFrame = false;
+        indicatorThickness = 6;
+        indicatorColor = "primary";
+        indicatorOpacity = 0.6;
+      };
+
+      controlCenter = {
+        position = "close_to_bar_button";
+        diskPath = "/";
+        shortcuts = {
+          left = [
+            { id = "Network"; }
+            { id = "Bluetooth"; }
+            { id = "WallpaperSelector"; }
+            { id = "NoctaliaPerformance"; }
+          ];
+          right = [
+            { id = "Notifications"; }
+            { id = "PowerProfile"; }
+            { id = "KeepAwake"; }
+            { id = "NightLight"; }
+          ];
+        };
+        cards = [
+          {
+            id = "profile-card";
+            enabled = true;
+          }
+          {
+            id = "shortcuts-card";
+            enabled = true;
+          }
+          {
+            id = "audio-card";
+            enabled = true;
+          }
+          {
+            id = "brightness-card";
+            enabled = false;
+          }
+          {
+            id = "weather-card";
+            enabled = true;
+          }
+          {
+            id = "media-sysmon-card";
+            enabled = true;
+          }
+        ];
+      };
+
+      systemMonitor = {
+        cpuWarningThreshold = 80;
+        cpuCriticalThreshold = 90;
+        tempWarningThreshold = 80;
+        tempCriticalThreshold = 90;
+        memWarningThreshold = 80;
+        memCriticalThreshold = 90;
+        diskWarningThreshold = 80;
+        diskCriticalThreshold = 90;
+        batteryWarningThreshold = 20;
+        batteryCriticalThreshold = 5;
+        enableDgpuMonitoring = true;
+      };
+
+      network = {
+        networkPanelView = "wifi";
+        wifiDetailsViewMode = "list";
+        bluetoothDetailsViewMode = "grid";
+        bluetoothAutoConnect = true;
+      };
+
+      notifications = {
+        enabled = true;
+        density = "default";
+        location = "top_right";
+        overlayLayer = true;
+        backgroundOpacity = 1;
+        lowUrgencyDuration = 3;
+        normalUrgencyDuration = 8;
+        criticalUrgencyDuration = 15;
+        clearDismissed = true;
+        enableKeyboardLayoutToast = true;
+        enableBatteryToast = true;
+        enableMarkdown = false;
+        sounds.enabled = false;
+      };
+
+      osd = {
+        enabled = true;
+        location = "top_right";
+        autoHideMs = 2000;
+        overlayLayer = true;
+        backgroundOpacity = 1;
+      };
+
+      audio = {
+        volumeStep = 5;
+        volumeOverdrive = false;
+        spectrumFrameRate = 30;
+        visualizerType = "linear";
+        spectrumMirrored = true;
+      };
+
+      brightness = {
+        brightnessStep = 5;
+        enforceMinimum = true;
+        enableDdcSupport = false;
+      };
+
+      nightLight = {
+        enabled = false;
+        autoSchedule = true;
+        nightTemp = "4000";
+        dayTemp = "6500";
+        manualSunrise = "06:30";
+        manualSunset = "18:30";
+      };
+
+      idle = {
+        enabled = true;
+        screenOffTimeout = 600;
+        lockTimeout = 660;
+        suspendTimeout = 1800;
+        fadeDuration = 5;
+      };
+
+      colorSchemes = {
+        useWallpaperColors = false;
+        predefinedScheme = "Catppuccin";
+        darkMode = true; # use Mocha dark
+        schedulingMode = "manual";
+        manualSunrise = "08:00";
+        manualSunset = "18:00";
+        generationMethod = "fruit-salad";
+        syncGsettings = true;
+      };
+
+      templates = {
+        activeTemplates = [
+          {
+            id = "niri";
+            enabled = true;
+          }
+          {
+            id = "code";
+            enabled = true;
+          }
+          {
+            id = "telegram";
+            enabled = true;
+          }
+          {
+            id = "kitty";
+            enabled = true;
+          }
+          {
+            id = "starship";
+            enabled = true;
+          }
+          {
+            id = "steam";
+            enabled = true;
+          }
+          {
+            id = "qt";
+            enabled = true;
+          }
+          {
+            id = "gtk";
+            enabled = true;
+          }
+          {
+            id = "fuzzel";
+            enabled = true;
+          }
+          {
+            id = "foot";
+            enabled = true;
+          }
+          {
+            id = "btop";
+            enabled = true;
+          }
+          {
+            id = "sway";
+            enabled = true;
+          }
+          {
+            id = "zed";
+            enabled = true;
+          }
+        ];
+        enableUserTheming = false;
+      };
+
+      hooks.enabled = false;
+      plugins = {
+        autoUpdate = true;
+        notifyUpdates = true;
+      };
+    };
+
+    # Catppuccin Mocha (dark) explicit colors — from noctalia-colorschemes community repo.
+    # Overrides the predefinedScheme above for pixel-perfect color control.
     colors = {
       mPrimary = "#b4befe"; # lavender
       mOnPrimary = "#11111b"; # crust
@@ -269,6 +692,15 @@ in
       mShadow = "#11111b"; # crust
     };
   };
+
+  # noctalia writes back to settings.json at runtime, turning home-manager's symlink into a plain
+  # file. On the next rebuild, home-manager tries to back it up to settings.json.backup, which
+  # already exists from the previous cycle, causing a failure. Clean both files before activation.
+  # gtk.css is also overwritten by nwg-look (symlink) or noctalia's GTK template at runtime.
+  home.activation.cleanNoctaliaConflicts = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+    rm -f "${config.xdg.configHome}/noctalia/settings.json.backup"
+    rm -f "${config.xdg.configHome}/gtk-4.0/gtk.css"
+  '';
 
   services.gnome-keyring = {
     enable = true;
@@ -314,5 +746,8 @@ in
     # Then in noctalia: Settings → Color Scheme → Templates → enable GTK
     adw-gtk3
     nwg-look
+
+    # Pixiv / image collection manager with built-in downloader GUI
+    hydrus
   ];
 }

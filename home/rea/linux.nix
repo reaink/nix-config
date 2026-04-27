@@ -328,7 +328,7 @@
     xdg.dataFile."applications/todesk.desktop".text = ''
       [Desktop Entry]
       Name=ToDesk
-      Exec=todesk-gui
+      Exec=/etc/profiles/per-user/rea/bin/todesk-gui
       Icon=todesk
       Type=Application
       Categories=Network;RemoteAccess;
@@ -345,7 +345,7 @@
       Categories=Utility;
       Comment=WeChat Desktop
       Comment[zh_CN]=微信桌面版
-      Exec=env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" wechat %U
+      Exec=env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" /etc/profiles/per-user/rea/bin/wechat %U
       Icon=wechat
       Name=WeChat
       Name[zh_CN]=微信

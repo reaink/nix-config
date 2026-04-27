@@ -244,11 +244,23 @@
     pulse.enable = true;
   };
 
-  # UGREEN Camera 2K: firmware resets Mic Capture Volume to 0 on every connect.
-  # This udev rule fires when the ALSA control device appears and sets it to max (256 = 0dB).
+  # UGREEN Camera 2K: firmware resets Mic Capture Volume (numid=3) to 0 on every connect.
+  # The udev RUN approach fails silently because the ALSA mixer isn't fully initialized
+  # when controlC* appears. Instead, trigger a systemd service (with a short delay) via
+  # SYSTEMD_WANTS so the amixer call runs after the mixer is ready.
   services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{idVendor}=="0c45", ATTRS{idProduct}=="636f", RUN+="${pkgs.alsa-utils}/bin/amixer -c %n cset numid=3 256,256"
+    ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{idVendor}=="0c45", ATTRS{idProduct}=="636f", TAG+="systemd", ENV{SYSTEMD_WANTS}="alsa-ugreen-mic-vol@%n.service"
   '';
+
+  systemd.services."alsa-ugreen-mic-vol@" = {
+    description = "Set UGREEN Camera 2K mic capture volume (card %i)";
+    unitConfig.DefaultDependencies = false;
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 0.5";
+      ExecStart = "${pkgs.alsa-utils}/bin/amixer -c %i cset numid=3 256,256";
+    };
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

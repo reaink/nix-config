@@ -61,13 +61,21 @@
     NVD_BACKEND = "direct";
   };
 
-  # NVIDIA VRAM leak fix: niri triggers rapid buffer pool growth on resizes
+  # NVIDIA VRAM leak fix: niri triggers rapid buffer pool growth on resizes.
+  # Also applied to chrome GPU process to prevent tab-switch flicker from buffer pool churn.
   environment.etc."nvidia/nvidia-application-profiles-rc.d/50-niri-vram.json".text = builtins.toJSON {
     rules = [
       {
         pattern = {
           feature = "procname";
           matches = "niri";
+        };
+        profile = "Limit Free Buffer Pool On Wayland Compositors";
+      }
+      {
+        pattern = {
+          feature = "procname";
+          matches = "chrome";
         };
         profile = "Limit Free Buffer Pool On Wayland Compositors";
       }

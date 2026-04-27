@@ -354,6 +354,14 @@
       Type=Application
     '';
 
+    # Chrome flags: force native Wayland and enable GPU zero-copy for NVIDIA
+    # --ozone-platform=wayland: explicit (not hint=auto) avoids race condition edge cases
+    # --enable-zero-copy: reduces GPU memory copies, alleviates tab-switch flicker on NVIDIA
+    xdg.configFile."chrome-flags.conf".text = ''
+      --ozone-platform=wayland
+      --enable-zero-copy
+    '';
+
     # Steam font support
     home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source =
       "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";

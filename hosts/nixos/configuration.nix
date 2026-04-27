@@ -242,13 +242,13 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
+
+  # UGREEN Camera 2K: firmware resets Mic Capture Volume to 0 on every connect.
+  # This udev rule fires when the ALSA control device appears and sets it to max (256 = 0dB).
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{idVendor}=="0c45", ATTRS{idProduct}=="636f", RUN+="${pkgs.alsa-utils}/bin/amixer -c %n cset numid=3 256,256"
+  '';
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;

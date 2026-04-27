@@ -97,7 +97,16 @@ in
 
     animations.slowdown = 0.6;
 
-    debug."honor-xdg-activation-with-invalid-serial" = [ ];
+    debug = {
+      "honor-xdg-activation-with-invalid-serial" = [ ];
+      # Force niri to render on the NVIDIA GPU (card1/renderD129).
+      # Without this, niri may pick card0 (AMD iGPU), causing cross-GPU buffer copies → tearing.
+      render-drm-device = "/dev/dri/renderD129";
+    };
+
+    outputs."DP-1" = {
+      variable-refresh-rate = "on-demand";
+    };
 
     overview.backdrop-color = "#1f1d2e";
 

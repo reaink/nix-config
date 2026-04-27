@@ -220,22 +220,9 @@ in
     Name=Keyboard Layout Viewer
   '';
 
-  # fcitx5-with-addons wrapper ensures rime/mozc addons are found at the same $out/lib/fcitx5
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-rime
-      fcitx5-mozc
-      fcitx5-gtk
-      qt6Packages.fcitx5-configtool
-    ];
-  };
-
-  # On Wayland, fcitx5 uses the text-input protocol directly.
-  # GTK_IM_MODULE/QT_IM_MODULE are legacy X11 hooks that conflict and cause warnings.
-  home.sessionVariables.GTK_IM_MODULE = lib.mkForce "";
-  home.sessionVariables.QT_IM_MODULE = lib.mkForce "";
+  # fcitx5 is configured at system level (configuration.nix) with waylandFrontend = true.
+  # Declaring i18n.inputMethod here would overwrite ~/.config/fcitx5/profile and
+  # strip the Wayland frontend, breaking input on native Wayland apps.
 
   home.packages = with pkgs; [
     kitty

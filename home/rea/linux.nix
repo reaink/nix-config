@@ -239,6 +239,71 @@
       }
     '';
 
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        # File manager
+        "inode/directory" = "org.gnome.Nautilus.desktop";
+        "x-directory/normal" = "org.gnome.Nautilus.desktop";
+
+        # Images
+        "image/jpeg" = "org.gnome.Loupe.desktop";
+        "image/png" = "org.gnome.Loupe.desktop";
+        "image/gif" = "org.gnome.Loupe.desktop";
+        "image/webp" = "org.gnome.Loupe.desktop";
+        "image/avif" = "org.gnome.Loupe.desktop";
+        "image/bmp" = "org.gnome.Loupe.desktop";
+        "image/tiff" = "org.gnome.Loupe.desktop";
+        "image/svg+xml" = "org.gnome.Loupe.desktop";
+
+        # Video
+        "video/mp4" = "mpv.desktop";
+        "video/mkv" = "mpv.desktop";
+        "video/x-matroska" = "mpv.desktop";
+        "video/webm" = "mpv.desktop";
+        "video/avi" = "mpv.desktop";
+        "video/x-msvideo" = "mpv.desktop";
+        "video/quicktime" = "mpv.desktop";
+        "video/x-flv" = "mpv.desktop";
+        "video/mpeg" = "mpv.desktop";
+
+        # Audio
+        "audio/mpeg" = "mpv.desktop";
+        "audio/mp3" = "mpv.desktop";
+        "audio/flac" = "mpv.desktop";
+        "audio/ogg" = "mpv.desktop";
+        "audio/wav" = "mpv.desktop";
+        "audio/aac" = "mpv.desktop";
+        "audio/x-m4a" = "mpv.desktop";
+
+        # PDF
+        "application/pdf" = "wps-office-pdf.desktop";
+
+        # Documents (WPS Office)
+        "application/msword" = "wps-office-wps.desktop";
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
+          "wps-office-wps.desktop";
+        "application/vnd.oasis.opendocument.text" = "wps-office-wps.desktop";
+
+        # Spreadsheets (WPS ET)
+        "application/vnd.ms-excel" = "wps-office-et.desktop";
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "wps-office-et.desktop";
+        "application/vnd.oasis.opendocument.spreadsheet" = "wps-office-et.desktop";
+
+        # Presentations (WPS Presentation)
+        "application/vnd.ms-powerpoint" = "wps-office-wpp.desktop";
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
+          "wps-office-wpp.desktop";
+        "application/vnd.oasis.opendocument.presentation" = "wps-office-wpp.desktop";
+
+        # Browser
+        "text/html" = "google-chrome.desktop";
+        "x-scheme-handler/http" = "google-chrome.desktop";
+        "x-scheme-handler/https" = "google-chrome.desktop";
+        "x-scheme-handler/ftp" = "google-chrome.desktop";
+      };
+    };
+
     # Qt icon theme - qt6ct reads from config file, no GSettings/gnome-settings-daemon needed
     qt = {
       enable = true;

@@ -35,6 +35,9 @@
 
   programs.dconf.enable = true;
 
+  # gvfs: virtual filesystem daemon required by Nautilus for file operations (rename, trash, etc.)
+  services.gvfs.enable = true;
+
   # Unlock gnome-keyring via PAM on SDDM autologin so secrets component is available
   security.pam.services.sddm-autologin.enableGnomeKeyring = true;
 

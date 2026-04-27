@@ -448,7 +448,7 @@ in
       };
 
       dock = {
-        enabled = true;
+        enabled = false;
         position = "bottom";
         displayMode = "always_visible";
         dockType = "floating";

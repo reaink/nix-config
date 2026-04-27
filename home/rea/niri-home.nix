@@ -48,6 +48,7 @@ in
       "ELECTRON_OZONE_PLATFORM_HINT" = "wayland";
       "GDK_BACKEND" = "wayland,x11";
       "QT_QPA_PLATFORM" = "wayland;xcb";
+      "QT_QPA_PLATFORMTHEME" = "qt6ct"; # lets qt6ct apply noctalia colors to Qt apps
       "XDG_CURRENT_DESKTOP" = "niri:GNOME";
     };
 
@@ -76,8 +77,8 @@ in
       border = {
         enable = true;
         width = 2;
-        active.color = "#c4a7e7";
-        inactive.color = "#26233a";
+        active.color = "#b4befe"; # Catppuccin Mocha lavender
+        inactive.color = "#313244"; # Catppuccin Mocha surface1
       };
       focus-ring.enable = false;
       # shadow disabled: causes flickering on NVIDIA due to extra render pass buffer sync
@@ -109,7 +110,7 @@ in
       variable-refresh-rate = "on-demand";
     };
 
-    overview.backdrop-color = "#1f1d2e";
+    overview.backdrop-color = "#1e1e2e"; # Catppuccin Mocha base
 
     window-rules = [
       {
@@ -244,7 +245,30 @@ in
     };
   };
 
-  programs.noctalia-shell.enable = true;
+  programs.noctalia-shell = {
+    enable = true;
+    # Catppuccin Mocha — dark variant from noctalia-colorschemes community repo.
+    # These override noctalia's built-in color generation; switch to
+    # colorScheme.scheme = "Catppuccin Lavender" in the GUI if you prefer runtime switching.
+    colors = {
+      mPrimary = "#b4befe"; # lavender
+      mOnPrimary = "#11111b"; # crust
+      mSecondary = "#f5bde6"; # pink
+      mOnSecondary = "#11111b";
+      mTertiary = "#c6a0f6"; # mauve
+      mOnTertiary = "#11111b";
+      mError = "#f38ba8"; # red
+      mOnError = "#11111b";
+      mSurface = "#1e1e2e"; # base
+      mOnSurface = "#cdd6f4"; # text
+      mHover = "#c6a0f6"; # mauve
+      mOnHover = "#11111b";
+      mSurfaceVariant = "#313244"; # surface1
+      mOnSurfaceVariant = "#a3b4eb";
+      mOutline = "#4c4f69"; # overlay1
+      mShadow = "#11111b"; # crust
+    };
+  };
 
   services.gnome-keyring = {
     enable = true;
@@ -284,5 +308,11 @@ in
 
     # Calculator
     gnome-calculator
+
+    # GTK theming: adw-gtk3 is the base theme; nwg-look applies it
+    # One-time setup: open nwg-look, select adw-gtk3, click Apply
+    # Then in noctalia: Settings → Color Scheme → Templates → enable GTK
+    adw-gtk3
+    nwg-look
   ];
 }

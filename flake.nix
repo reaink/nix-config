@@ -92,7 +92,6 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
-                (import ./overlays/claude-code-latest.nix)
                 (import ./overlays/fix-picosvg-tests.nix)
                 (import ./overlays/fix-openldap-tests.nix)
                 # sunshine/gearlever(dwarfs) are broken in unstable (boost 1.89 regression), use stable
@@ -137,7 +136,6 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
-                (import ./overlays/claude-code-latest.nix)
               ];
             }
 

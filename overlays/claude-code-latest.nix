@@ -27,10 +27,11 @@ self: super: {
       npmDepsHash
       strictDeps
       postPatch
-      dontNpmBuild
       postInstall
       meta
       ;
+
+    dontNpmBuild = true;
 
     # nativeInstallCheckInputs is not exposed on the derivation attrs
     doInstallCheck = false;

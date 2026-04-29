@@ -45,7 +45,7 @@
     sops
     age
     # LLM inference - Metal backend auto-enabled on aarch64-darwin (M4 Pro)
-    llama-cpp
+    # llama-cpp
   ];
 
   # Define user

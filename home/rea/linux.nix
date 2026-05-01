@@ -51,6 +51,21 @@
       # Linux-specific GUI apps
       wechat
       qq
+
+      # Focus existing WeChat window via X11 (xdotool), or start fresh if not running.
+      # WeChat runs via XWayland, so X11 windowactivate is more reliable than niri IPC focus
+      # which gets immediately overridden by other Wayland clients stealing focus.
+      (writeShellScriptBin "wechat-launch" ''
+        export DISPLAY=''${DISPLAY:-:0}
+        WIN=$(${xdotool}/bin/xdotool search --name "Weixin" 2>/dev/null | head -1)
+        if [ -n "$WIN" ]; then
+          ${xdotool}/bin/xdotool windowactivate --sync "$WIN"
+        else
+          exec env DISPLAY="$DISPLAY" QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx \
+            XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 \
+            ${wechat}/bin/wechat --no-sandbox "$@"
+        fi
+      '')
       # wechat-uos
       wpsoffice-cn
 
@@ -392,7 +407,7 @@
       Categories=Utility;
       Comment=WeChat Desktop
       Comment[zh_CN]=微信桌面版
-      Exec=/run/current-system/sw/bin/env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 /etc/profiles/per-user/rea/bin/wechat --no-sandbox %U
+      Exec=/etc/profiles/per-user/rea/bin/wechat-launch %U
       Icon=wechat
       Name=WeChat
       Name[zh_CN]=微信

@@ -384,12 +384,15 @@
     # WeChat desktop launcher (force fcitx input method on Wayland)
     # Since QT_IM_MODULE and GTK_IM_MODULE are disabled globally for text-input-v3,
     # we must inject them specifically for WeChat.
+    # --no-sandbox: bwrap FHS env + Electron sandbox causes nested namespace conflicts on NixOS.
+    # MALLOC_ARENA_MAX=1: libowl.so (WeChat coroutine lib) corrupts heap when glibc per-thread
+    # arenas are used concurrently during coroutine context switches (SIGSEGV in malloc_consolidate).
     xdg.dataFile."applications/wechat.desktop".text = ''
       [Desktop Entry]
       Categories=Utility;
       Comment=WeChat Desktop
       Comment[zh_CN]=微信桌面版
-      Exec=/run/current-system/sw/bin/env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" /etc/profiles/per-user/rea/bin/wechat %U
+      Exec=/run/current-system/sw/bin/env QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 /etc/profiles/per-user/rea/bin/wechat --no-sandbox %U
       Icon=wechat
       Name=WeChat
       Name[zh_CN]=微信

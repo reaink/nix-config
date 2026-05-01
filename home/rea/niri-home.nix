@@ -104,6 +104,11 @@ in
       # Without this, niri picks card0 (AMD iGPU, renderD129), causing cross-GPU buffer copies
       # and exposes niri to AMD iGPU page faults triggered by other processes (e.g. Chrome).
       render-drm-device = "/dev/dri/renderD128";
+      # Workaround for NVIDIA open driver fence sync bug: the driver does not properly honor
+      # IN_FENCE_FD, causing frames to be scanned out before rendering completes, resulting
+      # in single-frame flickers (wallpaper/previous frame) when switching windows.
+      # See: https://github.com/niri-wm/niri/issues/2030 and #2477
+      "wait-for-frame-completion-before-queueing" = [ ];
     };
 
     outputs."DP-1" = {

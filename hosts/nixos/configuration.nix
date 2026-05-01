@@ -127,10 +127,6 @@
 
       # NVIDIA
       nvidia-vaapi-driver
-
-      # Vulkan
-      vulkan-validation-layers
-      vulkan-tools
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
@@ -177,7 +173,8 @@
 
   environment.sessionVariables = {
     # __GL_SYNC_TO_VBLANK is X11/TwinView-only; removed to avoid double VSync on Wayland.
-    __GL_VRR_ALLOWED = "0";
+    # VRR enabled: G27-X supports VRR (Game mode), niri runs on NVIDIA which handles VRR at KMS level.
+    __GL_VRR_ALLOWED = "1";
   };
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -434,11 +431,6 @@
     # be set or fcitx5 will warn and input may break.
     # XMODIFIERS is still required for XWayland apps.
     XMODIFIERS = "@im=fcitx";
-    # Force Electron apps (VSCode, etc.) to use native Wayland backend so they
-    # use text-input-v3 instead of XIM. Without this, WebView-based panels
-    # (e.g. Copilot Chat) run in a separate Chromium process that bypasses XIM
-    # entirely, making fcitx5 unreachable inside them.
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
   };
 
   virtualisation.waydroid = {

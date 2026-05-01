@@ -100,9 +100,10 @@ in
 
     debug = {
       "honor-xdg-activation-with-invalid-serial" = [ ];
-      # Force niri to render on the NVIDIA GPU (card1/renderD129).
-      # Without this, niri may pick card0 (AMD iGPU), causing cross-GPU buffer copies → tearing.
-      render-drm-device = "/dev/dri/renderD129";
+      # Force niri to render on the NVIDIA GPU (card1/renderD128).
+      # Without this, niri picks card0 (AMD iGPU, renderD129), causing cross-GPU buffer copies
+      # and exposes niri to AMD iGPU page faults triggered by other processes (e.g. Chrome).
+      render-drm-device = "/dev/dri/renderD128";
     };
 
     outputs."DP-1" = {

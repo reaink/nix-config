@@ -45,7 +45,7 @@
       android-studio
       scrcpy
       waydroid-helper
-      libreoffice-fresh
+      libreoffice-still
       todesk
 
       # Linux-specific GUI apps

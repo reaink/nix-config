@@ -20,7 +20,7 @@ in
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
-      { command = [ "wl-clip-persist" "--all-mime-type-regex" ".*" ]; }
+      { command = [ "wl-clip-persist" "--clipboard" "both" ]; }
     ];
 
     environment = {

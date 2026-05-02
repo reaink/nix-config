@@ -20,26 +20,7 @@ in
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
-      {
-        command = [
-          "wl-paste"
-          "--type"
-          "text"
-          "--watch"
-          "cliphist"
-          "store"
-        ];
-      }
-      {
-        command = [
-          "wl-paste"
-          "--type"
-          "image"
-          "--watch"
-          "cliphist"
-          "store"
-        ];
-      }
+      { command = [ "wl-clip-persist" "--all-mime-type-regex" ".*" ]; }
     ];
 
     environment = {
@@ -732,6 +713,7 @@ in
     kitty
     cliphist
     wl-clipboard
+    wl-clip-persist
     nautilus
     pavucontrol
     brightnessctl

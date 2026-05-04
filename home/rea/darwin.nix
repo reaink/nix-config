@@ -11,9 +11,10 @@
     # macOS-specific configuration
     # Currently minimal - can be expanded with macOS-specific packages and settings
 
-    # macOS-specific environment variables (if needed)
     home.sessionVariables = {
-      # Example: DYLD_LIBRARY_PATH if needed
+      ANDROID_HOME = "$HOME/Library/Android/sdk";
+      NDK_HOME = "$HOME/Library/Android/sdk/ndk/27.0.12077973";
+      JAVA_HOME = "/Applications/Android Studio.app/Contents/jbr/Contents/Home";
     };
 
     # macOS-specific packages (can be added as needed)

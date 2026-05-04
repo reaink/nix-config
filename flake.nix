@@ -136,6 +136,7 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
+                (import ./overlays/fix-direnv-tests.nix)
               ];
             }
 

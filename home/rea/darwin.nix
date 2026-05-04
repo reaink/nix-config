@@ -26,6 +26,7 @@
       docker
       docker-compose
       docker-credential-helpers
+      ipatool
     ];
 
     home.file.".docker/config.json".text = builtins.toJSON {

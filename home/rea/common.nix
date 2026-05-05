@@ -74,6 +74,7 @@
     obsidian
     firefox
     antigravity
+    marktext
 
     # Fonts
     pkgs.nerd-fonts.jetbrains-mono

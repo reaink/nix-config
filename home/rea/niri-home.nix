@@ -20,7 +20,13 @@ in
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
-      { command = [ "wl-clip-persist" "--clipboard" "both" ]; }
+      {
+        command = [
+          "wl-clip-persist"
+          "--clipboard"
+          "both"
+        ];
+      }
     ];
 
     environment = {
@@ -141,7 +147,11 @@ in
 
       # --- Shell (noctalia) ---
       "Mod+Space".action.spawn = noctalia "launcher toggle";
-      "Mod+Alt+R".action.spawn = [ "sh" "-c" "pkill -x noctalia-shell; noctalia-shell &" ];
+      "Mod+Alt+R".action.spawn = [
+        "sh"
+        "-c"
+        "noctalia-shell kill; exec noctalia-shell"
+      ];
       "Mod+V".action.spawn = noctalia "launcher clipboard"; # clipboard history (supports images)
       "Mod+Period".action.spawn = noctalia "launcher emoji";
       "Mod+S".action.spawn = noctalia "controlCenter toggle";

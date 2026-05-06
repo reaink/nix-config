@@ -27,6 +27,13 @@ in
           "both"
         ];
       }
+      {
+        command = [
+          "fcitx5"
+          "--replace"
+          "-d"
+        ];
+      }
     ];
 
     environment = {

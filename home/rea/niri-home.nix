@@ -28,10 +28,13 @@ in
         ];
       }
       {
+        # --disable xcb: prevents the xcb addon from connecting to XWayland,
+        # which causes a 100% CPU busy loop (xcb_poll_for_event tight loop).
         command = [
           "fcitx5"
           "--replace"
-          "-d"
+          "--disable"
+          "xcb"
         ];
       }
     ];

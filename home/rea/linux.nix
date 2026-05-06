@@ -32,7 +32,6 @@
       librsvg
       librsvg.dev
       libayatana-appindicator
-      xdotool
 
       # Android / Tauri mobile development
       jdk17
@@ -52,19 +51,25 @@
       wechat
       qq
 
-      # Focus existing WeChat window via X11 (xdotool), or start fresh if not running.
-      # WeChat runs via XWayland, so X11 windowactivate is more reliable than niri IPC focus
-      # which gets immediately overridden by other Wayland clients stealing focus.
+      # Focus existing WeChat window via niri IPC, or start fresh if not running.
+      # WeChat runs natively on Wayland via ozone; focus detection uses niri msg + jq.
       (writeShellScriptBin "wechat-launch" ''
-        export DISPLAY=''${DISPLAY:-:0}
-        WIN=$(${xdotool}/bin/xdotool search --name "Weixin" 2>/dev/null | head -1)
-        if [ -n "$WIN" ]; then
-          ${xdotool}/bin/xdotool windowactivate --sync "$WIN"
-        else
-          exec env DISPLAY="$DISPLAY" QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx \
-            XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 \
-            ${wechat}/bin/wechat --no-sandbox "$@"
+        export WAYLAND_DISPLAY="''${WAYLAND_DISPLAY:-wayland-1}"
+        export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+        WIN_ID=$(niri msg --json windows 2>/dev/null \
+          | ${jq}/bin/jq -r \
+              '.[] | select((.app_id // "" | ascii_downcase | contains("wechat")) or (.title // "" | test("Weixin|WeChat";"i"))) | .id' \
+              2>/dev/null | head -1)
+        if [ -n "$WIN_ID" ]; then
+          niri msg action focus-window --id "$WIN_ID"
+          exit 0
         fi
+        exec env \
+          WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
+          XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+          QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx \
+          XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 \
+          ${wechat}/bin/wechat --no-sandbox --ozone-platform=wayland "$@"
       '')
       # wechat-uos
       wpsoffice-cn
@@ -396,9 +401,8 @@
       X-KDE-SubstituteUID=false
     '';
 
-    # WeChat desktop launcher (force fcitx input method on Wayland)
-    # Since QT_IM_MODULE and GTK_IM_MODULE are disabled globally for text-input-v3,
-    # we must inject them specifically for WeChat.
+    # WeChat desktop launcher (Wayland-native via ozone, force fcitx input method)
+    # --ozone-platform=wayland: run WeChat natively on Wayland instead of XWayland.
     # --no-sandbox: bwrap FHS env + Electron sandbox causes nested namespace conflicts on NixOS.
     # MALLOC_ARENA_MAX=1: libowl.so (WeChat coroutine lib) corrupts heap when glibc per-thread
     # arenas are used concurrently during coroutine context switches (SIGSEGV in malloc_consolidate).

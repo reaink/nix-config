@@ -63,6 +63,11 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # KeyTao installer GUI
+    keytao-installer = {
+      url = "github:xkinput/keytao-installer";
+    };
   };
 
   outputs =

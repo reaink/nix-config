@@ -20,6 +20,7 @@ in
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
+      { command = [ "keytao-installer" ]; }
       {
         command = [
           "wl-clip-persist"

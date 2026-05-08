@@ -67,9 +67,8 @@
         setsid env \
           WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
           XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-          QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx QT_IM_MODULES=fcitx \
           XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 \
-          ${wechat}/bin/wechat --no-sandbox --ozone-platform=wayland "$@" &
+          ${wechat}/bin/wechat --no-sandbox "$@" &
       '')
       # wechat-uos
       wpsoffice-cn

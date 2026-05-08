@@ -208,7 +208,9 @@
     enable = true;
     type = "fcitx5";
     fcitx5 = {
-      waylandFrontend = true;
+      # waylandFrontend = true would start fcitx5 with --disable xcb, killing XIM.
+      # WeChat's Chromium only speaks zwp_text_input_v1; niri only exposes v3.
+      # With waylandFrontend off, fcitx5 enables XCB+XIM so XWayland apps work.
       addons = with pkgs; [
         qt6Packages.fcitx5-configtool
         fcitx5-mozc
@@ -426,10 +428,10 @@
       )
     );
     # Fcitx5 input method environment variables.
-    # With waylandFrontend = true, native Wayland apps (GTK4, Qt6) use the
-    # text-input-v3 protocol directly — GTK_IM_MODULE / QT_IM_MODULE must NOT
-    # be set or fcitx5 will warn and input may break.
-    # XMODIFIERS is still required for XWayland apps.
+    # GTK_IM_MODULE / QT_IM_MODULE needed since waylandFrontend is off.
+    # XMODIFIERS for XWayland apps (incl. WeChat which only speaks text-input-v1).
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
     XMODIFIERS = "@im=fcitx";
   };
 

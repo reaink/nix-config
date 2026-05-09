@@ -12,7 +12,7 @@
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
     home.packages = with pkgs; [
-      inputs.keytao-installer.packages.${pkgs.system}.default
+      inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.default
       # Tauri/GTK development libraries
       glib
       glib.dev

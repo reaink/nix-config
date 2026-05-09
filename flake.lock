@@ -96,11 +96,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1778294061,
-        "narHash": "sha256-fBPyOmUA3bP6Hzlz7V3wL6xYb1l4jx2i2M2hRC104DM=",
+        "lastModified": 1778319163,
+        "narHash": "sha256-vpap36mP3j9gtBx9svVLLTyUueg6lagtPdEZGnfz8qc=",
         "owner": "xkinput",
         "repo": "keytao-installer",
-        "rev": "b6d5aed0365088512bb7db2909083a355f897ec2",
+        "rev": "f7b10b4edbde244d44f6834305ffdbe37267a68f",
         "type": "github"
       },
       "original": {

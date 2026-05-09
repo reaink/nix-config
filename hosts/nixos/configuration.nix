@@ -220,6 +220,16 @@
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
+
+  # polkit 0.112+ removed allow_gui DISPLAY forwarding, so gpartedbin launched via
+  # pkexec has no display. Setuid wrapper lets gpartedbin inherit the caller's full
+  # Wayland/X11 environment without pkexec involvement.
+  security.wrappers.gpartedbin = {
+    source = "${pkgs.gparted}/libexec/gpartedbin";
+    owner = "root";
+    group = "root";
+    setuid = true;
+  };
   hardware.alsa.enablePersistence = true;
   services.pipewire = {
     enable = true;

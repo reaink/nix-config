@@ -80,6 +80,13 @@
       adwaita-qt6
       kdePackages.qt6ct
       gparted
+      # Wrapper: pkexec strips DISPLAY/WAYLAND_DISPLAY (polkit 0.112+ removed allow_gui).
+      # Call the setuid gpartedbin directly so it inherits the caller's display env.
+      (lib.hiPrio (
+        writeShellScriptBin "gparted" ''
+          exec /run/wrappers/bin/gpartedbin "$@"
+        ''
+      ))
       seahorse
       appimage-run
       gearlever
@@ -529,5 +536,16 @@
         -not -perm -u+x \
         -exec chmod +x {} \;
     '';
+
+    # Override GParted desktop entry to use the setuid wrapper directly,
+    # bypassing pkexec which strips DISPLAY/WAYLAND_DISPLAY in polkit 0.112+.
+    xdg.desktopEntries.gparted = {
+      name = "GParted";
+      exec = "/run/wrappers/bin/gpartedbin %f";
+      icon = "gparted";
+      terminal = false;
+      categories = [ "System" ];
+      comment = "Create, reorganize, and delete disk partitions";
+    };
   };
 }

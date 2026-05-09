@@ -221,15 +221,23 @@
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
-  # polkit 0.112+ removed allow_gui DISPLAY forwarding, so gpartedbin launched via
-  # pkexec has no display. Setuid wrapper lets gpartedbin inherit the caller's full
-  # Wayland/X11 environment without pkexec involvement.
-  security.wrappers.gpartedbin = {
-    source = "${pkgs.gparted}/libexec/gpartedbin";
-    owner = "root";
-    group = "root";
-    setuid = true;
-  };
+  # polkit 0.112+ removed allow_gui env forwarding; setuid is blocked by GTK.
+  # sudo with SETENV preserves DISPLAY/WAYLAND_DISPLAY/XDG_RUNTIME_DIR so gpartedbin
+  # can open the Wayland display. The gparted wrapper in home-manager calls this.
+  security.sudo.extraRules = [
+    {
+      users = [ "rea" ];
+      commands = [
+        {
+          command = "${pkgs.gparted}/libexec/gpartedbin";
+          options = [
+            "NOPASSWD"
+            "SETENV"
+          ];
+        }
+      ];
+    }
+  ];
   hardware.alsa.enablePersistence = true;
   services.pipewire = {
     enable = true;

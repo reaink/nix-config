@@ -80,11 +80,11 @@
       adwaita-qt6
       kdePackages.qt6ct
       gparted
-      # Wrapper: pkexec strips DISPLAY/WAYLAND_DISPLAY (polkit 0.112+ removed allow_gui).
-      # Call the setuid gpartedbin directly so it inherits the caller's display env.
+      # polkit strips display env; sudo SETENV preserves DISPLAY/WAYLAND_DISPLAY.
       (lib.hiPrio (
         writeShellScriptBin "gparted" ''
-          exec /run/wrappers/bin/gpartedbin "$@"
+          exec sudo --preserve-env=DISPLAY,WAYLAND_DISPLAY,XDG_RUNTIME_DIR,XAUTHORITY \
+            ${pkgs.gparted}/libexec/gpartedbin "$@"
         ''
       ))
       seahorse
@@ -537,11 +537,10 @@
         -exec chmod +x {} \;
     '';
 
-    # Override GParted desktop entry to use the setuid wrapper directly,
-    # bypassing pkexec which strips DISPLAY/WAYLAND_DISPLAY in polkit 0.112+.
+    # Override GParted desktop entry: call the sudo wrapper instead of pkexec.
     xdg.desktopEntries.gparted = {
       name = "GParted";
-      exec = "/run/wrappers/bin/gpartedbin %f";
+      exec = "gparted %f";
       icon = "gparted";
       terminal = false;
       categories = [ "System" ];

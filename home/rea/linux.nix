@@ -68,7 +68,7 @@
         setsid env \
           WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
           XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-          XMODIFIERS="@im=fcitx" MALLOC_ARENA_MAX=1 \
+          XMODIFIERS="@im=keytao" MALLOC_ARENA_MAX=1 \
           ${wechat}/bin/wechat --no-sandbox "$@" &
       '')
       # wechat-uos

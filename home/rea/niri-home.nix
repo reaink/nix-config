@@ -21,6 +21,7 @@ in
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
       { command = [ "keytao-installer" ]; }
+      { command = [ "keytao-linux-ime" ]; }
       {
         command = [
           "wl-clip-persist"
@@ -28,16 +29,16 @@ in
           "both"
         ];
       }
-      {
-        # --disable xcb: prevents the xcb addon from connecting to XWayland,
-        # which causes a 100% CPU busy loop (xcb_poll_for_event tight loop).
-        command = [
-          "fcitx5"
-          "--replace"
-          "--disable"
-          "xcb"
-        ];
-      }
+      # {
+      #   # --disable xcb: prevents the xcb addon from connecting to XWayland,
+      #   # which causes a 100% CPU busy loop (xcb_poll_for_event tight loop).
+      #   command = [
+      #     "fcitx5"
+      #     "--replace"
+      #     "--disable"
+      #     "xcb"
+      #   ];
+      # }
     ];
 
     environment = {

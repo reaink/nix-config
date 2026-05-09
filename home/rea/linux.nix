@@ -68,8 +68,10 @@
         setsid env \
           WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
           XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-          XMODIFIERS="@im=keytao" MALLOC_ARENA_MAX=1 \
-          ${wechat}/bin/wechat --no-sandbox "$@" &
+          XMODIFIERS="@im=keytao" \
+          ELECTRON_OZONE_PLATFORM_HINT=wayland \
+          MALLOC_ARENA_MAX=1 \
+          ${wechat}/bin/wechat --no-sandbox --ozone-platform=wayland "$@" &
       '')
       # wechat-uos
       wpsoffice-cn

@@ -53,27 +53,6 @@
       wechat
       qq
 
-      # Focus existing WeChat window via niri IPC, or start fresh if not running.
-      # WeChat runs natively on Wayland via ozone; focus detection uses niri msg + jq.
-      (writeShellScriptBin "wechat-launch" ''
-        export WAYLAND_DISPLAY="''${WAYLAND_DISPLAY:-wayland-1}"
-        export XDG_RUNTIME_DIR="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-        WIN_ID=$(niri msg --json windows 2>/dev/null \
-          | ${jq}/bin/jq -r \
-              '.[] | select((.app_id // "" | ascii_downcase | contains("wechat")) or (.title // "" | test("Weixin|WeChat";"i"))) | .id' \
-              2>/dev/null | head -1)
-        if [ -n "$WIN_ID" ]; then
-          niri msg action focus-window --id "$WIN_ID"
-          exit 0
-        fi
-        setsid env \
-          WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
-          XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-          XMODIFIERS="@im=keytao" \
-          ELECTRON_OZONE_PLATFORM_HINT=wayland \
-          MALLOC_ARENA_MAX=1 \
-          ${wechat}/bin/wechat --no-sandbox --ozone-platform=wayland "$@" &
-      '')
       # wechat-uos
       wpsoffice-cn
 
@@ -409,25 +388,6 @@
       Comment=ToDesk Remote Desktop (Fixed for Wayland/XWayland)
       Terminal=false
       X-KDE-SubstituteUID=false
-    '';
-
-    # WeChat desktop launcher (Wayland-native via ozone, force fcitx input method)
-    # --ozone-platform=wayland: run WeChat natively on Wayland instead of XWayland.
-    # --no-sandbox: bwrap FHS env + Electron sandbox causes nested namespace conflicts on NixOS.
-    # MALLOC_ARENA_MAX=1: libowl.so (WeChat coroutine lib) corrupts heap when glibc per-thread
-    # arenas are used concurrently during coroutine context switches (SIGSEGV in malloc_consolidate).
-    xdg.dataFile."applications/wechat.desktop".text = ''
-      [Desktop Entry]
-      Categories=Utility;
-      Comment=WeChat Desktop
-      Comment[zh_CN]=微信桌面版
-      Exec=/etc/profiles/per-user/rea/bin/wechat-launch %U
-      Icon=wechat
-      Name=WeChat
-      Name[zh_CN]=微信
-      StartupNotify=true
-      Terminal=false
-      Type=Application
     '';
 
     # Chrome flags: force native Wayland and enable GPU zero-copy for NVIDIA

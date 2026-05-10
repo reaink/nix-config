@@ -13,6 +13,7 @@
     # Linux-specific packages
     home.packages = with pkgs; [
       inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.keytao-linux-ime
       # Tauri/GTK development libraries
       glib
       glib.dev

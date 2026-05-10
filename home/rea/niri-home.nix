@@ -21,7 +21,16 @@ in
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
       { command = [ "keytao-installer" ]; }
-      { command = [ "keytao-linux-ime" ]; }
+      # keytao-linux-ime in X11-only mode (no WAYLAND_DISPLAY) serves XWayland apps
+      # (e.g. WeChat) via XIM.  keytao-installer already owns the Wayland
+      # zwp_input_method_v2 seat — only one process may register at a time.
+      {
+        command = [
+          "sh"
+          "-c"
+          "unset WAYLAND_DISPLAY; exec keytao-ime"
+        ];
+      }
       {
         command = [
           "wl-clip-persist"
@@ -48,6 +57,10 @@ in
       "QT_QPA_PLATFORM" = "wayland;xcb";
       "QT_QPA_PLATFORMTHEME" = "qt6ct"; # lets qt6ct apply noctalia colors to Qt apps
       "XDG_CURRENT_DESKTOP" = "niri:GNOME";
+      # XWayland display — niri always assigns :0.  Exporting it here ensures
+      # processes spawned at startup (e.g. keytao-ime X11 backend) can connect
+      # to XWayland even before the first X11 client triggers its lazy start.
+      "DISPLAY" = ":0";
     };
 
     input = {

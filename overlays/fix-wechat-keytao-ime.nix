@@ -17,23 +17,23 @@ final: prev:
         appimageContents = final.appimageTools.extract {
           inherit pname version src;
           postExtract = ''
-            patchelf --replace-needed libtiff.so.5 libtiff.so $out/opt/wechat/wechat
+                        patchelf --replace-needed libtiff.so.5 libtiff.so $out/opt/wechat/wechat
 
-            mv $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx \
-              $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx.real
-            cat > $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx <<'EOF'
-#!${final.bash}/bin/bash
-export DISPLAY="''${DISPLAY:-:0}"
-export XMODIFIERS="''${XMODIFIERS:-@im=keytao}"
-export GTK_IM_MODULE="''${GTK_IM_MODULE:-xim}"
-export QT_IM_MODULE="''${QT_IM_MODULE:-xim}"
-export GTK_IM_MODULE_FILE="''${GTK_IM_MODULE_FILE:-/usr/lib64/gtk-3.0/3.0.0/immodules.cache}"
-export GDK_BACKEND="''${GDK_BACKEND:-x11}"
-export QT_QPA_PLATFORM="''${QT_QPA_PLATFORM:-xcb}"
+                        mv $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx \
+                          $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx.real
+                        cat > $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx <<'EOF'
+            #!${final.bash}/bin/bash
+            export DISPLAY="''${DISPLAY:-:0}"
+            export XMODIFIERS="''${XMODIFIERS:-@im=keytao}"
+            export GTK_IM_MODULE="''${GTK_IM_MODULE:-xim}"
+            export QT_IM_MODULE="''${QT_IM_MODULE:-xim}"
+            export GTK_IM_MODULE_FILE="''${GTK_IM_MODULE_FILE:-/usr/lib64/gtk-3.0/3.0.0/immodules.cache}"
+            export GDK_BACKEND="''${GDK_BACKEND:-x11}"
+            export QT_QPA_PLATFORM="''${QT_QPA_PLATFORM:-xcb}"
 
-exec -a "$0" "$0.real" "$@"
-EOF
-            chmod +x $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx
+            exec -a "$0" "$0.real" "$@"
+            EOF
+                        chmod +x $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx
           '';
         };
       in

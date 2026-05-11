@@ -51,6 +51,7 @@
       (lib.hiPrio (
         writeShellScriptBin "wechat" ''
           unset WAYLAND_DISPLAY
+          export DISPLAY="''${DISPLAY:-:0}"
           export XMODIFIERS=@im=keytao
           export GTK_IM_MODULE=ibus
           export QT_IM_MODULE=ibus
@@ -520,7 +521,7 @@
     xdg.desktopEntries.wechat = {
       name = "WeChat";
       genericName = "WeChat";
-      exec = "env -u WAYLAND_DISPLAY XMODIFIERS=@im=keytao GTK_IM_MODULE=ibus QT_IM_MODULE=ibus GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ${pkgs.wechat}/bin/wechat %U";
+      exec = "${config.home.profileDirectory}/bin/wechat %U";
       icon = "wechat";
       terminal = false;
       categories = [

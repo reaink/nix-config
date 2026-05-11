@@ -730,6 +730,8 @@ in
   home.activation.restartNoctalia = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     if ${pkgs.procps}/bin/pgrep -x noctalia-shell > /dev/null 2>&1; then
       noctalia-shell kill 2>/dev/null || true
+      sleep 0.5
+      noctalia-shell &
     fi
   '';
 

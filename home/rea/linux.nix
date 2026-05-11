@@ -13,7 +13,6 @@
     # Linux-specific packages
     home.packages = with pkgs; [
       inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.default
-      inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.keytao-linux-ime
       # Tauri/GTK development libraries
       glib
       glib.dev
@@ -518,6 +517,23 @@
       terminal = false;
       categories = [ "System" ];
       comment = "Create, reorganize, and delete disk partitions";
+    };
+    xdg.desktopEntries.wechat = {
+      name = "WeChat";
+      genericName = "WeChat";
+      exec = "env -u WAYLAND_DISPLAY XMODIFIERS=@im=keytao GTK_IM_MODULE=xim QT_IM_MODULE=xim GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb wechat %U";
+      icon = "wechat";
+      terminal = false;
+      categories = [
+        "Network"
+        "InstantMessaging"
+        "Chat"
+      ];
+      comment = "WeChat with KeyTao XIM environment";
+      settings = {
+        StartupWMClass = "wechat";
+        Keywords = "wechat;weixin;微信;";
+      };
     };
   };
 }

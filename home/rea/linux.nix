@@ -53,8 +53,9 @@
           unset WAYLAND_DISPLAY
           export DISPLAY="''${DISPLAY:-:0}"
           export XMODIFIERS=@im=keytao
-          export GTK_IM_MODULE=ibus
-          export QT_IM_MODULE=ibus
+          export GTK_IM_MODULE=xim
+          export QT_IM_MODULE=xim
+          export GTK_IM_MODULE_FILE=/usr/lib64/gtk-3.0/3.0.0/immodules.cache
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
 

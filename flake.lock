@@ -96,17 +96,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1778493480,
-        "narHash": "sha256-X/Zdv0SCBRWB2Z432BgcnHkoOm6H2LaMBJYwfKS37UE=",
-        "ref": "refs/tags/v0.0.11-alpha",
-        "rev": "0e841d42249ca727354dba80705c9965874fc330",
-        "revCount": 75,
+        "lastModified": 1778497227,
+        "narHash": "sha256-svaSme5Hg1A33FM6AJtK5X+JiQmEYMjb4Gja97WrfzY=",
+        "ref": "refs/tags/v0.0.12-alpha",
+        "rev": "78a727721015e9cd67eb387d09f7bf8db62b0a20",
+        "revCount": 76,
         "type": "git",
         "url": "ssh://git@github.com/xkinput/keytao-installer.git"
       },
       "original": {
-        "ref": "refs/tags/v0.0.11-alpha",
-        "rev": "0e841d42249ca727354dba80705c9965874fc330",
+        "ref": "refs/tags/v0.0.12-alpha",
+        "rev": "78a727721015e9cd67eb387d09f7bf8db62b0a20",
         "type": "git",
         "url": "ssh://git@github.com/xkinput/keytao-installer.git"
       }

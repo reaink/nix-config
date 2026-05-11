@@ -66,7 +66,7 @@
 
     # KeyTao installer GUI
     keytao-installer = {
-      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.11-alpha&rev=0e841d42249ca727354dba80705c9965874fc330";
+      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.12-alpha&rev=78a727721015e9cd67eb387d09f7bf8db62b0a20";
     };
   };
 
@@ -100,6 +100,7 @@
                 (import ./overlays/fix-picosvg-tests.nix)
                 (import ./overlays/fix-openldap-tests.nix)
                 (import ./overlays/fix-marktext-build.nix)
+                (import ./overlays/fix-wechat-keytao-ime.nix)
                 # sunshine/gearlever(dwarfs) are broken in unstable (boost 1.89 regression), use stable
                 (_: _: { sunshine = (stablePkgsFor "x86_64-linux").sunshine; })
                 (_: _: { gearlever = (stablePkgsFor "x86_64-linux").gearlever; })

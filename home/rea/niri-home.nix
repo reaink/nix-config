@@ -726,6 +726,13 @@ in
     ${pkgs.procps}/bin/pkill -x nautilus 2>/dev/null || true
   '';
 
+  # After rebuild, restart noctalia-shell so the launcher picks up new .desktop entries.
+  home.activation.restartNoctalia = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if ${pkgs.procps}/bin/pgrep -x noctalia-shell > /dev/null 2>&1; then
+      noctalia-shell kill 2>/dev/null || true
+    fi
+  '';
+
   services.gnome-keyring = {
     enable = true;
     components = [ "secrets" ];

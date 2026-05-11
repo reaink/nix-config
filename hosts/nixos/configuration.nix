@@ -430,9 +430,6 @@
         ++ [ pkgs.pipewire ]
       )
     );
-    # keytao-linux-ime handles Wayland apps via zwp_input_method_v2 (no IM module needed).
-    # XWayland apps (e.g. WeChat) fall back to XIM — keytao-linux-ime's X11 backend.
-    XMODIFIERS = "@im=keytao";
   };
 
   virtualisation.waydroid = {

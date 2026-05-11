@@ -12,7 +12,6 @@
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
     home.packages = with pkgs; [
-      inputs.keytao-installer.packages.${pkgs.stdenv.hostPlatform.system}.default
       # Tauri/GTK development libraries
       glib
       glib.dev
@@ -529,7 +528,7 @@
         "InstantMessaging"
         "Chat"
       ];
-      comment = "WeChat with KeyTao XIM environment";
+      comment = "WeChat with KeyTao input method environment";
       settings = {
         StartupWMClass = "wechat";
         Keywords = "wechat;weixin;微信;";

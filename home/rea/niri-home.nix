@@ -20,7 +20,6 @@ in
   programs.niri.settings = {
     spawn-at-startup = [
       { command = [ "noctalia-shell" ]; }
-      { command = [ "keytao-installer" ]; }
       {
         command = [
           "wl-clip-persist"
@@ -44,8 +43,6 @@ in
       "NIXOS_OZONE_WL" = "1";
       "ELECTRON_OZONE_PLATFORM_HINT" = "wayland";
       "GDK_BACKEND" = "wayland,x11";
-      "GTK_IM_MODULE" = "xim";
-      "QT_IM_MODULE" = "xim";
       "QT_QPA_PLATFORM" = "wayland;xcb";
       "QT_QPA_PLATFORMTHEME" = "qt6ct"; # lets qt6ct apply noctalia colors to Qt apps
       "XDG_CURRENT_DESKTOP" = "niri:GNOME";
@@ -53,7 +50,6 @@ in
       # processes spawned at startup (e.g. keytao-ime X11 backend) can connect
       # to XWayland even before the first X11 client triggers its lazy start.
       "DISPLAY" = ":0";
-      "XMODIFIERS" = "@im=keytao";
     };
 
     input = {

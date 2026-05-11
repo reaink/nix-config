@@ -66,7 +66,7 @@
 
     # KeyTao installer GUI
     keytao-installer = {
-      url = "github:xkinput/keytao-installer";
+      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.9-alpha&rev=9a8c2566f435024e9e769a2b6409ed5ce712d5f8";
     };
   };
 
@@ -122,6 +122,7 @@
               home-manager.users.rea = {
                 imports = [
                   ./home/rea/linux-home.nix
+                  inputs.keytao-installer.homeManagerModules.default
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                   inputs.noctalia.homeModules.default

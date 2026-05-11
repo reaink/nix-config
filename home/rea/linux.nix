@@ -67,7 +67,8 @@
 
           # WeChat hides to tray on window close; niri has no systray so the
           # process stays invisible. Kill the old instance for a clean restart.
-          pkill -x wechat 2>/dev/null || true
+          # Exclude self ($$) so the wrapper doesn't suicide before exec.
+          pgrep -x wechat | grep -v "^$$\$" | xargs -r kill 2>/dev/null || true
           sleep 0.3
           exec ${pkgs.wechat}/bin/wechat "$@"
         ''

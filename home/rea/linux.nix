@@ -506,7 +506,7 @@
     xdg.desktopEntries.wechat = {
       name = "WeChat";
       genericName = "WeChat";
-      exec = "wechat-uos %U";
+      exec = "env XMODIFIERS=@im=ibus wechat-uos %U";
       icon = "wechat-uos";
       terminal = false;
       categories = [

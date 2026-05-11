@@ -59,6 +59,10 @@
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
 
+          # WeChat hides to tray on window close; niri has no systray so the
+          # process stays invisible. Kill the old instance for a clean restart.
+          pkill -x wechat 2>/dev/null || true
+          sleep 0.3
           exec ${pkgs.wechat}/bin/wechat "$@"
         ''
       ))

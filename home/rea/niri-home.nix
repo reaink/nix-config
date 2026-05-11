@@ -127,6 +127,7 @@ in
           bottom-right = 14.0;
         };
         clip-to-geometry = true;
+        open-focused = true;
       }
       {
         matches = [
@@ -717,6 +718,12 @@ in
   # gtk.css is also overwritten by nwg-look (symlink) or noctalia's GTK template at runtime.
   home.activation.cleanNoctaliaConflicts = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
     rm -f "${config.xdg.configHome}/noctalia/settings.json.backup"
+  '';
+
+  # After rebuild, the running nautilus daemon may have stale library handles from
+  # the old store path. Kill it so the next Win+E gets a clean start.
+  home.activation.killStaleNautilus = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.procps}/bin/pkill -x nautilus 2>/dev/null || true
   '';
 
   services.gnome-keyring = {

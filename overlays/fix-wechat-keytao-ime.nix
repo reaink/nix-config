@@ -30,6 +30,7 @@ final: prev:
             export GTK_IM_MODULE_FILE="''${GTK_IM_MODULE_FILE:-/usr/lib64/gtk-3.0/3.0.0/immodules.cache}"
             export GDK_BACKEND="''${GDK_BACKEND:-x11}"
             export QT_QPA_PLATFORM="''${QT_QPA_PLATFORM:-xcb}"
+            export IBUS_ADDRESS="''${IBUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}"
 
             exec -a "$0" "$0.real" "$@"
             EOF

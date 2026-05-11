@@ -53,8 +53,8 @@
         writeShellScriptBin "wechat" ''
           unset WAYLAND_DISPLAY
           export XMODIFIERS=@im=keytao
-          export GTK_IM_MODULE=xim
-          export QT_IM_MODULE=xim
+          export GTK_IM_MODULE=ibus
+          export QT_IM_MODULE=ibus
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
 
@@ -521,7 +521,7 @@
     xdg.desktopEntries.wechat = {
       name = "WeChat";
       genericName = "WeChat";
-      exec = "env -u WAYLAND_DISPLAY XMODIFIERS=@im=keytao GTK_IM_MODULE=xim QT_IM_MODULE=xim GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb wechat %U";
+      exec = "env -u WAYLAND_DISPLAY XMODIFIERS=@im=keytao GTK_IM_MODULE=ibus QT_IM_MODULE=ibus GDK_BACKEND=x11 QT_QPA_PLATFORM=xcb ${pkgs.wechat}/bin/wechat %U";
       icon = "wechat";
       terminal = false;
       categories = [

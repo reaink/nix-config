@@ -48,28 +48,8 @@
       todesk
 
       # Linux-specific GUI apps
-      (lib.hiPrio (
-        writeShellScriptBin "wechat" ''
-          unset WAYLAND_DISPLAY
-          export DISPLAY="''${DISPLAY:-:0}"
-          export XMODIFIERS=@im=keytao
-          export GTK_IM_MODULE=xim
-          export QT_IM_MODULE=xim
-          export GTK_IM_MODULE_FILE=/usr/lib64/gtk-3.0/3.0.0/immodules.cache
-          export GDK_BACKEND=x11
-          export QT_QPA_PLATFORM=xcb
-
-          # WeChat hides to tray on window close; niri has no systray so the
-          # process stays invisible. Kill the old instance for a clean restart.
-          pkill -x wechat 2>/dev/null || true
-          sleep 0.3
-          exec ${pkgs.wechat}/bin/wechat "$@"
-        ''
-      ))
-      wechat
+      wechat-uos
       qq
-
-      # wechat-uos
       wpsoffice-cn
 
       # System tools
@@ -526,17 +506,17 @@
     xdg.desktopEntries.wechat = {
       name = "WeChat";
       genericName = "WeChat";
-      exec = "${config.home.profileDirectory}/bin/wechat %U";
-      icon = "wechat";
+      exec = "wechat-uos %U";
+      icon = "wechat-uos";
       terminal = false;
       categories = [
         "Network"
         "InstantMessaging"
         "Chat"
       ];
-      comment = "WeChat with KeyTao input method environment";
+      comment = "WeChat (UOS)";
       settings = {
-        StartupWMClass = "wechat";
+        StartupWMClass = "wechat-uos";
         Keywords = "wechat;weixin;微信;";
       };
     };

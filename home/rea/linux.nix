@@ -50,6 +50,18 @@
       todesk
 
       # Linux-specific GUI apps
+      (lib.hiPrio (
+        writeShellScriptBin "wechat" ''
+          unset WAYLAND_DISPLAY
+          export XMODIFIERS=@im=keytao
+          export GTK_IM_MODULE=xim
+          export QT_IM_MODULE=xim
+          export GDK_BACKEND=x11
+          export QT_QPA_PLATFORM=xcb
+
+          exec ${pkgs.wechat}/bin/wechat "$@"
+        ''
+      ))
       wechat
       qq
 

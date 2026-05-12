@@ -58,6 +58,8 @@ nix-config/
 │   ├── nixos/                # NixOS 桌面
 │   │   ├── default.nix       # 主机入口
 │   │   ├── configuration.nix # 系统配置（硬件、桌面、服务）
+│   │   ├── linux-kde.nix     # KDE Plasma 6 桌面
+│   │   ├── desktop.nix       # niri 桌面配置（保留，当前未启用）
 │   │   ├── hardware-configuration.nix
 │   │   └── sunshine.nix      # 自定义模块
 │   └── mac/                  # macOS 笔记本
@@ -75,7 +77,9 @@ nix-config/
 │   └── rea/
 │       ├── default.nix       # 用户入口（条件导入）
 │       ├── common.nix        # 跨平台配置（CLI、开发工具、Zsh、Git）
-│       ├── linux.nix         # Linux 特有（GTK/Qt 主题、KDE、游戏）
+│       ├── linux.nix         # Linux 通用配置（GTK/Qt 主题、游戏、GUI 应用）
+│       ├── kde-home.nix      # KDE Plasma 用户配置
+│       ├── niri-home.nix     # niri 用户配置（保留，当前未启用）
 │       └── darwin.nix        # macOS 特有（最小配置）
 │
 ├── secrets/                  # SOPS 加密密钥（NixOS）
@@ -124,7 +128,8 @@ nix-config/
 - **GPU 1**: NVIDIA RTX 4070 Super（discrete，12GB VRAM）
 - **GPU 2**: AMD Radeon 890M（integrated，RDNA 3.5，PRIME Sync 模式下由 NVIDIA 主渲染）
 - **内存**: 64GB
-- **桌面**: niri (Wayland, scrollable tiling) + Noctalia Shell
+- **桌面**: KDE Plasma 6 (Wayland)
+- **保留配置**: niri (Wayland, scrollable tiling) + Noctalia Shell，见 `hosts/nixos/desktop.nix` 和 `home/rea/niri-home.nix`
 
 ### macOS 笔记本
 - **用户**: rea

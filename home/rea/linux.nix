@@ -7,7 +7,10 @@
 }:
 
 {
-  imports = [ ./niri-home.nix ];
+  imports = [
+    # ./niri-home.nix # niri desktop home config, kept for switching back later
+    ./kde-home.nix
+  ];
 
   config = lib.mkIf pkgs.stdenv.isLinux {
     # Linux-specific packages
@@ -65,11 +68,9 @@
             export GTK_IM_MODULE=ibus
           fi
 
-          # WeChat hides to tray on window close; niri has no systray so the
-          # process stays invisible. Kill the old instance for a clean restart.
-          # Exclude self ($$) so the wrapper doesn't suicide before exec.
-          pgrep -x wechat | grep -v "^$$\$" | xargs -r kill 2>/dev/null || true
-          sleep 0.3
+          # niri no-tray restart workaround kept disabled for KDE.
+          # pgrep -x wechat | grep -v "^$$\$" | xargs -r kill 2>/dev/null || true
+          # sleep 0.3
           exec ${pkgs.wechat}/bin/wechat "$@"
         ''
       ))
@@ -334,10 +335,10 @@
       };
     };
 
-    # Qt icon theme - qt6ct reads from config file, no GSettings/gnome-settings-daemon needed
+    # Qt icon theme - qt6ct is the desktop-agnostic fallback; KDE overrides this in kde-home.nix.
     qt = {
       enable = true;
-      platformTheme.name = "qt6ct";
+      platformTheme.name = lib.mkDefault "qt6ct";
     };
 
     xdg.configFile."qt6ct/qt6ct.conf".text = ''
@@ -380,7 +381,8 @@
         gtk-xft-rgba = "rgb";
       };
 
-      gtk4.theme = null; # noctalia GTK template manages gtk-4.0/gtk.css at runtime
+      # niri/noctalia managed gtk-4.0/gtk.css at runtime; KDE uses the shared GTK theme.
+      # gtk4.theme = null;
 
       gtk4.extraConfig = {
         gtk-application-prefer-dark-theme = true;

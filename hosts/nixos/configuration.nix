@@ -13,7 +13,8 @@
   imports = [
     ./hardware-configuration.nix
     ./sunshine.nix
-    ./desktop.nix
+    # ./desktop.nix # niri desktop, kept for switching back later
+    ./linux-kde.nix
   ];
 
   # sops secrets configuration

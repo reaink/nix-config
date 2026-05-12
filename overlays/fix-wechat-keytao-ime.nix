@@ -24,9 +24,14 @@ final: prev:
                         cat > $out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx <<'EOF'
             #!${final.bash}/bin/bash
             export DISPLAY="''${DISPLAY:-:0}"
-            export XMODIFIERS="''${XMODIFIERS:-@im=keytao}"
-            export GTK_IM_MODULE="''${GTK_IM_MODULE:-xim}"
-            export QT_IM_MODULE="''${QT_IM_MODULE:-xim}"
+            # Chromium/CEF activates IBus only when XMODIFIERS=@im=ibus or
+            # GTK_IM_MODULE=ibus.  bubblewrap clears the outer environment, so
+            # we must set these unconditionally (no :-fallback) to force IBus
+            # instead of XIM.  keytao-ime registers as org.freedesktop.IBus on
+            # the session D-Bus, so Chromium will find it via the address file.
+            export XMODIFIERS="@im=ibus"
+            export GTK_IM_MODULE="ibus"
+            export QT_IM_MODULE="ibus"
             export GTK_IM_MODULE_FILE="''${GTK_IM_MODULE_FILE:-/usr/lib64/gtk-3.0/3.0.0/immodules.cache}"
             export GDK_BACKEND="''${GDK_BACKEND:-x11}"
             export QT_QPA_PLATFORM="''${QT_QPA_PLATFORM:-xcb}"

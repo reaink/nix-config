@@ -74,6 +74,18 @@
           exec ${pkgs.wechat}/bin/wechat "$@"
         ''
       ))
+      (lib.hiPrio (
+        writeShellScriptBin "qq" ''
+          unset WAYLAND_DISPLAY
+          export DISPLAY="''${DISPLAY:-:0}"
+          export GDK_BACKEND=x11
+          export QT_QPA_PLATFORM=xcb
+          export ELECTRON_OZONE_PLATFORM_HINT=x11
+          export NIXOS_OZONE_WL=0
+
+          exec ${pkgs.qq}/bin/qq --ozone-platform-hint=x11 "$@"
+        ''
+      ))
       wechat
       qq
       wpsoffice-cn
@@ -423,6 +435,10 @@
       --enable-features=WebUIDarkMode
     '';
 
+    xdg.configFile."qq-electron-flags.conf".text = ''
+      --ozone-platform-hint=x11
+    '';
+
     # Steam font support
     home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source =
       "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";
@@ -545,6 +561,18 @@
       settings = {
         StartupWMClass = "wechat";
         Keywords = "wechat;weixin;微信;";
+      };
+    };
+    xdg.desktopEntries.qq = {
+      name = "QQ";
+      genericName = "QQ";
+      exec = "${config.home.profileDirectory}/bin/qq %U";
+      icon = "qq";
+      terminal = false;
+      categories = [ "Network" ];
+      comment = "QQ forced to XWayland for clipboard sync";
+      settings = {
+        StartupWMClass = "QQ";
       };
     };
   };

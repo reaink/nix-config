@@ -42,8 +42,8 @@
     LIBVA_DRIVER_NAME = "nvidia";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     NVD_BACKEND = "direct";
-    XMODIFIERS = "@im=keytao";
-    QT_IM_MODULE = "ibus";
-    GTK_IM_MODULE = "ibus";
+    XMODIFIERS = "@im=fcitx";
+    QT_IM_MODULE = "fcitx";
+    GTK_IM_MODULE = "fcitx";
   };
 }

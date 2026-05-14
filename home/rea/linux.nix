@@ -560,7 +560,7 @@
         "InstantMessaging"
         "Chat"
       ];
-      comment = "WeChat with KeyTao input method";
+      comment = "WeChat with fcitx5 input method";
       settings = {
         StartupWMClass = "wechat";
         Keywords = "wechat;weixin;微信;";

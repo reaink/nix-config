@@ -22,9 +22,6 @@
     pavucontrol
   ];
 
-  programs.keytao-installer.autostart = false;
-  programs.keytao-installer.kde = true;
-
   qt = {
     enable = true;
     platformTheme.name = lib.mkForce "kde";
@@ -94,9 +91,6 @@
   };
 
   xdg.configFile."mimeapps.list".force = lib.mkForce true;
-
-  xdg.configFile."autostart/keytao-installer.desktop".source =
-    "${config.programs.keytao-installer.package}/share/applications/keytao-installer.desktop";
 
   xdg.desktopEntries.wechat.settings.StartupWMClass = lib.mkForce "wechat";
 

@@ -64,10 +64,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # KeyTao installer GUI
-    keytao-installer = {
-      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.20-alpha&rev=22a1b84430cf62ad7d4ceece090d1c8a68039ad2";
-    };
   };
 
   outputs =
@@ -101,7 +97,6 @@
                 (import ./overlays/fix-openldap-tests.nix)
                 (import ./overlays/fix-marktext-build.nix)
                 (import ./overlays/fix-libkgapi-gcc15-ice.nix)
-                (import ./overlays/fix-wechat-keytao-ime.nix)
                 # sunshine/gearlever(dwarfs) are broken in unstable (boost 1.89 regression), use stable
                 (_: _: { sunshine = (stablePkgsFor "x86_64-linux").sunshine; })
                 (_: _: { gearlever = (stablePkgsFor "x86_64-linux").gearlever; })
@@ -124,7 +119,6 @@
               home-manager.users.rea = {
                 imports = [
                   ./home/rea/linux-home.nix
-                  inputs.keytao-installer.homeManagerModules.default
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                   inputs.noctalia.homeModules.default

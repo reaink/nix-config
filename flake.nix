@@ -66,7 +66,7 @@
 
     # KeyTao installer GUI
     keytao-installer = {
-      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.16-alpha&rev=2a3cd1f6349375d80137898a836335fca585f438";
+      url = "git+ssh://git@github.com/xkinput/keytao-installer.git?ref=refs/tags/v0.0.17-alpha&rev=216837183e76c7526d1315c20a6012ff0c3e3a79";
     };
   };
 

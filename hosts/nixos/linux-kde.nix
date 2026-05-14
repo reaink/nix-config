@@ -43,5 +43,7 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     NVD_BACKEND = "direct";
     XMODIFIERS = "@im=keytao";
+    QT_IM_MODULE = "ibus";
+    GTK_IM_MODULE = "ibus";
   };
 }

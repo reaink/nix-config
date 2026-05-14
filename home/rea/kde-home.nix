@@ -23,6 +23,7 @@
   ];
 
   programs.keytao-installer.autostart = false;
+  programs.keytao-installer.kde = true;
 
   qt = {
     enable = true;

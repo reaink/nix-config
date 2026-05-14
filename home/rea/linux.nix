@@ -439,6 +439,9 @@
       --ozone-platform-hint=x11
     '';
 
+    # GTK4 CSS is a generated HM file and may also be touched by theme tooling.
+    xdg.configFile."gtk-4.0/gtk.css".force = true;
+
     # Steam font support
     home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source =
       "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";

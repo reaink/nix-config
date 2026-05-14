@@ -18,10 +18,11 @@
     kdePackages.kcalc
     kdePackages.spectacle
     kdePackages.plasma-systemmonitor
-    kdePackages.filelight
     kdePackages.kwalletmanager
     pavucontrol
   ];
+
+  programs.keytao-installer.autostart = false;
 
   qt = {
     enable = true;
@@ -90,6 +91,11 @@
       "x-scheme-handler/ftp" = "google-chrome.desktop";
     };
   };
+
+  xdg.configFile."mimeapps.list".force = lib.mkForce true;
+
+  xdg.configFile."autostart/keytao-installer.desktop".source =
+    "${config.programs.keytao-installer.package}/share/applications/keytao-installer.desktop";
 
   xdg.desktopEntries.wechat.settings.StartupWMClass = lib.mkForce "wechat";
 

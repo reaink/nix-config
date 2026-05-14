@@ -63,6 +63,15 @@
     imagemagick
     ffmpeg
     mdbook
+    lsof
+    fd
+    tree-sitter
+    sqlite
+    stylua
+    shfmt
+    shellcheck
+    prettier
+    ruff
 
     # Cross-platform GUI applications
     dbeaver-bin
@@ -108,25 +117,6 @@
   # Keep rustup directories from being affected by nix gc
   home.file.".cargo/.keep".text = "";
   home.file.".rustup/.keep".text = "";
-
-  # Neovim wrapper — extraPackages are injected into the wrapper's PATH so
-  # tools are available regardless of how nvim is launched (GUI, etc.)
-  programs.neovim = {
-    enable = true;
-    withRuby = false;
-    withPython3 = false;
-    extraPackages = with pkgs; [
-      lsof
-      fd
-      tree-sitter
-      sqlite
-      stylua
-      shfmt
-      shellcheck
-      prettier
-      ruff
-    ];
-  };
 
   # AstroNvim configuration — symlink the entire config directory from the
   # pinned GitHub source so `rebuild` always applies the latest locked version.

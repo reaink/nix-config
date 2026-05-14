@@ -43,7 +43,5 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     NVD_BACKEND = "direct";
     XMODIFIERS = "@im=fcitx";
-    QT_IM_MODULE = "fcitx";
-    GTK_IM_MODULE = "fcitx";
   };
 }

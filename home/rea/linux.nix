@@ -47,7 +47,7 @@
       android-studio
       scrcpy
       waydroid-helper
-      libreoffice-still
+      onlyoffice-desktopeditors
       todesk
 
       # Linux-specific GUI apps
@@ -88,7 +88,6 @@
       ))
       wechat
       qq
-      wpsoffice-cn
 
       # System tools
       adwaita-qt6
@@ -320,24 +319,25 @@
         "audio/x-m4a" = "mpv.desktop";
 
         # PDF
-        "application/pdf" = "wps-office-pdf.desktop";
+        "application/pdf" = "onlyoffice-desktopeditors.desktop";
 
-        # Documents (WPS Office)
-        "application/msword" = "wps-office-wps.desktop";
+        # Documents (OnlyOffice Desktop Editors)
+        "application/msword" = "onlyoffice-desktopeditors.desktop";
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-          "wps-office-wps.desktop";
-        "application/vnd.oasis.opendocument.text" = "wps-office-wps.desktop";
+          "onlyoffice-desktopeditors.desktop";
+        "application/vnd.oasis.opendocument.text" = "onlyoffice-desktopeditors.desktop";
 
-        # Spreadsheets (WPS ET)
-        "application/vnd.ms-excel" = "wps-office-et.desktop";
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "wps-office-et.desktop";
-        "application/vnd.oasis.opendocument.spreadsheet" = "wps-office-et.desktop";
+        # Spreadsheets
+        "application/vnd.ms-excel" = "onlyoffice-desktopeditors.desktop";
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" =
+          "onlyoffice-desktopeditors.desktop";
+        "application/vnd.oasis.opendocument.spreadsheet" = "onlyoffice-desktopeditors.desktop";
 
-        # Presentations (WPS Presentation)
-        "application/vnd.ms-powerpoint" = "wps-office-wpp.desktop";
+        # Presentations
+        "application/vnd.ms-powerpoint" = "onlyoffice-desktopeditors.desktop";
         "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
-          "wps-office-wpp.desktop";
-        "application/vnd.oasis.opendocument.presentation" = "wps-office-wpp.desktop";
+          "onlyoffice-desktopeditors.desktop";
+        "application/vnd.oasis.opendocument.presentation" = "onlyoffice-desktopeditors.desktop";
 
         # Browser
         "text/html" = "google-chrome.desktop";
@@ -394,7 +394,7 @@
       };
 
       # niri/noctalia managed gtk-4.0/gtk.css at runtime; KDE uses the shared GTK theme.
-      # gtk4.theme = null;
+      gtk4.theme = config.gtk.theme;
 
       gtk4.extraConfig = {
         gtk-application-prefer-dark-theme = true;

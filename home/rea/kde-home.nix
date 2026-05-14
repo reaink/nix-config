@@ -69,19 +69,20 @@
 
       "application/pdf" = "org.kde.okular.desktop";
 
-      "application/msword" = "wps-office-wps.desktop";
+      "application/msword" = "onlyoffice-desktopeditors.desktop";
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-        "wps-office-wps.desktop";
-      "application/vnd.oasis.opendocument.text" = "wps-office-wps.desktop";
+        "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.text" = "onlyoffice-desktopeditors.desktop";
 
-      "application/vnd.ms-excel" = "wps-office-et.desktop";
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "wps-office-et.desktop";
-      "application/vnd.oasis.opendocument.spreadsheet" = "wps-office-et.desktop";
+      "application/vnd.ms-excel" = "onlyoffice-desktopeditors.desktop";
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" =
+        "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.spreadsheet" = "onlyoffice-desktopeditors.desktop";
 
-      "application/vnd.ms-powerpoint" = "wps-office-wpp.desktop";
+      "application/vnd.ms-powerpoint" = "onlyoffice-desktopeditors.desktop";
       "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
-        "wps-office-wpp.desktop";
-      "application/vnd.oasis.opendocument.presentation" = "wps-office-wpp.desktop";
+        "onlyoffice-desktopeditors.desktop";
+      "application/vnd.oasis.opendocument.presentation" = "onlyoffice-desktopeditors.desktop";
 
       "text/html" = "google-chrome.desktop";
       "x-scheme-handler/http" = "google-chrome.desktop";

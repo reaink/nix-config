@@ -120,6 +120,7 @@
       (prismlauncher.override {
         additionalLibs = [ libxkbcommon ];
       })
+      (pkgs.callPackage ../../pkgs/waylandcraft.nix {})
 
       winetricks
       wineWow64Packages.full
@@ -445,6 +446,9 @@
     xdg.configFile."gtk-4.0/gtk.css".force = true;
 
     # Steam font support
+    home.file.".local/share/PrismLauncher/instances/26.1.2/minecraft/mods/waylandcraft-1.0.0.jar".source =
+      "${pkgs.callPackage ../../pkgs/waylandcraft.nix {}}/share/mods/waylandcraft-1.0.0.jar";
+
     home.file.".local/share/fonts/noto-cjk/NotoSansCJK-VF.otf.ttc".source =
       "${pkgs.noto-fonts-cjk-sans}/share/fonts/opentype/noto-cjk/NotoSansCJK-VF.otf.ttc";
     home.file.".local/share/fonts/source-han/SourceHanSans-VF.otf.ttc".source =

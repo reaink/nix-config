@@ -120,6 +120,7 @@
       (prismlauncher.override {
         additionalLibs = [ libxkbcommon ];
       })
+      libxkbcommon
       (pkgs.callPackage ../../pkgs/waylandcraft.nix {})
 
       winetricks

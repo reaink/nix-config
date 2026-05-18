@@ -230,8 +230,8 @@
     # Linux-specific Zsh aliases (override common.nix aliases)
     programs.zsh.shellAliases = {
       # Linux-specific (with sudo)
-      rebuild = "sudo nixos-rebuild switch --flake ~/nix-config\\#nixos";
-      test = "sudo nixos-rebuild test --flake ~/nix-config\\#nixos";
+      rebuild = "sudo nice -n 19 ionice -c 3 nixos-rebuild switch --flake ~/nix-config\\#nixos";
+      test = "sudo nice -n 19 ionice -c 3 nixos-rebuild test --flake ~/nix-config\\#nixos";
       gc = "sudo nix-collect-garbage";
       gcold = "sudo nix-collect-garbage --delete-older-than 30d";
       gcall = "sudo nix-collect-garbage -d";

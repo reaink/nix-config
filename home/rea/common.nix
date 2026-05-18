@@ -52,7 +52,7 @@
     google-cloud-sdk
     ngrok
     claude-code
-    copilot-cli
+    github-copilot-cli
     tmux
 
     # Database tools (cross-platform)

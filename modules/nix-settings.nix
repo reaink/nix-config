@@ -56,4 +56,13 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # Limit parallel jobs to prevent I/O saturation and system freeze
+  # 32 concurrent idle-priority jobs still saturate a single NVMe and trigger
+  # Linux dirty-page writeback throttling, which stalls the Wayland compositor.
+  nix.settings.max-jobs = 6;
+
+  # Lower nix-daemon scheduling priority for unprivileged builds
+  nix.daemonCPUSchedPolicy = "idle";
+  nix.daemonIOSchedClass = "idle";
 }

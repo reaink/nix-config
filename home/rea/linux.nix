@@ -117,7 +117,9 @@
           pkgs.gamemode
         ];
       })
-      prismlauncher
+      (prismlauncher.override {
+        additionalLibs = [ libxkbcommon ];
+      })
 
       winetricks
       wineWow64Packages.full

@@ -9,12 +9,19 @@ self: super: {
         let
           drv = super.stdenv.mkDerivation args;
           cjkFontPkgs = with super; [
+            # CJK
             noto-fonts-cjk-sans
             noto-fonts-cjk-serif
             wqy_zenhei
+            wqy_microhei
             source-han-sans
             source-han-serif
+            source-han-mono
+            arphic-uming
+            arphic-ukai
             lxgw-wenkai
+            # Latin — metric-compatible MS font replacements (.docx defaults)
+            liberation_ttf
           ];
         in
           if (args.pname or "") == "onlyoffice-desktopeditors" then

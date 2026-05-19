@@ -21,7 +21,7 @@ self: super: {
             drv.overrideAttrs (_: {
               postInstall = super.lib.concatMapStringsSep "\n" (pkg: ''
                 find ${pkg}/share/fonts \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) \
-                  -exec ln -sf {} "$out/share/desktopeditors/fonts/" \;
+                  -exec cp {} "$out/share/desktopeditors/fonts/" \;
               '') cjkFontPkgs;
             })
           else drv;

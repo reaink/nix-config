@@ -1,18 +1,21 @@
 self: super: {
-  # OnlyOffice discovers fonts by scanning /usr/share/fonts inside its bwrap FHS env.
-  # The package.nix uses noto-fonts-cjk-sans as a named argument in targetPkgs,
-  # so we replace it with a symlinkJoin of all needed CJK fonts via callPackage override.
+  # OnlyOffice 9.x only scans its own desktopeditors/fonts/ dir, not /usr/share/fonts.
+  # We replace noto-fonts-cjk-sans (a targetPkgs entry) with a derivation whose
+  # outputs live under share/desktopeditors/fonts/, so bwrap maps them into
+  # /usr/share/desktopeditors/fonts/ — exactly where OnlyOffice looks.
   onlyoffice-desktopeditors = super.onlyoffice-desktopeditors.override {
-    noto-fonts-cjk-sans = super.symlinkJoin {
-      name = "onlyoffice-cjk-fonts";
-      paths = with super; [
-        noto-fonts-cjk-sans
-        noto-fonts-cjk-serif
-        wqy_zenhei
-        source-han-sans
-        source-han-serif
-        lxgw-wenkai
-      ];
-    };
+    noto-fonts-cjk-sans = super.runCommand "onlyoffice-desktopeditors-cjk-fonts" { } ''
+      mkdir -p $out/share/desktopeditors/fonts
+      for pkg in \
+        ${super.noto-fonts-cjk-sans} \
+        ${super.noto-fonts-cjk-serif} \
+        ${super.wqy_zenhei} \
+        ${super.source-han-sans} \
+        ${super.source-han-serif} \
+        ${super.lxgw-wenkai}; do
+        find "$pkg/share/fonts" \( -name "*.ttf" -o -name "*.otf" -o -name "*.ttc" \) \
+          -exec ln -sf {} $out/share/desktopeditors/fonts/ \;
+      done
+    '';
   };
 }

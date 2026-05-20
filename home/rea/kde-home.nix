@@ -6,6 +6,14 @@
 }:
 
 {
+  programs.keytao-app = {
+    enable = true;
+    kde = true;
+    kdeAutoConfigureVirtualKeyboard = true;
+    autostart = false;
+    setInputMethodEnvironment = true;
+  };
+
   home.packages = with pkgs; [
     kdePackages.dolphin
     kdePackages.dolphin-plugins

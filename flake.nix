@@ -41,6 +41,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    keytao-app = {
+      url = "git+file:///home/rea/code/keytao-app";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Catppuccin theme
     catppuccin = {
       url = "github:catppuccin/nix";
@@ -119,6 +124,7 @@
                 imports = [
                   ./home/rea/linux-home.nix
                   inputs.rime-keytao.homeManagerModules.default
+                  inputs.keytao-app.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                   inputs.noctalia.homeModules.default
                 ];
@@ -155,6 +161,7 @@
                 imports = [
                   ./home/rea/darwin-home.nix
                   inputs.rime-keytao.homeManagerModules.default
+                  inputs.keytao-app.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                 ];
               };

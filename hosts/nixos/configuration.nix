@@ -205,17 +205,7 @@
   hardware.xpadneo.enable = true; # Bluetooth Xbox controller driver
   hardware.xone.enable = true; # Xbox One wireless adapter support
 
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5 = {
-      waylandFrontend = true;
-      addons = with pkgs; [
-        fcitx5-rime
-        fcitx5-gtk
-      ];
-    };
-  };
+  i18n.inputMethod.enable = false;
 
   # Configure keymap in X11
   services.xserver.xkb = {

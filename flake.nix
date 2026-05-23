@@ -113,10 +113,6 @@
             # Host-specific configuration
             ./hosts/nixos
 
-            # System-wide KeyTao integration (Required for KWin Virtual Keyboard)
-            inputs.keytao-app.nixosModules.default
-            { services.keytao-app.enable = true; }
-
             # Home Manager integration
             home-manager.nixosModules.home-manager
             {

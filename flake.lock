@@ -98,17 +98,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1779528991,
-        "narHash": "sha256-cr5Ga5eZjC3qYmKUYMheWiLJ6AAMyhcdeTMd0TzdUpQ=",
-        "owner": "xkinput",
-        "repo": "keytao-app",
-        "rev": "236d771d5f279b116b2063eb0e94af98502a60f9",
-        "type": "github"
+        "lastModified": 1779535606,
+        "narHash": "sha256-Rjm/1YajQc5PIQtOpm7tHfSfd/0ctcrjcVALxB4GtO8=",
+        "ref": "refs/heads/main",
+        "rev": "5100b9eff8ee2c6bbc6568ad59770534d0099b75",
+        "revCount": 112,
+        "type": "git",
+        "url": "file:///home/rea/code/keytao-app"
       },
       "original": {
-        "owner": "xkinput",
-        "repo": "keytao-app",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/rea/code/keytao-app"
       }
     },
     "niri-flake": {

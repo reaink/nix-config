@@ -42,7 +42,7 @@
     };
 
     keytao-app = {
-      url = "git+file:///home/rea/code/keytao-app";
+      url = "github:xkinput/keytao-app";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

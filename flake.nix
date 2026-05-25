@@ -109,6 +109,7 @@
 
             # niri compositor module (replaces nixpkgs niri module)
             inputs.niri-flake.nixosModules.niri
+            inputs.keytao-app.nixosModules.default
 
             # Host-specific configuration
             ./hosts/nixos
@@ -124,7 +125,6 @@
                 imports = [
                   ./home/rea/linux-home.nix
                   inputs.rime-keytao.homeManagerModules.default
-                  inputs.keytao-app.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                   inputs.noctalia.homeModules.default
                 ];
@@ -161,7 +161,6 @@
                 imports = [
                   ./home/rea/darwin-home.nix
                   inputs.rime-keytao.homeManagerModules.default
-                  inputs.keytao-app.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                 ];
               };

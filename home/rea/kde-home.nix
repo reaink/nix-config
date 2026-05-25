@@ -2,19 +2,19 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
+let
+  system = pkgs.stdenv.hostPlatform.system;
+  keytaoPackage = inputs.keytao-app.packages.${system}.default;
+  kdeVirtualKeyboardDesktop = "keytao-wayland-launcher.desktop";
+in
 {
-  programs.keytao-app = {
-    enable = true;
-    kde = true;
-    kdeAutoConfigureVirtualKeyboard = true;
-    autostart = false;
-    setInputMethodEnvironment = true;
-  };
-
   home.packages = with pkgs; [
+    keytaoPackage
+    kdePackages.kconfig
     kdePackages.dolphin
     kdePackages.dolphin-plugins
     kdePackages.kio-extras
@@ -29,6 +29,95 @@
     kdePackages.kwalletmanager
     pavucontrol
   ];
+
+  home.sessionVariables = {
+    XMODIFIERS = "@im=keytao";
+    GTK_IM_MODULE = "ibus";
+    QT_IM_MODULE = "ibus";
+  };
+
+  systemd.user.sessionVariables = {
+    XMODIFIERS = "@im=keytao";
+    GTK_IM_MODULE = "ibus";
+    QT_IM_MODULE = "ibus";
+  };
+
+  xdg.configFile."autostart/keytao-ime.desktop".text = ''
+    [Desktop Entry]
+    Name=KeyTao IME Daemon
+    Exec=${keytaoPackage}/bin/keytao-ime
+    Icon=keytao-app
+    Type=Application
+    NoDisplay=true
+    X-KDE-autostart-phase=1
+  '';
+
+  xdg.dataFile."applications/${kdeVirtualKeyboardDesktop}".text = ''
+    [Desktop Entry]
+    Name=KeyTao Input Method (Wayland)
+    Name[zh_CN]=键道输入法 (Wayland)
+    Name[zh_TW]=鍵道輸入法 (Wayland)
+    GenericName=Input Method
+    GenericName[zh_CN]=输入法
+    GenericName[zh_TW]=輸入法
+    Comment=KeyTao Chinese Input Method Engine (KDE Virtual Keyboard)
+    Comment[zh_CN]=键道中文输入法引擎（KDE 虚拟键盘）
+    Comment[zh_TW]=鍵道中文輸入法引擎（KDE 虛擬鍵盤）
+    Exec=${keytaoPackage}/bin/keytao-ime
+    Icon=input-keyboard
+    Terminal=false
+    Type=Application
+    Categories=System;Utility;
+    StartupNotify=false
+    NoDisplay=true
+    OnlyShowIn=KDE;
+    X-KDE-StartupNotify=false
+    X-KDE-Wayland-VirtualKeyboard=true
+  '';
+
+  home.activation.configureKeytaoKdeVirtualKeyboard =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      rm -f "$HOME/.config/plasma-workspace/env/keytao.sh"
+
+      if [ -x "${pkgs.kdePackages.kconfig}/bin/kreadconfig6" ]; then
+        current_im="$("${pkgs.kdePackages.kconfig}/bin/kreadconfig6" \
+          --file "$HOME/.config/kwinrc" \
+          --group Wayland \
+          --key InputMethod || true)"
+
+        if [ "$current_im" != "${kdeVirtualKeyboardDesktop}" ]; then
+          "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6" \
+            --file "$HOME/.config/kwinrc" \
+            --group Wayland \
+            --key InputMethod \
+            "${kdeVirtualKeyboardDesktop}"
+        fi
+
+        current_exclude="$("${pkgs.kdePackages.kconfig}/bin/kreadconfig6" \
+          --file "$HOME/.config/ksmserverrc" \
+          --group General \
+          --key excludeApps || true)"
+
+        # Exclude both keytao-app and keytao-ime from session restore
+        new_exclude="$current_exclude"
+        for app in keytao-app keytao-ime; do
+          if [[ ! ",$new_exclude," == *",$app,"* ]]; then
+            if [ -z "$new_exclude" ]; then
+              new_exclude="$app"
+            else
+              new_exclude="$new_exclude,$app"
+            fi
+          fi
+        done
+        if [ "$new_exclude" != "$current_exclude" ]; then
+          "${pkgs.kdePackages.kconfig}/bin/kwriteconfig6" \
+            --file "$HOME/.config/ksmserverrc" \
+            --group General \
+            --key excludeApps \
+            "$new_exclude"
+        fi
+      fi
+    '';
 
   qt = {
     enable = true;

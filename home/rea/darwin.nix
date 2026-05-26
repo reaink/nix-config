@@ -15,6 +15,9 @@
       ANDROID_HOME = "$HOME/Library/Android/sdk";
       NDK_HOME = "$HOME/Library/Android/sdk/ndk/27.0.12077973";
       JAVA_HOME = "/Applications/Android Studio.app/Contents/jbr/Contents/Home";
+      CC = "/usr/bin/cc";
+      CXX = "/usr/bin/c++";
+      CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER = "/usr/bin/cc";
     };
 
     # macOS-specific packages (can be added as needed)

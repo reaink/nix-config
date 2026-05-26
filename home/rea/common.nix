@@ -9,85 +9,89 @@
 {
   imports = [ ];
   # Cross-platform packages
-  home.packages = with pkgs; [
-    # System utilities
-    fastfetch
-    zip
-    xz
-    unzip
-    p7zip
+  home.packages =
+    with pkgs;
+    [
+      # System utilities
+      fastfetch
+      zip
+      xz
+      unzip
+      p7zip
 
-    # Modern CLI tools
-    ripgrep
-    jq
-    eza
-    bat
-    bottom
-    zoxide
-    lazygit
-    lazydocker
-    gdu
-    redis
-    rclone
+      # Modern CLI tools
+      ripgrep
+      jq
+      eza
+      bat
+      bottom
+      zoxide
+      lazygit
+      lazydocker
+      gdu
+      redis
+      rclone
 
-    # Development tools - Rust (cross-platform)
-    rustup
-    protobuf
-    clang
-    libclang.lib
-    lld
-    gnumake
-    pkg-config
-    openssl
-    openssl.dev
-    android-tools
+      # Development tools - Rust (cross-platform)
+      rustup
+      protobuf
+      libclang.lib
+      gnumake
+      pkg-config
+      openssl
+      openssl.dev
+      android-tools
 
-    uv
-    python3
-    python3Packages.huggingface-hub
-    fnm
-    pnpm
-    bun
-    mariadb
-    google-cloud-sdk
-    ngrok
-    claude-code
-    github-copilot-cli
-    tmux
+      uv
+      python3
+      python3Packages.huggingface-hub
+      fnm
+      pnpm
+      bun
+      mariadb
+      google-cloud-sdk
+      ngrok
+      claude-code
+      github-copilot-cli
+      tmux
 
-    # Database tools (cross-platform)
-    # prisma-engines_7 # disabled: build fails with new rustc (metrics-0.23.0 lifetime bug, nixpkgs upstream issue)
+      # Database tools (cross-platform)
+      # prisma-engines_7 # disabled: build fails with new rustc (metrics-0.23.0 lifetime bug, nixpkgs upstream issue)
 
-    # Development tools (cross-platform)
-    typescript-language-server
-    imagemagick
-    ffmpeg
-    mdbook
-    lsof
-    fd
-    tree-sitter
-    sqlite
-    stylua
-    shfmt
-    shellcheck
-    prettier
-    ruff
+      # Development tools (cross-platform)
+      typescript-language-server
+      imagemagick
+      ffmpeg
+      mdbook
+      lsof
+      fd
+      tree-sitter
+      sqlite
+      stylua
+      shfmt
+      shellcheck
+      prettier
+      ruff
 
-    # Cross-platform GUI applications
-    dbeaver-bin
-    postman
-    google-chrome
-    telegram-desktop
-    discord
-    vscode-latest
-    obsidian
-    firefox
-    antigravity
-    marktext
+      # Cross-platform GUI applications
+      dbeaver-bin
+      postman
+      google-chrome
+      telegram-desktop
+      discord
+      vscode-latest
+      obsidian
+      firefox
+      antigravity
+      marktext
 
-    # Fonts
-    pkgs.nerd-fonts.jetbrains-mono
-  ];
+      # Fonts
+      pkgs.nerd-fonts.jetbrains-mono
+    ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      clang
+      lld
+    ];
 
   # GitHub CLI with gh-notify extension
   programs.gh = {

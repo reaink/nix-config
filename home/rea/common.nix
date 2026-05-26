@@ -83,7 +83,6 @@
       obsidian
       firefox
       antigravity
-      marktext
 
       # Fonts
       pkgs.nerd-fonts.jetbrains-mono
@@ -91,6 +90,7 @@
     ++ lib.optionals pkgs.stdenv.isLinux [
       clang
       lld
+      marktext
     ];
 
   # GitHub CLI with gh-notify extension

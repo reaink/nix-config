@@ -32,14 +32,10 @@ in
 
   home.sessionVariables = {
     XMODIFIERS = "@im=keytao";
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
   };
 
   systemd.user.sessionVariables = {
     XMODIFIERS = "@im=keytao";
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
   };
 
   xdg.configFile."autostart/keytao-ime.desktop".text = ''

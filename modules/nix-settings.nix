@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  options,
   ...
 }:
 
@@ -64,12 +65,12 @@ lib.mkMerge [
     nix.settings.max-jobs = 6;
 
   }
-  (lib.mkIf pkgs.stdenv.isLinux {
+  (lib.optionalAttrs (options.nix ? daemonCPUSchedPolicy) {
     # Lower nix-daemon scheduling priority for unprivileged builds
     nix.daemonCPUSchedPolicy = "idle";
     nix.daemonIOSchedClass = "idle";
   })
-  (lib.mkIf pkgs.stdenv.isDarwin {
+  (lib.optionalAttrs (options.nix ? daemonProcessType) {
     # Lower nix-daemon resource priority on launchd-based systems.
     nix.daemonProcessType = "Background";
   })

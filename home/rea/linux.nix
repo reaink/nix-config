@@ -57,6 +57,8 @@
           export DISPLAY="''${DISPLAY:-:0}"
           export QT_QPA_PLATFORM=xcb
           export GDK_BACKEND=x11
+          export XMODIFIERS="@im=keytao"
+          export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
 
           # Mirror wechat-uos IM detection; map keytao→ibus since
           # keytao-ime exposes an IBus D-Bus backend.
@@ -80,6 +82,10 @@
           export DISPLAY="''${DISPLAY:-:0}"
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
+          export XMODIFIERS="@im=keytao"
+          export QT_IM_MODULE=ibus
+          export GTK_IM_MODULE=ibus
+          export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
           export ELECTRON_OZONE_PLATFORM_HINT=x11
           export NIXOS_OZONE_WL=0
 

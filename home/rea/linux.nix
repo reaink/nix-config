@@ -58,12 +58,13 @@
           export QT_QPA_PLATFORM=xcb
           export GDK_BACKEND=x11
           export XMODIFIERS="@im=keytao"
+          export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
 
-          # WeChat/QQ are forced onto X11 above.  Use keytao's XIM server
-          # directly instead of relying on GTK/Qt IBus plugins inside their
-          # packaged runtime.
-          export QT_IM_MODULE=xim
-          export GTK_IM_MODULE=xim
+          # Chromium/Electron XIM can grab keys without completing the XIM
+          # handshake. Route these packaged apps through keytao's IBus D-Bus
+          # backend instead so normal editing keys keep working if IME falls back.
+          export QT_IM_MODULE=ibus
+          export GTK_IM_MODULE=ibus
 
           # niri no-tray restart workaround kept disabled for KDE.
           # pgrep -x wechat | grep -v "^$$\$" | xargs -r kill 2>/dev/null || true
@@ -78,8 +79,9 @@
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
           export XMODIFIERS="@im=keytao"
-          export QT_IM_MODULE=xim
-          export GTK_IM_MODULE=xim
+          export QT_IM_MODULE=ibus
+          export GTK_IM_MODULE=ibus
+          export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
           export ELECTRON_OZONE_PLATFORM_HINT=x11
           export NIXOS_OZONE_WL=0
 

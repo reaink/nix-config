@@ -41,7 +41,7 @@ in
   xdg.configFile."autostart/keytao-ime.desktop".text = ''
     [Desktop Entry]
     Name=KeyTao IME Daemon
-    Exec=${keytaoPackage}/bin/keytao-ime
+    Exec=${keytaoPackage}/bin/keytao-ime --backend=xim,ibus
     Icon=keytao-app
     Type=Application
     NoDisplay=true

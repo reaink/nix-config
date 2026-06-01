@@ -8,6 +8,12 @@
 
 {
   imports = [ ];
+
+  catppuccin = {
+    enable = true;
+    autoEnable = true;
+  };
+
   # Cross-platform packages
   home.packages =
     with pkgs;

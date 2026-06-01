@@ -358,6 +358,7 @@
     qt = {
       enable = true;
       platformTheme.name = lib.mkDefault "qt6ct";
+      style.name = lib.mkDefault "kvantum";
     };
 
     xdg.configFile."qt6ct/qt6ct.conf".text = ''
@@ -377,8 +378,8 @@
       };
 
       iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
+        name = lib.mkDefault "Papirus-Dark";
+        package = lib.mkDefault pkgs.papirus-icon-theme;
       };
 
       gtk3.extraConfig = {

@@ -25,7 +25,7 @@
 
     # Home Manager for user environment (cross-platform)
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -49,6 +49,7 @@
     # Catppuccin theme
     catppuccin = {
       url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # AstroNvim user configuration

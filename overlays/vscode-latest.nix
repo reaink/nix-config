@@ -40,6 +40,29 @@ self: super: {
         url = "https://update.code.visualstudio.com/latest/${platformConfig.platform}/stable";
         sha256 = platformConfig.hash;
       };
+
+      postPatch =
+        if super.stdenv.isLinux then
+          super.lib.replaceStrings
+            [
+              ''
+                rm resources/app/node_modules/@vscode/ripgrep/bin/rg
+                ln -s ${super.ripgrep}/bin/rg resources/app/node_modules/@vscode/ripgrep/bin/rg
+              ''
+            ]
+            [
+              ''
+                rm -f resources/app/node_modules/@vscode/ripgrep-universal/bin/linux-x64/rg
+                ln -s ${super.ripgrep}/bin/rg resources/app/node_modules/@vscode/ripgrep-universal/bin/linux-x64/rg
+              ''
+            ]
+            oldAttrs.postPatch
+        else
+          oldAttrs.postPatch;
+
+      autoPatchelfIgnoreMissingDeps = (oldAttrs.autoPatchelfIgnoreMissingDeps or [ ]) ++ [
+        "libc.musl-x86_64.so.1"
+      ];
     }
   );
 }

@@ -25,7 +25,7 @@
 
     # Home Manager for user environment (cross-platform)
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

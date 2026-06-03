@@ -57,7 +57,12 @@ lib.mkMerge [
     );
 
     # Allow unfree packages
-    nixpkgs.config.allowUnfree = true;
+    nixpkgs.config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "electron-39.8.10"
+      ];
+    };
 
     # Limit parallel jobs to prevent I/O saturation and system freeze
     # 32 concurrent idle-priority jobs still saturate a single NVMe and trigger

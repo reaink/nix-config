@@ -101,11 +101,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780573861,
-        "narHash": "sha256-Dcug3p9tzdomTQKjCchiD57ch+3pag5YJ2PWaKPAl3M=",
+        "lastModified": 1780578579,
+        "narHash": "sha256-6naZPHLch5R+S98HkeGGoL926aW+MEhbXbZLf4q7Gwc=",
         "ref": "refs/heads/main",
-        "rev": "c0671cd96b0ae2ed8606fe7de24511d3c1d8c6ad",
-        "revCount": 147,
+        "rev": "bbbd77f346c5371d36d6e27c1a12560819fdc207",
+        "revCount": 151,
         "type": "git",
         "url": "file:///home/rea/code/keytao-app"
       },

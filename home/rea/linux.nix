@@ -6,6 +6,12 @@
   ...
 }:
 
+let
+  gtkIbusImModulesCache = pkgs.runCommand "keytao-gtk-immodules.cache" { } ''
+    ${pkgs.gtk3.dev}/bin/gtk-query-immodules-3.0 \
+      ${pkgs.ibus}/lib/gtk-3.0/3.0.0/immodules/im-ibus.so > "$out"
+  '';
+in
 {
   imports = [
     # ./niri-home.nix # niri desktop home config, kept for switching back later
@@ -59,6 +65,8 @@
           export GDK_BACKEND=x11
           export XMODIFIERS="@im=keytao"
           export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
+          export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"
+          export GTK_IM_MODULE_FILE="${gtkIbusImModulesCache}"
 
           # Chromium/Electron XIM can grab keys without completing the XIM
           # handshake. Route these packaged apps through keytao's IBus D-Bus
@@ -82,6 +90,8 @@
           export QT_IM_MODULE=ibus
           export GTK_IM_MODULE=ibus
           export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
+          export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"
+          export GTK_IM_MODULE_FILE="${gtkIbusImModulesCache}"
           export ELECTRON_OZONE_PLATFORM_HINT=x11
           export NIXOS_OZONE_WL=0
 

@@ -52,13 +52,26 @@ self: super: {
             ]
             [
               ''
-                rm -f resources/app/node_modules/@vscode/ripgrep-universal/bin/linux-x64/rg
-                ln -s ${super.ripgrep}/bin/rg resources/app/node_modules/@vscode/ripgrep-universal/bin/linux-x64/rg
+                for rgPath in \
+                  resources/app/node_modules/@vscode/ripgrep/bin/rg \
+                  resources/app/node_modules/@vscode/ripgrep-universal/bin/linux-x64/rg
+                do
+                  if [ -e "$rgPath" ] || [ -d "$(dirname "$rgPath")" ]; then
+                    rm -f "$rgPath"
+                    ln -s ${super.ripgrep}/bin/rg "$rgPath"
+                    break
+                  fi
+                done
               ''
             ]
-            oldAttrs.postPatch
+            (oldAttrs.postPatch or "")
+        else if super.stdenv.isDarwin then
+          super.lib.replaceStrings
+            [ "Contents/Resources/app/node_modules/@vscode/ripgrep/bin/rg" ]
+            [ "Contents/Resources/app/node_modules/@vscode/ripgrep-universal/bin/darwin-arm64/rg" ]
+            (oldAttrs.postPatch or "")
         else
-          oldAttrs.postPatch;
+          oldAttrs.postPatch or "";
 
       autoPatchelfIgnoreMissingDeps = (oldAttrs.autoPatchelfIgnoreMissingDeps or [ ]) ++ [
         "libc.musl-x86_64.so.1"

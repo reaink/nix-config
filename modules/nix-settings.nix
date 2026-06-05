@@ -6,6 +6,10 @@
   ...
 }:
 
+let
+  isDarwin = options ? launchd;
+  isLinux = options ? systemd;
+in
 lib.mkMerge [
   {
     # Enable flakes and new nix command
@@ -70,12 +74,12 @@ lib.mkMerge [
     nix.settings.max-jobs = 6;
 
   }
-  (lib.optionalAttrs (options.nix ? daemonCPUSchedPolicy) {
+  (lib.optionalAttrs (isLinux && options.nix ? daemonCPUSchedPolicy) {
     # Lower nix-daemon scheduling priority for unprivileged builds
     nix.daemonCPUSchedPolicy = "idle";
     nix.daemonIOSchedClass = "idle";
   })
-  (lib.optionalAttrs (options.nix ? daemonProcessType) {
+  (lib.optionalAttrs (isDarwin && options.nix ? daemonProcessType) {
     # Lower nix-daemon resource priority on launchd-based systems.
     nix.daemonProcessType = "Background";
   })

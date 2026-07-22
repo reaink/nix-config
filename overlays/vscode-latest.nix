@@ -66,9 +66,14 @@ self: super: {
             ]
             (oldAttrs.postPatch or "")
         else if super.stdenv.isDarwin then
+          # The Microsoft "latest" zip ships ripgrep under node_modules.asar.unpacked,
+          # but nixpkgs' base postPatch targets plain node_modules (and its exact path
+          # shifts across releases: @vscode/ripgrep/bin/rg -> @vscode/ripgrep-universal/
+          # bin/darwin-arm64/rg). Match only the version-stable fragment and inject the
+          # .asar.unpacked segment so this keeps working across nixpkgs bumps.
           super.lib.replaceStrings
-            [ "Contents/Resources/app/node_modules/@vscode/ripgrep/bin/rg" ]
-            [ "Contents/Resources/app/node_modules/@vscode/ripgrep-universal/bin/darwin-arm64/rg" ]
+            [ "app/node_modules/@vscode/ripgrep" ]
+            [ "app/node_modules.asar.unpacked/@vscode/ripgrep" ]
             (oldAttrs.postPatch or "")
         else
           oldAttrs.postPatch or "";

@@ -11,6 +11,14 @@
     # macOS-specific configuration
     # Currently minimal - can be expanded with macOS-specific packages and settings
 
+    # home-manager 25.11 switched macOS app handling from linkApps (symlinks) to
+    # copyApps (real copies, so Spotlight indexes them). Its activation check does
+    # `tccutil reset SystemPolicyAppBundles` then immediately re-tests App Management
+    # permission — the reset revokes the just-granted permission, so every rebuild
+    # fails this race. Disable the self-defeating check; copyApps' rsync still works
+    # because the terminal running rebuild already holds App Management permission.
+    targets.darwin.copyApps.enableChecks = false;
+
     home.sessionVariables = {
       ANDROID_HOME = "$HOME/Library/Android/sdk";
       NDK_HOME = "$HOME/Library/Android/sdk/ndk/27.0.12077973";

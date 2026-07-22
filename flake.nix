@@ -145,6 +145,7 @@
             {
               nixpkgs.overlays = [
                 (import ./overlays/vscode-latest.nix)
+                (import ./overlays/vercel-cli.nix)
               ];
             }
 

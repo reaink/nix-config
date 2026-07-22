@@ -1,0 +1,8 @@
+{
+  "name": "vercel-cli-nix-wrapper",
+  "version": "54.20.1",
+  "private": true,
+  "dependencies": {
+    "vercel": "54.20.1"
+  }
+}

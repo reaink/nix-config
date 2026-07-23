@@ -56,6 +56,7 @@
       bun
       mariadb
       google-cloud-sdk
+      awscli2
       ngrok
       claude-code
       github-copilot-cli
@@ -160,6 +161,7 @@
     '';
 
     shellAliases = {
+      cc = "claude --dangerously-skip-permissions";
       claudetg = "claude --channels plugin:telegram@claude-plugins-official";
 
       # Flake operations

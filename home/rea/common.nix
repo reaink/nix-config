@@ -228,6 +228,26 @@
       "ctrl+3" = "goto_tab 3";
       "ctrl+4" = "goto_tab 4";
       "ctrl+5" = "goto_tab 5";
+      "ctrl+6" = "goto_tab 6";
+      "ctrl+7" = "goto_tab 7";
+      "ctrl+8" = "goto_tab 8";
+      "ctrl+9" = "goto_tab 9";
+      # Tab jump by number (macOS cmd style)
+      "cmd+1" = "goto_tab 1";
+      "cmd+2" = "goto_tab 2";
+      "cmd+3" = "goto_tab 3";
+      "cmd+4" = "goto_tab 4";
+      "cmd+5" = "goto_tab 5";
+      "cmd+6" = "goto_tab 6";
+      "cmd+7" = "goto_tab 7";
+      "cmd+8" = "goto_tab 8";
+      "cmd+9" = "goto_tab 9";
+      # Bracket-based prev/next tab switching
+      "cmd+[" = "previous_tab"; # macOS style
+      "cmd+]" = "next_tab";
+      # Do NOT bind plain ctrl+[ — it is the Escape byte in terminals and would break nvim
+      "ctrl+shift+[" = "previous_tab";
+      "ctrl+shift+]" = "next_tab";
       # Window (pane) splitting
       "ctrl+shift+\\" = "launch --location=vsplit --cwd=current";
       "ctrl+shift+-" = "launch --location=hsplit --cwd=current";

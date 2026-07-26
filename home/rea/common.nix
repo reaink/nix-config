@@ -89,7 +89,6 @@
       vscode
       obsidian
       firefox
-      antigravity
 
       # Fonts
       pkgs.nerd-fonts.jetbrains-mono
@@ -161,7 +160,9 @@
     '';
 
     shellAliases = {
-      cc = "claude --dangerously-skip-permissions";
+      # Claude Code account profiles
+      cc = "env -u CLAUDE_CONFIG_DIR -u CLAUDE_SECURESTORAGE_CONFIG_DIR claude --dangerously-skip-permissions";
+      cc2 = "env -u CLAUDE_SECURESTORAGE_CONFIG_DIR CLAUDE_CONFIG_DIR=$HOME/.claude-2 claude --dangerously-skip-permissions";
       claudetg = "claude --channels plugin:telegram@claude-plugins-official";
 
       # Flake operations

@@ -1,41 +1,38 @@
-self: super: {
-  # Claude Code Latest - Always tracks the latest version from npm registry
+self: super:
+let
+  # Claude Code Latest — always tracks the latest release from Anthropic.
   #
-  # Uses buildNpmPackage directly (not overrideAttrs) to avoid lib.extendMkDerivation
-  # timing issues where npmDeps can't be updated via overrideAttrs.
-  #
-  # Only version + src hash need updating here. Everything else (npmDepsHash,
-  # postPatch with vendored package-lock.json, postInstall, meta, etc.)
-  # is inherited from nixpkgs and maintained by nixpkgs maintainers.
+  # Since v2.1.113 claude-code ships as per-platform native binaries (no cli.js).
+  # nixpkgs packages this by fetching the raw `claude` binary from
+  # downloads.claude.ai and verifying it against the sha256 checksum recorded in
+  # its manifest.json. This overlay is a minimal override on top of that model:
+  # it only bumps the version and the per-platform binary checksums, inheriting
+  # installPhase, wrapper, meta, install-check, etc. from nixpkgs.
   #
   # To update to the newest release, run:
   #   sh ~/nix-config/update-hashes.sh claude-code
 
-  claude-code = super.buildNpmPackage (finalAttrs: {
-    pname = "claude-code";
-    # Pinned to 2.1.112 — last version with cli.js.
-    # v2.1.113+ switched to native platform binaries (cli-wrapper.cjs) which
-    # requires nixpkgs to update its postPatch. Unpin once nixpkgs handles it.
-    version = "2.1.112"; # Updated by update-hashes.sh
+  version = "2.1.220"; # Updated by update-hashes.sh
+  baseUrl = "https://downloads.claude.ai/claude-code-releases";
 
-    src = super.fetchzip {
-      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-${finalAttrs.version}.tgz";
-      hash = "sha256-SJJqU7XHbu9IRGPMJNUg6oaMZiQUKqJhI2wm7BnR1gs="; # Updated by update-hashes.sh (src)
+  # node-style platform key, matching nixpkgs (e.g. darwin-arm64, linux-x64).
+  platformKey = "${super.stdenv.hostPlatform.node.platform}-${super.stdenv.hostPlatform.node.arch}";
+
+  # Hex sha256 of each raw native binary, taken from the upstream manifest.json.
+  # Both hosts share home/rea/common.nix, so both platforms must be present:
+  # this mac is darwin-arm64, the nixos host is linux-x64.
+  checksums = {
+    "darwin-arm64" = "8addc857f3fe64d5a0368af9ee50321b50afb4a6918ba3ef018ab84f5dbbe081"; # Updated by update-hashes.sh (darwin-arm64)
+    "linux-x64" = "674f61f20ff306f3100cf9200e4c36c4b70278b5bef2884549819b942a89c863"; # Updated by update-hashes.sh (linux-x64)
+  };
+in
+{
+  claude-code = super.claude-code.overrideAttrs (oldAttrs: {
+    inherit version;
+
+    src = super.fetchurl {
+      url = "${baseUrl}/${version}/${platformKey}/claude";
+      sha256 = checksums.${platformKey};
     };
-
-    inherit (super.claude-code)
-      npmDepsHash
-      strictDeps
-      postPatch
-      postInstall
-      meta
-      ;
-
-    dontNpmBuild = true;
-
-    # nativeInstallCheckInputs is not exposed on the derivation attrs
-    doInstallCheck = false;
-
-    env.AUTHORIZED = "1";
   });
 }

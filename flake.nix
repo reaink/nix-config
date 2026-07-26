@@ -98,7 +98,7 @@
             # Apply custom overlays
             {
               nixpkgs.overlays = [
-                (import ./overlays/vscode-latest.nix)
+                (import ./overlays/claude-code-latest.nix)
                 (import ./overlays/fix-openldap-tests.nix)
                 (import ./overlays/fix-libkgapi-gcc15-ice.nix)
                 (import ./overlays/onlyoffice-cjk-fonts.nix)
@@ -144,7 +144,7 @@
             # Apply custom overlays
             {
               nixpkgs.overlays = [
-                (import ./overlays/vscode-latest.nix)
+                (import ./overlays/claude-code-latest.nix)
                 (import ./overlays/vercel-cli.nix)
               ];
             }

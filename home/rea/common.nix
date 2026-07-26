@@ -86,7 +86,7 @@
       google-chrome
       telegram-desktop
       discord
-      vscode-latest
+      vscode
       obsidian
       firefox
       antigravity
@@ -168,7 +168,6 @@
       flake-update = "nix flake update";
       flake-check = "nix flake check";
       update = "nix flake update && sh ~/nix-config/update-hashes.sh";
-      update-vscode = "sh ~/nix-config/update-hashes.sh vscode";
       update-claude = "sh ~/nix-config/update-hashes.sh claude-code";
     };
 

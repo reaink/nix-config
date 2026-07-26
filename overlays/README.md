@@ -1,72 +1,53 @@
 # Custom Overlays
 
-This directory contains custom Nix overlays for packages that need special handling or the latest versions.
+This directory contains custom Nix overlays for packages that need special handling or newer versions than the locked nixpkgs provides.
 
-## VSCode Latest
+## Claude Code Latest
 
-The `vscode-latest.nix` overlay provides a `vscode-latest` package that always fetches the latest stable version directly from Microsoft's official download server.
+The `claude-code-latest.nix` overlay overrides nixpkgs' `claude-code` so it tracks the latest release from Anthropic instead of whatever version is pinned in the locked nixpkgs.
 
 ### Why?
 
-The VSCode package in nixpkgs (even on unstable channel) can lag behind official releases by days or weeks. This overlay ensures you always have access to the absolute latest version.
-
-### Platform Support
-
-✅ **Linux (x86_64)** - Downloads from `linux-x64` endpoint  
-✅ **macOS (Apple Silicon)** - Downloads from `darwin-arm64` endpoint
-
-The overlay automatically detects your platform and fetches the appropriate version.
+The `claude-code` package in nixpkgs can lag behind the latest npm/Anthropic release by days. This overlay lets the config pick up new versions without waiting for a `nix flake update`.
 
 ### How it works
 
-The overlay fetches VSCode from platform-specific URLs:
-- **Linux**: `https://update.code.visualstudio.com/latest/linux-x64/stable`
-- **macOS**: `https://update.code.visualstudio.com/latest/darwin-arm64/stable`
+Since v2.1.113, `claude-code` ships as per-platform **native binaries** (no `cli.js`). nixpkgs packages this by fetching the raw `claude` binary from `downloads.claude.ai` and verifying it against the sha256 checksum recorded in the upstream `manifest.json`.
 
-These URLs always redirect to the newest stable release for each platform.
+This overlay is a *minimal* override on top of that model: it only bumps the `version` and the per-platform binary checksums, inheriting `installPhase`, the wrapper, `meta`, and the install check from nixpkgs. Because `claude-code` lives in the shared `home/rea/common.nix` package list, the overlay carries a checksum for both hosts:
 
-### Updating the hash
+- **macOS (Apple Silicon)** — `darwin-arm64`
+- **NixOS (x86_64)** — `linux-x64`
 
-When Microsoft releases a new VSCode version, the content at the URL changes but the URL stays the same. This means you need to update the SHA256 hash in the overlay for your platform.
+The overlay is wired into both `nixpkgs.overlays` lists in `flake.nix` (darwin and nixos).
 
-#### Method 1: Using the update script (Recommended)
+### Updating
 
-Run the provided update script from the repository root:
+Run the update script from the repository root:
 
 ```bash
-./update-vscode-hash.sh
+sh ~/nix-config/update-hashes.sh claude-code
 ```
 
-The script automatically detects your platform and updates the corresponding hash.
+The script:
 
-#### Method 2: Manual update
+1. Reads the latest version from the npm registry (`@anthropic-ai/claude-code`).
+2. Fetches `manifest.json` for that version from `downloads.claude.ai`.
+3. Writes the version and both platform checksums into `claude-code-latest.nix` via its sed-marker comments.
 
-1. Run `nix-prefetch-url` to get the current hash for your platform:
-   ```bash
-   # On Linux:
-   nix-prefetch-url https://update.code.visualstudio.com/latest/linux-x64/stable
-   
-   # On macOS:
-   nix-prefetch-url https://update.code.visualstudio.com/latest/darwin-arm64/stable
-   ```
+There is also a `update-claude` shell alias and a `update` alias (`nix flake update && update-hashes.sh`) defined in `home/rea/common.nix`.
 
-2. Update the corresponding `hash` value in `vscode-latest.nix`:
-   - For Linux: Update the hash in the `linux-x64` platform block
-   - For macOS: Update the hash in the `darwin-arm64` platform block
+Then rebuild:
 
-3. Rebuild your system:
-   ```bash
-   # NixOS
-   sudo nixos-rebuild switch --flake .#nixos
-   
-   # macOS
-   darwin-rebuild switch --flake .#mac
-   ```
+```bash
+# macOS
+darwin-rebuild switch --flake ~/nix-config#mac
 
-### Usage
+# NixOS
+sudo nixos-rebuild switch --flake ~/nix-config#nixos
+```
 
-The `vscode-latest` package is already configured in `home/rea/common.nix`. It will be available on both NixOS and macOS systems with platform-appropriate binaries.
+## Other overlays
 
-### First-time setup
-
-On first build, if the hash is set to `lib.fakeSha256`, Nix will fail with an error message showing the correct hash. This is intentional - simply run the update script or manually update the hash as described above, then rebuild.
+- `vercel-cli.nix` — packages the `vercel` CLI (darwin only).
+- `fix-openldap-tests.nix`, `fix-libkgapi-gcc15-ice.nix`, `onlyoffice-cjk-fonts.nix` — NixOS-side build fixes / tweaks.

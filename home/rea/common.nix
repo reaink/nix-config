@@ -60,6 +60,7 @@
       ngrok
       claude-code
       github-copilot-cli
+      herdr
       tmux
 
       # Database tools (cross-platform)

@@ -41,6 +41,8 @@
       azure-cli
       vercel
       ipatool
+      # Cloudflare Tunnel client (locally-managed tunnel)
+      cloudflared
     ];
 
     home.file.".docker/config.json".text = builtins.toJSON {
@@ -62,6 +64,26 @@
         KeepAlive = true;
         StandardOutPath = "/tmp/colima.log";
         StandardErrorPath = "/tmp/colima.error.log";
+      };
+    };
+
+    # Auto-start the Cloudflare Tunnel as a launchd user agent.
+    # The tunnel is locally-managed: the config file (tunnel UUID, credentials-file
+    # and ingress rules) lives outside the nix store so no secret is world-readable.
+    launchd.agents.cloudflared = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          "${pkgs.cloudflared}/bin/cloudflared"
+          "tunnel"
+          "--config"
+          "/Users/rea/.cloudflared/config.yml"
+          "run"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/tmp/cloudflared.log";
+        StandardErrorPath = "/tmp/cloudflared.error.log";
       };
     };
 

@@ -52,7 +52,25 @@
   users.users.rea = {
     name = "rea";
     home = "/Users/rea";
+
+    # Rendered by nix-darwin into /etc/ssh/nix_authorized_keys.d/rea, which the
+    # AuthorizedKeysCommand in /etc/ssh/sshd_config.d/101-authorized-keys.conf reads.
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE9q9mCefQT18PIsJHkUFPC/mA3JZUaH7HD/rQF0GfBb remote-mbp"
+    ];
   };
+
+  # sshd hardening. Rendered into /etc/ssh/sshd_config.d/100-nix-darwin.conf.
+  # `enable` is deliberately left at its default (null = leave Remote Login as
+  # macOS manages it); only the daemon configuration is declared here.
+  # No other file under sshd_config.d sets these directives, so OpenSSH's
+  # first-obtained-value-wins ordering makes these authoritative.
+  services.openssh.extraConfig = ''
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    ChallengeResponseAuthentication no
+    PermitRootLogin no
+  '';
 
   # Primary user for system-wide activation (required by nix-darwin migration)
   system.primaryUser = "rea";

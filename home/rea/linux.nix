@@ -88,7 +88,8 @@ in
 {
   imports = [
     # ./niri-home.nix # niri desktop home config, kept for switching back later
-    ./kde-home.nix
+    # ./kde-home.nix # KDE desktop home config, kept for switching back later
+    ./nixarchy-home.nix
   ];
 
   config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {

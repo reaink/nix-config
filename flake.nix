@@ -5,10 +5,14 @@
     extra-substituters = [
       "https://noctalia.cachix.org"
       "https://niri.cachix.org"
+      "https://nixarchy.cachix.org"
+      "https://hyprland.cachix.org"
     ];
     extra-trusted-public-keys = [
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+      "nixarchy.cachix.org-1:05JOuIlsQOWY2/5DQMq7JEA1hwlhgvmMWowMfka8mMM="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIITemDosxrE9/Kb+PfYvE="
     ];
   };
 
@@ -70,6 +74,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Omarchy desktop vendored for NixOS (Hyprland + QuickShell)
+    nixarchy = {
+      url = "github:olafkfreund/nixarchy/v4.0.4-1";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # nixarchy imports sops-nix's module itself; following our input keeps a
+      # single module source (two different sops-nix revisions = duplicate
+      # option declarations and a failed evaluation).
+      inputs.sops-nix.follows = "sops-nix";
+    };
+
   };
 
   outputs =
@@ -112,6 +126,9 @@
             inputs.niri-flake.nixosModules.niri
             inputs.keytao-app.nixosModules.default
 
+            # Nixarchy desktop (Omarchy vendored for NixOS)
+            inputs.nixarchy.nixosModules.nixarchy
+
             # Host-specific configuration
             ./hosts/nixos
 
@@ -128,6 +145,7 @@
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
                   inputs.noctalia.homeModules.default
+                  inputs.nixarchy.homeManagerModules.nixarchy
                 ];
               };
             }

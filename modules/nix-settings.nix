@@ -24,12 +24,16 @@ lib.mkMerge [
       "https://nix-community.cachix.org"
       "https://noctalia.cachix.org"
       "https://niri.cachix.org"
+      "https://nixarchy.cachix.org"
+      "https://hyprland.cachix.org"
     ];
 
     nix.settings.trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+      "nixarchy.cachix.org-1:05JOuIlsQOWY2/5DQMq7JEA1hwlhgvmMWowMfka8mMM="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIITemDosxrE9/Kb+PfYvE="
     ];
 
     nix.settings.trusted-users = [

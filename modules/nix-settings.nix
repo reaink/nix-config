@@ -46,7 +46,7 @@ lib.mkMerge [
       options = "--delete-older-than 1w";
     }
     // (
-      if pkgs.stdenv.isDarwin then
+      if pkgs.stdenv.hostPlatform.isDarwin then
         {
           interval = {
             Weekday = 0;

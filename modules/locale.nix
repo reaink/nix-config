@@ -10,7 +10,7 @@
   time.timeZone = "Asia/Shanghai";
 
   # Locale settings (Linux only)
-  i18n = lib.mkIf pkgs.stdenv.isLinux {
+  i18n = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     defaultLocale = "en_US.UTF-8";
 
     extraLocaleSettings = {

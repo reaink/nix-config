@@ -7,7 +7,7 @@
 }:
 
 {
-  config = lib.mkIf pkgs.stdenv.isDarwin {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
     # macOS-specific configuration
     # Currently minimal - can be expanded with macOS-specific packages and settings
 

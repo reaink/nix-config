@@ -91,7 +91,7 @@ in
     ./kde-home.nix
   ];
 
-  config = lib.mkIf pkgs.stdenv.isLinux {
+  config = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     # Linux-specific packages
     home.packages = with pkgs; [
       # Tauri/GTK development libraries

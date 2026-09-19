@@ -42,11 +42,11 @@ update_claude_code() {
     echo "  current: $current_version"
     echo "  latest:  $latest_version"
 
-    # Since v2.1.113 claude-code ships per-platform native binaries. The upstream
-    # manifest.json records a hex sha256 checksum per platform — exactly what
-    # fetchurl needs — so no need to download the (~250MB) binaries here.
+    # Since v2.1.113 claude-code ships per-platform native binaries; nixpkgs
+    # fetches the zstd-compressed claude.zst, whose sha256 lives in the upstream
+    # manifest.zst.json — exactly what fetchurl needs, no binary download here.
     local manifest
-    manifest=$(curl -fsSL "https://downloads.claude.ai/claude-code-releases/${latest_version}/manifest.json")
+    manifest=$(curl -fsSL "https://downloads.claude.ai/claude-code-releases/${latest_version}/manifest.zst.json")
 
     # The overlay tracks two platforms: this mac (darwin-arm64) and the nixos host (linux-x64).
     for platform in darwin-arm64 linux-x64; do

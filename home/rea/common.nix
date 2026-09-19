@@ -59,6 +59,8 @@
       awscli2
       ngrok
       claude-code
+      pi-coding-agent
+      (pkgs.callPackage ../../pkgs/oh-my-pi.nix { })
       github-copilot-cli
       herdr
       tmux
@@ -88,13 +90,13 @@
       telegram-desktop
       discord
       vscode
-      obsidian
       firefox
+      zennotes-desktop
 
       # Fonts
       pkgs.nerd-fonts.jetbrains-mono
     ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       clang
       lld
       marktext

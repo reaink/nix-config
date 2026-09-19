@@ -50,4 +50,10 @@ sudo nixos-rebuild switch --flake ~/nix-config#nixos
 ## Other overlays
 
 - `vercel-cli.nix` — packages the `vercel` CLI (darwin only).
+- `zennotes-desktop-darwin-app.nix` — nixpkgs installs ZenNotes with a Linux-only
+  layout (`bin/` wrapper + `.desktop` + hicolor icons), so on macOS it never
+  reaches Launchpad or Spotlight. This overlay adds nixpkgs'
+  `desktopToDarwinBundle` hook to build `$out/Applications/ZenNotes.app` from the
+  existing desktop entry, then fixes up the bundle's `Info.plist` and icon.
+  home-manager's `targets.darwin.copyApps` picks it up from there. No-op on Linux.
 - `fix-openldap-tests.nix`, `fix-libkgapi-gcc15-ice.nix`, `onlyoffice-cjk-fonts.nix` — NixOS-side build fixes / tweaks.

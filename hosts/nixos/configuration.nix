@@ -429,12 +429,9 @@
     );
   };
 
-  # NOTE: never inject LD_LIBRARY_PATH into sessions (here or via
-  # systemd.user.sessionVariables) — it takes precedence over binaries' RPATH
-  # and forced nixpkgs' libstdc++ onto Hyprland/hyprutils (built against a
-  # newer GLIBCXX), crashing the omarchy session straight back to SDDM
-  # (2026-09-20). Unwrapped binaries needing libstdc++ are covered by
-  # programs.nix-ld below.
+  # Must be a list in sessionVariables so it merges with pipewire-jack's list
+  # (environment.variables would get pipewire's value as an already-joined string and conflict).
+  environment.sessionVariables.LD_LIBRARY_PATH = [ "${pkgs.gcc.cc.lib}/lib" ];
 
   virtualisation.waydroid = {
     enable = true;

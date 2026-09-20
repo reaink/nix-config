@@ -568,6 +568,7 @@
     gtk3
     pango
     freerdp
+    gamemode
     # CUDA libraries required by llama-server (llama-cpp)
     # cudaPackages.nccl
     # cudaPackages.cuda_cudart

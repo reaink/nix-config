@@ -254,14 +254,6 @@ in
 
     # Linux-specific environment variables
     home.sessionVariables = {
-      # Fix dynamic linking for Rust binaries on Linux
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-        pkgs.openssl
-        pkgs.stdenv.cc.cc.lib
-        pkgs.zlib
-        pkgs.gamemode
-      ];
-
       # Tauri/GTK PKG_CONFIG
       PKG_CONFIG_PATH = "${pkgs.lib.makeSearchPath "lib/pkgconfig" [
         pkgs.glib.dev
@@ -279,13 +271,12 @@ in
       JAVA_HOME = "${pkgs.jdk17}";
     };
 
+    # NOTE: no LD_LIBRARY_PATH in any session variable (here or in
+    # home.sessionVariables — hm-session-vars.sh is sourced by uwsm's env
+    # preloader). LD_LIBRARY_PATH overrides RPATH, forcing a stale libstdc++
+    # onto Hyprland (GLIBCXX not found → session exits to SDDM in a loop).
+    # Non-Nix binaries get runtime libs from nix-ld instead.
     systemd.user.sessionVariables = {
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-        pkgs.openssl
-        pkgs.stdenv.cc.cc.lib
-        pkgs.zlib
-        pkgs.gamemode
-      ];
       PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
       PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
 

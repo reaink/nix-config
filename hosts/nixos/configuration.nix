@@ -393,7 +393,6 @@
     gst_all_1.gst-plugins-bad
     gst_all_1.gst-plugins-ugly
     gst_all_1.gst-libav
-    gst_all_1.gst-vaapi
   ];
 
   # Sunshine game streaming - configured via sunshine.nix module
@@ -409,7 +408,6 @@
   environment.variables = {
     EDITOR = "nvim";
     "__GL_SHADER_DISK_CACHE" = "1";
-    LD_LIBRARY_PATH = "${pkgs.gcc.cc.lib}/lib:$LD_LIBRARY_PATH";
     # Make GStreamer plugins discoverable by WebKitGTK subprocesses (WebKitWebProcess, etc.)
     # NixOS does not set this automatically; without it createAudioSink crashes with SIGABRT.
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatStringsSep ":" (
@@ -421,7 +419,6 @@
           gst-plugins-bad
           gst-plugins-ugly
           gst-libav
-          gst-vaapi
           # gtk4paintablesink (libgstgtk4.so) required by WebKitGTK 2.50+ for video rendering
           gst-plugins-rs
         ])
@@ -431,6 +428,10 @@
       )
     );
   };
+
+  # Must be a list in sessionVariables so it merges with pipewire-jack's list
+  # (environment.variables would get pipewire's value as an already-joined string and conflict).
+  environment.sessionVariables.LD_LIBRARY_PATH = [ "${pkgs.gcc.cc.lib}/lib" ];
 
   virtualisation.waydroid = {
     enable = true;
@@ -613,10 +614,10 @@
   services.openssh.enable = true;
 
   # Prevent journal from growing unbounded and causing NVMe I/O stalls during suspend.
-  services.journald.extraConfig = ''
-    SystemMaxUse=512M
-    SystemKeepFree=256M
-  '';
+  services.journald.settings.Journal = {
+    SystemMaxUse = "512M";
+    SystemKeepFree = "256M";
+  };
 
   services.postgresql = {
     enable = true;

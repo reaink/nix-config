@@ -220,7 +220,7 @@ in
           obs-pipewire-audio-capture
         ];
       })
-      splayer
+      splayer-next
 
       # Remote desktop
       todesk

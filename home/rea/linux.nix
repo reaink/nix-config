@@ -279,13 +279,11 @@ in
       JAVA_HOME = "${pkgs.jdk17}";
     };
 
+    # NOTE: no LD_LIBRARY_PATH here — environment.d feeds systemd user units
+    # (uwsm/Hyprland), and LD_LIBRARY_PATH overrides RPATH, forcing the stale
+    # libstdc++ onto Hyprland (GLIBCXX not found → session exits to SDDM).
+    # The interactive-shell copy in home.sessionVariables above is kept.
     systemd.user.sessionVariables = {
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-        pkgs.openssl
-        pkgs.stdenv.cc.cc.lib
-        pkgs.zlib
-        pkgs.gamemode
-      ];
       PKG_CONFIG_ALLOW_SYSTEM_CFLAGS = "1";
       PKG_CONFIG_ALLOW_SYSTEM_LIBS = "1";
 

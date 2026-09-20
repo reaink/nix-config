@@ -614,16 +614,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1789905587,
+        "lastModified": 1789907216,
         "narHash": "sha256-MIwX1gtoiU8wgahaUpVIXTzczw/JzAKgSl9VuBWnUTw=",
-        "owner": "reaink",
+        "owner": "xkinput",
         "repo": "keytao-app",
-        "rev": "03c9c015bed96477f1429872a49d7e84624a1745",
+        "rev": "edcf700fbc978c4d5023062211596f25d06de1f7",
         "type": "github"
       },
       "original": {
-        "owner": "reaink",
-        "ref": "fix/pnpm-deps-hash",
+        "owner": "xkinput",
         "repo": "keytao-app",
         "type": "github"
       }

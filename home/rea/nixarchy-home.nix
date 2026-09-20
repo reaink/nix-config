@@ -16,6 +16,10 @@ in
   programs.nixarchy = {
     enable = true;
     defaultTheme = "catppuccin";
+    # ~/.config/nvim is a read-only symlink to home-manager-files
+    # (xdg.configFile."nvim".source in common.nix); nixarchy's imperative
+    # spec writes would hit EROFS and fail home-manager activation.
+    neovim = "off";
   };
 
   home.packages = [ keytaoPackage ];

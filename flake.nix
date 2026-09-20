@@ -45,9 +45,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO: revert to github:xkinput/keytao-app once the stale pnpmDeps.hash fix is merged upstream
     keytao-app = {
-      url = "github:reaink/keytao-app/fix/pnpm-deps-hash";
+      url = "github:xkinput/keytao-app";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

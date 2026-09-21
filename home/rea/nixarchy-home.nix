@@ -38,7 +38,7 @@ in
   xdg.configFile."autostart/keytao-ime.desktop".text = ''
     [Desktop Entry]
     Name=KeyTao IME Daemon
-    Exec=${keytaoPackage}/bin/keytao-ime --backend=xim,ibus
+    Exec=${pkgs.coreutils}/bin/env KEYTAO_IME_PANEL_SCALE=0.75 ${keytaoPackage}/bin/keytao-ime
     Icon=keytao-app
     Type=Application
     NoDisplay=true

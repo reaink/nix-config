@@ -16,7 +16,6 @@ pkgs.mkShell {
     # Build dependencies
     pkg-config
     openssl
-    openssl_3
     zlib
 
     # Development tools
@@ -27,7 +26,6 @@ pkgs.mkShell {
   # Environment variables for dynamic linking
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
     pkgs.openssl
-    pkgs.openssl_3
     pkgs.stdenv.cc.cc.lib
     pkgs.zlib
   ];
@@ -45,7 +43,6 @@ pkgs.mkShell {
     echo "  patchelf --set-interpreter $(cat $NIX_CC/nix-support/dynamic-linker) --set-rpath ${
       pkgs.lib.makeLibraryPath [
         pkgs.openssl
-        pkgs.openssl_3
         pkgs.stdenv.cc.cc.lib
       ]
     } ./your-binary"

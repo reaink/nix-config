@@ -550,7 +550,6 @@
     stdenv.cc.libc
     zlib
     openssl
-    openssl_3 # Add OpenSSL 3.x for newer binaries
     libgcc
     glibc
     gcc.cc.lib

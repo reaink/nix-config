@@ -2,7 +2,13 @@
 # The nixarchy module mkDefaults sddm (theme "omarchy"), portals, PipeWire,
 # printing, NetworkManager etc.; this file only adds what it does not cover.
 {
+  pkgs,
+  ...
+}:
+{
   services.keytao-app.enable = true;
+  # Overridden in the flake's overlays to build against stable's gflags 2.2.
+  services.keytao-app.package = pkgs.keytao-app-bin;
 
   programs.nixarchy = {
     enable = true;

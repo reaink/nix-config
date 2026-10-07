@@ -119,6 +119,14 @@
                 # sunshine/gearlever(dwarfs) are broken in unstable (boost 1.89 regression), use stable
                 (_: _: { sunshine = (stablePkgsFor "x86_64-linux").sunshine; })
                 (_: _: { gearlever = (stablePkgsFor "x86_64-linux").gearlever; })
+                # keytao-app-bin bundles a libglog linked against gflags 2.2; unstable's
+                # gflags 2.3 bumped the soname to libgflags.so.2.3, so satisfy the
+                # bundled lib's libgflags.so.2.2 with stable's gflags 2.2.
+                (_: _: {
+                  keytao-app-bin = inputs.keytao-app.packages.x86_64-linux.keytao-app-bin.overrideAttrs (old: {
+                    buildInputs = old.buildInputs ++ [ (stablePkgsFor "x86_64-linux").gflags ];
+                  });
+                })
               ];
             }
 

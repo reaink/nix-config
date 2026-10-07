@@ -7,8 +7,8 @@
 }:
 
 let
-  system = pkgs.stdenv.hostPlatform.system;
-  keytaoPackage = inputs.keytao-app.packages.${system}.default;
+  # Overridden in the flake's overlays to build against stable's gflags 2.2.
+  keytaoPackage = pkgs.keytao-app-bin;
 in
 {
   # Omarchy per-user: seeds the Install menu's app selection

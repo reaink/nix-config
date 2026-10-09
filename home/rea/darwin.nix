@@ -92,11 +92,11 @@
       # macOS-specific (no sudo)
       rebuild = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac";
       test = "sudo darwin-rebuild check --flake ~/nix-config\\#mac";
-      gc = "nix-collect-garbage";
-      gcold = "nix-collect-garbage --delete-older-than 30d";
-      gcall = "nix-collect-garbage -d";
-      optimize = "nix-store --optimize";
-      clean = "nix-collect-garbage -d && nix-store --optimize";
+      gc = "sudo nix-collect-garbage";
+      gcold = "sudo nix-collect-garbage --delete-older-than 30d";
+      gcall = "sudo nix-collect-garbage -d";
+      optimize = "sudo nix-store --optimize";
+      clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
       list-gens = "nix-env --list-generations --profile /nix/var/nix/profiles/system";
     };
 

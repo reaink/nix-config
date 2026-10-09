@@ -318,7 +318,7 @@ nix flake update
 
 # 垃圾回收
 sudo nix-collect-garbage -d           # NixOS
-nix-collect-garbage -d                # macOS
+sudo nix-collect-garbage -d           # macOS
 
 # 存储优化
 sudo nix-store --optimize             # NixOS

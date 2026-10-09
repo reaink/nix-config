@@ -337,9 +337,6 @@
     };
   };
 
-  # Install firefox.
-  programs.firefox.enable = true;
-
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
     efibootmgr

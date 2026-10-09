@@ -88,9 +88,7 @@
       postman
       google-chrome
       telegram-desktop
-      discord
       vscode
-      firefox
       zennotes-desktop
 
       # Fonts

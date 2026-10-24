@@ -7,6 +7,8 @@
 }:
 
 let
+  uuRemoteLinux = pkgs.callPackage ../../pkgs/uu-remote-linux.nix { };
+
   gtkIbusImModulesCache = pkgs.runCommand "keytao-gtk-immodules.cache" { } ''
     ${pkgs.gtk3.dev}/bin/gtk-query-immodules-3.0 \
       ${pkgs.ibus}/lib/gtk-3.0/3.0.0/immodules/im-ibus.so > "$out"
@@ -151,7 +153,7 @@ in
       ))
       (lib.hiPrio (
         writeShellScriptBin "qq" ''
-          unset WAYLAND_DISPLAY
+          unset WAYLAND_DISPLAY NIXOS_OZONE_WL
           export DISPLAY="''${DISPLAY:-:0}"
           export GDK_BACKEND=x11
           export QT_QPA_PLATFORM=xcb
@@ -161,10 +163,8 @@ in
           export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/1000/bus}}"
           export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"
           export GTK_IM_MODULE_FILE="${gtkIbusImModulesCache}"
-          export ELECTRON_OZONE_PLATFORM_HINT=x11
-          export NIXOS_OZONE_WL=0
 
-          exec ${pkgs.qq}/bin/qq --ozone-platform-hint=x11 "$@"
+          exec ${pkgs.qq}/bin/qq --ozone-platform=x11 "$@"
         ''
       ))
       keytaoWechat
@@ -219,6 +219,7 @@ in
 
       # Remote desktop
       todesk
+      uuRemoteLinux
       (writeShellScriptBin "todesk-gui" ''
         # Add X11 authorization
         ${xhost}/bin/xhost +local: >/dev/null 2>&1 || true
@@ -246,6 +247,26 @@ in
       linuxConsoleTools
       winboat
     ];
+
+    # Keep UU Remote's host process in the logged-in graphical session.
+    systemd.user.services.uuremote-native = {
+      Unit = {
+        Description = "UU Remote Linux host (unofficial)";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        Environment = [
+          "RUST_LOG=info"
+          "UU_ENGINE_DIR=${uuRemoteLinux}/lib"
+          "PATH=${lib.makeBinPath [ pkgs.ffmpeg pkgs.systemd pkgs.xrandr ]}"
+        ];
+        ExecStart = "${uuRemoteLinux}/bin/uuremote-server";
+        Restart = "always";
+        RestartSec = 5;
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
 
     # Linux-specific environment variables
     home.sessionVariables = {
@@ -513,7 +534,7 @@ in
     '';
 
     xdg.configFile."qq-electron-flags.conf".text = ''
-      --ozone-platform-hint=x11
+      --ozone-platform=x11
     '';
 
     # GTK4 CSS is a generated HM file and may also be touched by theme tooling.

@@ -59,6 +59,7 @@
       awscli2
       ngrok
       claude-code
+      codex
       pi-coding-agent
       (pkgs.callPackage ../../pkgs/oh-my-pi.nix { })
       github-copilot-cli

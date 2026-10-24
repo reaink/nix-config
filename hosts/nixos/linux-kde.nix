@@ -5,6 +5,7 @@
 
 {
   services.keytao-app.enable = true;
+  services.keytao-app.package = pkgs.keytao-app-bin;
 
   services.desktopManager.plasma6.enable = true;
 

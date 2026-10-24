@@ -14,8 +14,7 @@
     ./hardware-configuration.nix
     ./sunshine.nix
     # ./desktop.nix # niri desktop, kept for switching back later
-    # ./linux-kde.nix # KDE Plasma desktop, kept for switching back later
-    ./linux-nixarchy.nix
+    ./linux-kde.nix
   ];
 
   # sops secrets configuration

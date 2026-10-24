@@ -142,8 +142,6 @@
             inputs.niri-flake.nixosModules.niri
             inputs.keytao-app.nixosModules.default
 
-            # Nixarchy desktop (Omarchy vendored for NixOS)
-            inputs.nixarchy.nixosModules.nixarchy
 
             # Host-specific configuration
             ./hosts/nixos
@@ -160,8 +158,6 @@
                   ./home/rea/linux-home.nix
                   inputs.rime-keytao.homeManagerModules.default
                   inputs.catppuccin.homeModules.catppuccin
-                  inputs.noctalia.homeModules.default
-                  inputs.nixarchy.homeManagerModules.nixarchy
                 ];
               };
             }

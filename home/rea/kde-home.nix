@@ -8,7 +8,7 @@
 
 let
   system = pkgs.stdenv.hostPlatform.system;
-  keytaoPackage = inputs.keytao-app.packages.${system}.default;
+  keytaoPackage = pkgs.keytao-app-bin;
   kdeVirtualKeyboardDesktop = "keytao-wayland-launcher.desktop";
 in
 {

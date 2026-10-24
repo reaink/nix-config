@@ -5,14 +5,10 @@
     extra-substituters = [
       "https://noctalia.cachix.org"
       "https://niri.cachix.org"
-      "https://nixarchy.cachix.org"
-      "https://hyprland.cachix.org"
     ];
     extra-trusted-public-keys = [
       "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
-      "nixarchy.cachix.org-1:05JOuIlsQOWY2/5DQMq7JEA1hwlhgvmMWowMfka8mMM="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIITemDosxrE9/Kb+PfYvE="
     ];
   };
 
@@ -71,24 +67,6 @@
     # Noctalia desktop shell
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Omarchy desktop vendored for NixOS (Hyprland + QuickShell)
-    nixarchy = {
-      url = "github:olafkfreund/nixarchy/v4.0.6-1";
-      inputs.nixpkgs.follows = "nixpkgs";
-      # nixarchy imports sops-nix's module itself; following our input keeps a
-      # single module source (two different sops-nix revisions = duplicate
-      # option declarations and a failed evaluation).
-      inputs.sops-nix.follows = "sops-nix";
-      inputs.home-manager.follows = "home-manager";
-    };
-
-    # Hyprland 0.56 spawns hyprland-dialog (GUI dialogs) from PATH and warns
-    # at startup when missing; not packaged in nixpkgs yet.
-    hyprland-guiutils = {
-      url = "github:hyprwm/hyprland-guiutils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

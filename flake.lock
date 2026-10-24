@@ -23,11 +23,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792238796,
-        "narHash": "sha256-mRsa8oJ8R7fkvR5K+uQYfuxX9Np0ai/KvzTE8FYVx7E=",
+        "lastModified": 1792851666,
+        "narHash": "sha256-wDEAxTyksYFu9HVo8L6ozCRoW2k6QGlJkedujlY+VA4=",
         "owner": "catppuccin",
         "repo": "nix",
-        "rev": "30c87b95a628e81ec82a4fa0ed4db85d7c7d46d6",
+        "rev": "a08c7948f09cdd3c7f80f718b1d9b93eeaacca0c",
         "type": "github"
       },
       "original": {
@@ -101,11 +101,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792843203,
-        "narHash": "sha256-EFcVyBHkfZH43jdVM5HMvNxCsK6X+qBv5smrcwNhBTI=",
+        "lastModified": 1792846647,
+        "narHash": "sha256-NzSfF6zTE0esvnefbqSceBcVPTnF47Rhj9oUA37+tmQ=",
         "owner": "xkinput",
         "repo": "keytao-app",
-        "rev": "13c7802fc59790df74e31df987ce66528acb8e7f",
+        "rev": "9b30f229b26f0f7c536615a53d906014b270b9a4",
         "type": "github"
       },
       "original": {

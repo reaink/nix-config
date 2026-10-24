@@ -10,7 +10,7 @@ Personal configuration管理 NixOS（桌面）和 macOS（笔记本），共享�
 - **桌面环境**: KDE Plasma 6 with Wayland（NixOS）
 - **密钥管理**: sops-nix with age 加密（NixOS）
 - **开发工具**: Rust、Node.js、Python 完整工具链
-- **输入法**: fcitx5（Linux）、Rime 输入法配置（跨平台）
+- **输入法**: KeyTao（Linux）、Rime 输入法配置（跨平台）
 
 ## 快速开始
 
@@ -70,12 +70,12 @@ nix-config/
 │   └── locale.nix            # 时区和区域设置
 │
 ├── overlays/                 # 自定义包覆盖层
-│   ├── vscode-latest.nix     # VSCode 最新版本自动获取
+│   ├── claude-code-latest.nix # Claude Code 最新版本跟踪
+│   ├── ...                   # darwin/NixOS 构建修复，见 README.md
 │   └── README.md             # 覆盖层文档
 │
 ├── home/                     # Home Manager 用户配置
 │   └── rea/
-│       ├── default.nix       # 用户入口（条件导入）
 │       ├── common.nix        # 跨平台配置（CLI、开发工具、Zsh、Git）
 │       ├── linux.nix         # Linux 通用配置（GTK/Qt 主题、游戏、GUI 应用）
 │       ├── kde-home.nix      # KDE Plasma 用户配置
@@ -85,10 +85,10 @@ nix-config/
 ├── secrets/                  # SOPS 加密密钥（NixOS）
 │   └── secrets.yaml
 │
-├── update-vscode-hash.sh     # VSCode 版本更新脚本
+├── update-hashes.sh          # Claude Code 版本更新脚本
 │
-└── shells
-    └── rust-shell.nix
+├── rust-shell.nix            # Rust dev shell
+└── tauri-shell.nix           # Tauri dev shell
 ```
 
 ## 配置共享策略
@@ -96,13 +96,13 @@ nix-config/
 ### 完全共享（`modules/` 和 `home/rea/common.nix`）
 - Nix 核心设置（镜像源、缓存、GC）
 - 开发工具链（Rust、Node.js、Python、CLI 工具）
-- 跨平台 GUI（VSCode Latest、Chrome、Telegram、Obsidian）
+- 跨平台 GUI（VSCode、Chrome、Telegram）
 - Shell 配置（Zsh 插件、别名、工具集成）
 - Git 配置
 
 ### 自定义包（`overlays/`）
-- **VSCode Latest**: 自动从官方获取最新稳定版本
-  - 运行 `./update-vscode-hash.sh` 更新到最新版本
+- **Claude Code Latest**: 跟踪 npm 上的最新版本
+  - 运行 `./update-hashes.sh claude-code` 更新到最新版本
   - 详见 `overlays/README.md`
 
 ### 平台隔离

@@ -9,6 +9,14 @@
 
   services.desktopManager.plasma6.enable = true;
 
+  # plasma6 defaults the whole KDE PIM suite on; keep only Merkuro
+  # (calendar/contacts) and drop KMail/Kontact.
+  programs.kde-pim = {
+    enable = true;
+    kmail = false;
+    kontact = false;
+  };
+
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;

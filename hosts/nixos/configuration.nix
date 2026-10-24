@@ -13,7 +13,6 @@
   imports = [
     ./hardware-configuration.nix
     ./sunshine.nix
-    # ./desktop.nix # niri desktop, kept for switching back later
     ./linux-kde.nix
   ];
 
@@ -39,21 +38,8 @@
         group = "users";
         mode = "0400";
       };
-      # llama-api-key = {
-      #   owner = "rea";
-      #   group = "users";
-      #   mode = "0440";
-      # };
     };
 
-    # templates."open-webui-env" = {
-    #   content = ''
-    #     OPENAI_API_KEYS=${config.sops.placeholder."llama-api-key"}
-    #   '';
-    #   owner = "root";
-    #   group = "root";
-    #   mode = "0400";
-    # };
   };
 
   # Bootloader.
@@ -170,7 +156,7 @@
 
   environment.sessionVariables = {
     # __GL_SYNC_TO_VBLANK is X11/TwinView-only; removed to avoid double VSync on Wayland.
-    # VRR enabled: G27-X supports VRR (Game mode), niri runs on NVIDIA which handles VRR at KMS level.
+    # VRR enabled: G27-X supports VRR (Game mode), handled at KMS level on NVIDIA.
     __GL_VRR_ALLOWED = "1";
   };
 
@@ -372,11 +358,6 @@
     mangohud
     gamemode
 
-    # LLM inference - CUDA backend for 4070 Super
-    # (llama-cpp.override {
-    #   cudaSupport = true;
-    #   cudaPackages = pkgs.cudaPackages;
-    # })
 
     # Libraries for Electron apps
     stdenv.cc.cc.lib
@@ -568,11 +549,6 @@
     pango
     freerdp
     gamemode
-    # CUDA libraries required by llama-server (llama-cpp)
-    # cudaPackages.nccl
-    # cudaPackages.cuda_cudart
-    # cudaPackages.libcublas
-    # config.hardware.nvidia.package # provides libcuda.so.1
   ];
 
   programs.steam = {
@@ -725,8 +701,6 @@
       3000
       3389
       5000
-      # 11110 # llama-server
-      # 11111 # open-webui
     ];
     allowedUDPPortRanges = [
       {
@@ -742,17 +716,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  # Open WebUI - local AI chat interface, connects to llama-server via OpenAI-compatible API
-  # services.open-webui = {
-  #   enable = true;
-  #   port = 11111;
-  #   host = "0.0.0.0";
-  #   environmentFile = config.sops.templates."open-webui-env".path;
-  #   environment = {
-  #     OLLAMA_BASE_URL = "";
-  #     OPENAI_API_BASE_URLS = "http://127.0.0.1:11110/v1";
-  #   };
-  # };
 
   system.stateVersion = "25.11";
 

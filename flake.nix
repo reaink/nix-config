@@ -1,17 +1,6 @@
 {
   description = "Rea's unified NixOS & nix-darwin configuration";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://noctalia.cachix.org"
-      "https://niri.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
-    ];
-  };
-
   inputs = {
     # Unified nixpkgs for both NixOS and macOS
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -56,18 +45,6 @@
     astro-nvim-config = {
       url = "github:reaink/astro-nvim-config";
       flake = false;
-    };
-
-    # niri Wayland compositor
-    niri-flake = {
-      url = "github:sodiboo/niri-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Noctalia desktop shell
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
@@ -116,8 +93,6 @@
               ];
             }
 
-            # niri compositor module (replaces nixpkgs niri module)
-            inputs.niri-flake.nixosModules.niri
             inputs.keytao-app.nixosModules.default
 
 

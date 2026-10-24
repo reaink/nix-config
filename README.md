@@ -59,7 +59,6 @@ nix-config/
 │   │   ├── default.nix       # 主机入口
 │   │   ├── configuration.nix # 系统配置（硬件、桌面、服务）
 │   │   ├── linux-kde.nix     # KDE Plasma 6 桌面
-│   │   ├── desktop.nix       # niri 桌面配置（保留，当前未启用）
 │   │   ├── hardware-configuration.nix
 │   │   └── sunshine.nix      # 自定义模块
 │   └── mac/                  # macOS 笔记本
@@ -77,9 +76,10 @@ nix-config/
 ├── home/                     # Home Manager 用户配置
 │   └── rea/
 │       ├── common.nix        # 跨平台配置（CLI、开发工具、Zsh、Git）
+│       ├── linux-home.nix    # Linux 入口（flake 引用）
 │       ├── linux.nix         # Linux 通用配置（GTK/Qt 主题、游戏、GUI 应用）
 │       ├── kde-home.nix      # KDE Plasma 用户配置
-│       ├── niri-home.nix     # niri 用户配置（保留，当前未启用）
+│       ├── darwin-home.nix   # macOS 入口（flake 引用）
 │       └── darwin.nix        # macOS 特有（最小配置）
 │
 ├── secrets/                  # SOPS 加密密钥（NixOS）
@@ -90,6 +90,17 @@ nix-config/
 ├── rust-shell.nix            # Rust dev shell
 └── tauri-shell.nix           # Tauri dev shell
 ```
+
+## 开发环境（Dev Shells）
+
+仓库根目录的两个独立 dev shell，不依赖 flake，按需进入：
+
+```bash
+nix-shell ~/nix-config/rust-shell.nix    # Rust 工具链（rustc、cargo、clippy、rust-analyzer）
+nix-shell ~/nix-config/tauri-shell.nix   # Tauri 2.0 桌面 + Android 开发（含 Android SDK）
+```
+
+Tauri shell 进入后：`npm install && npm run tauri dev` 启动桌面开发，`npm run tauri android dev` 连接 Android 设备/模拟器（首次需 `npm run tauri android init`）。
 
 ## 配置共享策略
 
@@ -129,157 +140,12 @@ nix-config/
 - **GPU 2**: AMD Radeon 890M（integrated，RDNA 3.5，PRIME Sync 模式下由 NVIDIA 主渲染）
 - **内存**: 64GB
 - **桌面**: KDE Plasma 6 (Wayland)
-- **保留配置**: niri (Wayland, scrollable tiling) + Noctalia Shell，见 `hosts/nixos/desktop.nix` 和 `home/rea/niri-home.nix`
 
 ### macOS 笔记本
 - **用户**: rea
 - **主机名**: mac
 - **架构**: aarch64-darwin (Apple Silicon)
 - **芯片**: M4 Pro（16 核 CPU，20 核 GPU），24GB 统一内存
-
-## Niri 快捷键
-
-`Mod` = Super 键。
-
-### 应用
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Return` | 打开终端（kitty） |
-| `Mod+E` | 文件管理器（Nautilus） |
-
-### Noctalia Shell
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Space` | 应用启动器 |
-| `Mod+V` | 剪贴板历史（支持图片） |
-| `Mod+.` | Emoji 选择器 |
-| `Mod+S` | 控制中心（Wi-Fi / 蓝牙 / 音量等） |
-| `Mod+,` | Noctalia 设置 |
-| `Mod+N` | 通知历史 |
-| `Mod+Shift+N` | 切换免打扰模式 |
-| `Mod+Shift+E` | 会话菜单（注销 / 重启 / 关机） |
-| `Mod+Alt+L` | 锁屏 |
-
-### 窗口管理
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Q` | 关闭窗口 |
-| `Mod+F` | 全屏 |
-| `Mod+Shift+V` | 切换浮动 |
-| `Mod+C` | 居中当前列 |
-| `Mod+I` | 将下方窗口合并入当前列 |
-| `Mod+O` | 将窗口从列中分离 |
-
-### 焦点移动
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+H/J/K/L` | 移动焦点（左/下/上/右） |
-| `Mod+←/↓/↑/→` | 同上（方向键版） |
-
-### 窗口/列移动
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Shift+H/J/K/L` | 移动窗口/列（左/下/上/右） |
-| `Mod+Shift+←/↓/↑/→` | 同上（方向键版） |
-
-### 调整大小
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+R` | 循环切换预设列宽（1/3 → 1/2 → 2/3 → 全宽） |
-| `Mod+Shift+R` | 重置窗口高度 |
-| `Mod+-` / `Mod+=` | 列宽 -10% / +10% |
-| `Mod+Shift+-` / `Mod+Shift+=` | 窗口高度 -10% / +10% |
-
-### 工作区
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Tab` | 切回上一个工作区 |
-| `Mod+[` / `Mod+]` | 切换到上/下个工作区 |
-| `Mod+Shift+[` / `Mod+Shift+]` | 把当前列移到上/下个工作区 |
-| `Mod+1~6` | 跳转到工作区 1~6 |
-| `Mod+Shift+1~6` | 把当前列移到工作区 1~6 |
-
-### 截图
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Print` | 圈选截图（自动复制剪贴板 + 保存到 `~/Pictures/Screenshots/`） |
-| `Mod+Print` | 截当前窗口 |
-| `Shift+Print` | 截整个屏幕 |
-
-### 媒体
-
-| 快捷键 | 功能 |
-|--------|------|
-| `XF86AudioPlay` | 播放 / 暂停 |
-| `XF86AudioNext` / `XF86AudioPrev` | 下一首 / 上一首 |
-| `XF86AudioRaiseVolume` / `XF86AudioLowerVolume` | 音量 +/- |
-| `XF86AudioMute` | 静音输出 |
-| `XF86AudioMicMute` | 静音麦克风 |
-| `XF86MonBrightnessUp` / `XF86MonBrightnessDown` | 亮度 +/- |
-
-### 系统
-
-| 快捷键 | 功能 |
-|--------|------|
-| `Mod+Shift+Q` | 退出 niri |
-| `Mod+Shift+?` | 显示快捷键提示 |
-
----
-
-## Open WebUI + llama.cpp 本地 AI 配置
-
-open-webui 作为 NixOS 系统服务运行，通过 OpenAI 兼容 API 连接 llama.cpp 推理后端。
-
-### 架构
-
-```
-llama-server（llama-cpp）:8081 → OpenAI 兼容 API → open-webui :11111（浏览器访问）
-```
-
-### 访问地址
-
-rebuild 后 open-webui 自动启动：[http://localhost:11111](http://localhost:11111)
-
-open-webui 已预配置连接 `http://127.0.0.1:8081/v1`，无需手动添加连接。
-
-### 快捷命令
-
-| 命令 | 说明 |
-|------|------|
-| `llama-download-models` | 下载所有模型到 `~/.llama-models/`（首次运行，支持断点续传） |
-| `llama-start` | 启动推理服务（路由模式，自动加载 `~/.llama-models/` 内所有模型） |
-| `llama-stop` | 关闭推理服务 |
-| `llama-ls` | 查看已下载的模型列表 |
-
-### 模型配置
-
-**NixOS（RTX 4070 Super 12GB，CUDA）**
-
-| 用途 | 模型 | 大小 |
-|------|------|------|
-| 代码 | Qwen3-Coder-Next Q3_K_M | ~7GB |
-| 聊天 | Qwen3-14B-Instruct Q4_K_M | ~9GB |
-
-**macOS（M4 Pro 24GB，Metal）**
-
-| 用途 | 模型 | 大小 |
-|------|------|------|
-| 代码 | Qwen3-Coder-Next UD-IQ3_S | ~8GB |
-| 聊天 | Qwen3-14B-Instruct Q6_K | ~12GB |
-
-### macOS 使用
-
-macOS 无 open-webui 系统服务，可直接访问 NixOS 机器的 open-webui，或浏览器打开 `http://nixos-ip:11111`。
-
-`llama-download-models` / `llama-start` / `llama-stop` 同样可用。
 
 ## 密钥管理（NixOS）
 

@@ -87,7 +87,6 @@ let
 in
 {
   imports = [
-    # ./niri-home.nix # niri desktop home config, kept for switching back later
     ./kde-home.nix
   ];
 
@@ -147,9 +146,6 @@ in
           export QT_IM_MODULE=ibus
           export GTK_IM_MODULE=ibus
 
-          # niri no-tray restart workaround kept disabled for KDE.
-          # pgrep -x wechat | grep -v "^$$\$" | xargs -r kill 2>/dev/null || true
-          # sleep 0.3
           exec ${keytaoWechat}/bin/wechat "$@"
         ''
       ))
@@ -475,7 +471,6 @@ in
         gtk-xft-rgba = "rgb";
       };
 
-      # niri/noctalia managed gtk-4.0/gtk.css at runtime; KDE uses the shared GTK theme.
       gtk4.theme = config.gtk.theme;
 
       gtk4.extraConfig = {

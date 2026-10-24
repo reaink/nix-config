@@ -124,15 +124,11 @@
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
-      # AMD (RADV is included in Mesa by default)
-      mesa
-
       # NVIDIA
       nvidia-vaapi-driver
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
-      mesa
       nvidia-vaapi-driver
     ];
   };
@@ -205,6 +201,11 @@
   # Xbox controller support
   hardware.xpadneo.enable = true; # Bluetooth Xbox controller driver
   hardware.xone.enable = true; # Xbox One wireless adapter support
+  # xone pulls in xpad-noone by default, but the xpad-noone package lacks the
+  # .ko.cer module-signing artifact that nixpkgs' new modules.cer merge requires
+  # (breaks linux-modules build since nixpkgs 2026-10-20). In-kernel xpad covers
+  # wired Xbox 360/One pads in the meantime.
+  hardware.xpad-noone.enable = false;
 
   i18n.inputMethod.enable = false;
 

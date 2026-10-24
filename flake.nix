@@ -76,12 +76,20 @@
 
     # Omarchy desktop vendored for NixOS (Hyprland + QuickShell)
     nixarchy = {
-      url = "github:olafkfreund/nixarchy/v4.0.4-1";
+      url = "github:olafkfreund/nixarchy/v4.0.6-1";
       inputs.nixpkgs.follows = "nixpkgs";
       # nixarchy imports sops-nix's module itself; following our input keeps a
       # single module source (two different sops-nix revisions = duplicate
       # option declarations and a failed evaluation).
       inputs.sops-nix.follows = "sops-nix";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    # Hyprland 0.56 spawns hyprland-dialog (GUI dialogs) from PATH and warns
+    # at startup when missing; not packaged in nixpkgs yet.
+    hyprland-guiutils = {
+      url = "github:hyprwm/hyprland-guiutils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };

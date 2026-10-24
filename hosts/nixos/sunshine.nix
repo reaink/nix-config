@@ -156,6 +156,10 @@ in
   config = mkIf cfg.enable {
     # System-level Sunshine configuration
     security.wrappers.sunshine = {
+      # bin/sunshine is a bash wrapper (real ELF: bin/.sunshine-wrapped);
+      # capability wrappers must point at the ELF or ensure-wrapper-integrity
+      # fails (NixOS/nixpkgs#559144). The LD_LIBRARY_PATH the wrapper script
+      # used to set is covered by the service unit below.
       source = "${
         if cfg.cudaSupport then
           pkgs.sunshine.override {
@@ -164,7 +168,7 @@ in
           }
         else
           pkgs.sunshine
-      }/bin/sunshine";
+      }/bin/.sunshine-wrapped";
       capabilities = "cap_sys_admin+p";
       owner = "root";
       group = "root";
@@ -263,7 +267,9 @@ in
           Restart = "on-failure";
           RestartSec = "5";
           Environment = [
-            "LD_LIBRARY_PATH=/run/opengl-driver/lib:/run/opengl-driver-32/lib"
+            # vulkan-loader first: the package's bin wrapper used to force it
+            # via LD_LIBRARY_PATH; the cap wrapper now execs the ELF directly.
+            "LD_LIBRARY_PATH=${pkgs.vulkan-loader}/lib:/run/opengl-driver/lib:/run/opengl-driver-32/lib"
           ];
         };
 

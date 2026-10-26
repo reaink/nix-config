@@ -328,7 +328,7 @@ in
     programs.zsh.shellAliases = {
       # Linux-specific (with sudo)
       rebuild = "sudo nice -n 19 ionice -c 3 nixos-rebuild switch --flake ~/nix-config\\#nixos";
-      rebuild-bin = "sudo nice -n 19 ionice -c 3 nixos-rebuild switch --flake ~/nix-config\\#nixos --use-substitutes --max-jobs 0 --option substituters 'https://mirrors.cernet.edu.cn/nix-channels/store?priority=10 https://mirrors.ustc.edu.cn/nix-channels/store?priority=20 https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=30'";
+      rebuild-bin = "sudo nice -n 19 ionice -c 3 nixos-rebuild switch --flake ~/nix-config\\#nixos --use-substitutes --max-jobs 0 --option substituters 'https://mirrors.cernet.edu.cn/nix-channels/store?priority=10 https://mirrors.ustc.edu.cn/nix-channels/store?priority=20 https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=30 https://cache.nixos.org?priority=40 https://nix-community.cachix.org?priority=50'";
       test = "sudo nice -n 19 ionice -c 3 nixos-rebuild test --flake ~/nix-config\\#nixos";
       hm = "sudo systemctl restart home-manager-rea.service";
       gc = "sudo nix-collect-garbage";

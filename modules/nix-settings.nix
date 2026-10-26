@@ -19,10 +19,17 @@ lib.mkMerge [
     ];
 
     nix.settings.substituters = lib.mkForce [
+      # Lower priority values are tried first; keep upstream caches as fallbacks.
       # MirrorZ routes to a suitable China Education and Research Network mirror.
       "https://mirrors.cernet.edu.cn/nix-channels/store?priority=10"
       "https://mirrors.ustc.edu.cn/nix-channels/store?priority=20"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=30"
+      "https://cache.nixos.org?priority=40"
+      "https://nix-community.cachix.org?priority=50"
+    ];
+
+    nix.settings.trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
 
     nix.settings.trusted-users = [

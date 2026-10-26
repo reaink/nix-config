@@ -131,6 +131,7 @@ in
       todesk
 
       # Linux-specific GUI apps
+      disktree
       (lib.hiPrio (
         writeShellScriptBin "wechat" ''
           unset WAYLAND_DISPLAY

@@ -74,6 +74,7 @@ in
   home.activation.configureKeytaoKdeVirtualKeyboard =
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       rm -f "$HOME/.config/plasma-workspace/env/keytao.sh"
+      rm -f "$HOME/.config/autostart/keytao-ime.desktop.backup"
 
       if [ -x "${pkgs.kdePackages.kconfig}/bin/kreadconfig6" ]; then
         current_im="$("${pkgs.kdePackages.kconfig}/bin/kreadconfig6" \

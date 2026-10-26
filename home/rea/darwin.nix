@@ -91,6 +91,7 @@
     programs.zsh.shellAliases = {
       # macOS-specific (no sudo)
       rebuild = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac";
+      rebuild-bin = "sudo darwin-rebuild switch --flake ~/nix-config\\#mac --use-substitutes --max-jobs 0 --option substituters 'https://mirrors.cernet.edu.cn/nix-channels/store?priority=10 https://mirrors.ustc.edu.cn/nix-channels/store?priority=20 https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=30'";
       test = "sudo darwin-rebuild check --flake ~/nix-config\\#mac";
       gc = "sudo nix-collect-garbage";
       gcold = "sudo nix-collect-garbage --delete-older-than 30d";

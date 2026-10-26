@@ -18,13 +18,11 @@ lib.mkMerge [
       "flakes"
     ];
 
-    nix.settings.substituters = [
-      "https://cache.nixos.org"
-      "https://nix-community.cachix.org"
-    ];
-
-    nix.settings.trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    nix.settings.substituters = lib.mkForce [
+      # MirrorZ routes to a suitable China Education and Research Network mirror.
+      "https://mirrors.cernet.edu.cn/nix-channels/store?priority=10"
+      "https://mirrors.ustc.edu.cn/nix-channels/store?priority=20"
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store?priority=30"
     ];
 
     nix.settings.trusted-users = [

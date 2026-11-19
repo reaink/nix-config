@@ -83,4 +83,11 @@ lib.mkMerge [
     # Lower nix-daemon resource priority on launchd-based systems.
     nix.daemonProcessType = "Background";
   })
+  (lib.optionalAttrs isDarwin {
+    # launchd discards output by default; keep it so failed GC runs are visible.
+    launchd.daemons.nix-gc.serviceConfig = {
+      StandardOutPath = "/var/log/nix-gc.log";
+      StandardErrorPath = "/var/log/nix-gc.log";
+    };
+  })
 ]

@@ -12,7 +12,7 @@ let
   # To update to the newest release, run:
   #   sh ~/nix-config/update-hashes.sh claude-code
 
-  version = "2.1.310"; # Updated by update-hashes.sh
+  version = "2.1.328"; # Updated by update-hashes.sh
   baseUrl = "https://downloads.claude.ai/claude-code-releases";
 
   # node-style platform key, matching nixpkgs (e.g. darwin-arm64, linux-x64).
@@ -22,8 +22,8 @@ let
   # Both hosts share home/rea/common.nix, so both platforms must be present:
   # this mac is darwin-arm64, the nixos host is linux-x64.
   checksums = {
-    "darwin-arm64" = "0252ecc7c918fccc5a68d6f25a80c4579c4cf99fad8b315228236c2ee9c3f4af"; # Updated by update-hashes.sh (darwin-arm64)
-    "linux-x64" = "9314f28f679546a97813f2914c4fb60a190801ef782805f47bf197317cc4ffd2"; # Updated by update-hashes.sh (linux-x64)
+    "darwin-arm64" = "5c1e357bada5a66373e0705cb0e1213d3e49d086de0dcc11892e3063bc9da5dc"; # Updated by update-hashes.sh (darwin-arm64)
+    "linux-x64" = "10f24c9cfcbf3c586e6d281815dce9b561eb8acc6b8c0f26b8f0af5e56fa7605"; # Updated by update-hashes.sh (linux-x64)
   };
 in
 {

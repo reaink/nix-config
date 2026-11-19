@@ -38,7 +38,6 @@
       docker
       docker-compose
       docker-credential-helpers
-      azure-cli
       vercel
       ipatool
       # Cloudflare Tunnel client (locally-managed tunnel)

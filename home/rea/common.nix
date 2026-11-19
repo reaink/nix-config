@@ -67,7 +67,9 @@
       codex
       pi-coding-agent
       (pkgs.callPackage ../../pkgs/oh-my-pi.nix { })
+      (pkgs.callPackage ../../pkgs/magpie.nix { })
       github-copilot-cli
+      t3code
       herdr
       tmux
 

@@ -48,6 +48,11 @@
       openssl.dev
       android-tools
 
+      # Development tools - Flutter / Android (cross-platform)
+      flutter
+      jdk17
+      android-studio
+
       uv
       python3
       python3Packages.huggingface-hub
@@ -115,6 +120,9 @@
     OPENSSL_DIR = "${pkgs.openssl.dev}";
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+
+    # Android / Flutter
+    JAVA_HOME = "${pkgs.jdk17}";
 
     # Node.js
     PNPM_HOME = "$HOME/.local/share/pnpm";

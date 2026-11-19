@@ -116,15 +116,11 @@ in
       librsvg.dev
       libayatana-appindicator
 
-      # Android / Tauri mobile development
-      jdk17
-
       # Media and productivity GUI apps
       vlc
       mpv
       spotify
       kdePackages.kdenlive
-      android-studio
       scrcpy
       waydroid-helper
       onlyoffice-desktopeditors
@@ -285,7 +281,6 @@ in
         pkgs.librsvg.dev
       ]}";
       ANDROID_HOME = "$HOME/Android/Sdk";
-      JAVA_HOME = "${pkgs.jdk17}";
     };
 
     # NOTE: no LD_LIBRARY_PATH in any session variable (here or in

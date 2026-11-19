@@ -86,6 +86,7 @@
       tree-sitter
       sqlite
       stylua
+      lua
       shfmt
       shellcheck
       prettier

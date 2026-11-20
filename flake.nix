@@ -129,7 +129,6 @@
               nixpkgs.overlays = [
                 (import ./overlays/claude-code-latest.nix)
                 (import ./overlays/vercel-cli.nix)
-                (import ./overlays/zennotes-desktop-darwin-app.nix)
               ];
             }
 

@@ -65,6 +65,7 @@
       ngrok
       claude-code
       codex
+      antigravity-cli
       pi-coding-agent
       (pkgs.callPackage ../../pkgs/oh-my-pi.nix { })
       (pkgs.callPackage ../../pkgs/magpie.nix { })
@@ -98,7 +99,6 @@
       google-chrome
       telegram-desktop
       vscode
-      zennotes-desktop
 
       # Fonts
       pkgs.nerd-fonts.jetbrains-mono

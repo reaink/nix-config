@@ -19,12 +19,11 @@ let
   # nixpkgs now repackages WeChat's deb natively. Extend its patched package
   # rather than depending on the old AppImage wrapper's private passthru args.
   keytaoWechat = pkgs.wechat.overrideAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
     postFixup = (old.postFixup or "") + ''
       wrap_wechat_program() {
         local target="$1"
         mv "$target" "$target.keytao-real"
-        makeWrapper "$target.keytao-real" "$target" \
+        makeShellWrapper "$target.keytao-real" "$target" \
           --run 'unset WAYLAND_DISPLAY' \
           --run 'export DISPLAY="''${DISPLAY:-:0}"' \
           --set QT_QPA_PLATFORM xcb \

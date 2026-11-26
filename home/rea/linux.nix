@@ -7,6 +7,8 @@
 }:
 
 let
+  # Official Linux support is still in beta; the public download page has no
+  # Linux installer yet: https://uuyc.163.com/help/linux_test.html
   uuRemoteLinux = pkgs.callPackage ../../pkgs/uu-remote-linux.nix { };
 
   gtkIbusImModulesCache = pkgs.runCommand "keytao-gtk-immodules.cache" { } ''
@@ -14,78 +16,31 @@ let
       ${pkgs.ibus}/lib/gtk-3.0/3.0.0/immodules/im-ibus.so > "$out"
   '';
 
-  wechatExtracted =
-    let
-      prefix = "appimage-exec.sh -w ";
-      suffix = " --";
-      runScript = pkgs.wechat.passthru.args.runScript;
-    in
-    lib.removeSuffix suffix (lib.removePrefix prefix runScript);
+  # nixpkgs now repackages WeChat's deb natively. Extend its patched package
+  # rather than depending on the old AppImage wrapper's private passthru args.
+  keytaoWechat = pkgs.wechat.overrideAttrs (old: {
+    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.makeWrapper ];
+    postFixup = (old.postFixup or "") + ''
+      wrap_wechat_program() {
+        local target="$1"
+        mv "$target" "$target.keytao-real"
+        makeWrapper "$target.keytao-real" "$target" \
+          --run 'unset WAYLAND_DISPLAY' \
+          --run 'export DISPLAY="''${DISPLAY:-:0}"' \
+          --set QT_QPA_PLATFORM xcb \
+          --set GDK_BACKEND x11 \
+          --set XMODIFIERS "@im=keytao" \
+          --set QT_IM_MODULE ibus \
+          --set GTK_IM_MODULE ibus \
+          --run 'export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}}"' \
+          --run 'export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"' \
+          --set GTK_IM_MODULE_FILE "${gtkIbusImModulesCache}"
+      }
 
-  keytaoWechatInput = pkgs.runCommand "wechat-keytao-input-${pkgs.wechat.version}" { nativeBuildInputs = [ pkgs.makeWrapper ]; } ''
-    mkdir -p "$out"
-    cp -R --no-preserve=ownership ${wechatExtracted}/. "$out/"
-    chmod -R u+w "$out"
-
-    wrap_wechat_program() {
-      local target="$1"
-      chmod +x "$target"
-      mv "$target" "$target.real"
-      makeWrapper "$target.real" "$target" \
-        --run 'unset WAYLAND_DISPLAY' \
-        --run 'export DISPLAY="''${DISPLAY:-:0}"' \
-        --set QT_QPA_PLATFORM xcb \
-        --set GDK_BACKEND x11 \
-        --set XMODIFIERS "@im=keytao" \
-        --set QT_IM_MODULE ibus \
-        --set GTK_IM_MODULE ibus \
-        --run 'export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}}"' \
-        --run 'export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"' \
-        --set GTK_IM_MODULE_FILE "${gtkIbusImModulesCache}"
-    }
-
-    wrap_wechat_program "$out/opt/wechat/wechat"
-    wrap_wechat_program "$out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx"
-  '';
-
-  keytaoWechat = pkgs.appimageTools.wrapAppImage {
-    pname = "wechat";
-    version = "${pkgs.wechat.version}-keytao";
-    src = keytaoWechatInput;
-    meta = pkgs.wechat.meta;
-    extraPkgs = pkgs: [ pkgs.ibus ];
-    extraBuildCommands = ''
-      immodules_cache="$out/usr/lib64/gtk-3.0/3.0.0/immodules.cache"
-      old_immodules_cache="$(mktemp)"
-      cat "$immodules_cache" > "$old_immodules_cache"
-      rm "$immodules_cache"
-      cat "$old_immodules_cache" > "$immodules_cache"
-      ${pkgs.gtk3.dev}/bin/gtk-query-immodules-3.0 \
-        ${pkgs.ibus}/lib/gtk-3.0/3.0.0/immodules/im-ibus.so \
-        >> "$immodules_cache"
+      wrap_wechat_program "$out/opt/wechat/wechat"
+      wrap_wechat_program "$out/opt/wechat/RadiumWMPF/runtime/WeChatAppEx"
     '';
-    profile = ''
-      unset WAYLAND_DISPLAY
-      export DISPLAY="''${DISPLAY:-:0}"
-      export QT_QPA_PLATFORM=xcb
-      export GDK_BACKEND=x11
-      export XMODIFIERS="@im=keytao"
-      export QT_IM_MODULE=ibus
-      export GTK_IM_MODULE=ibus
-      export IBUS_ADDRESS="''${IBUS_ADDRESS:-''${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/$(id -u)/bus}}"
-      export GTK_PATH="${pkgs.ibus}/lib/gtk-3.0/3.0.0''${GTK_PATH:+:$GTK_PATH}"
-      export GTK_IM_MODULE_FILE="${gtkIbusImModulesCache}"
-    '';
-
-    extraInstallCommands = ''
-      mkdir -p "$out/share/applications"
-      cp ${keytaoWechatInput}/wechat.desktop "$out/share/applications/"
-      mkdir -p "$out/share/icons/hicolor/256x256/apps"
-      cp ${keytaoWechatInput}/wechat.png "$out/share/icons/hicolor/256x256/apps/"
-
-      substituteInPlace "$out/share/applications/wechat.desktop" --replace-fail AppRun wechat
-    '';
-  };
+  });
 in
 {
   imports = [

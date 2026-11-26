@@ -30,6 +30,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Follow upstream main, including the release pin maintained by its CI.
+    # `nix flake update` refreshes this input; rebuild activates the new package.
     keytao-app = {
       url = "github:xkinput/keytao-app";
       inputs.nixpkgs.follows = "nixpkgs";

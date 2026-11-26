@@ -70,7 +70,7 @@
       (pkgs.callPackage ../../pkgs/oh-my-pi.nix { })
       (pkgs.callPackage ../../pkgs/magpie.nix { })
       github-copilot-cli
-      t3code
+      (pkgs.callPackage ../../pkgs/orca-ide.nix { })
       herdr
       tmux
 
@@ -179,10 +179,11 @@
       claudetg = "claude --channels plugin:telegram@claude-plugins-official";
 
       # Flake operations
-      flake-update = "nix flake update";
-      flake-check = "nix flake check";
-      update = "nix flake update && sh ~/nix-config/update-hashes.sh";
-      update-claude = "sh ~/nix-config/update-hashes.sh claude-code";
+      flake-update = "nix flake update --flake ~/nix-config";
+      flake-check = "nix flake check ~/nix-config";
+      update = "nix flake update --flake ~/nix-config && bash ~/nix-config/update-hashes.sh";
+      update-claude = "bash ~/nix-config/update-hashes.sh claude-code";
+      update-orca = "bash ~/nix-config/update-hashes.sh orca-ide";
     };
 
     history.size = 10000;

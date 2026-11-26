@@ -75,6 +75,13 @@
   # Primary user for system-wide activation (required by nix-darwin migration)
   system.primaryUser = "rea";
 
+  # UU Remote's official pkg installs privileged helpers and launchd services.
+  # Use its Homebrew cask so the complete installer runs on macOS.
+  homebrew = {
+    enable = true;
+    casks = [ "uuremote" ];
+  };
+
   # Enable alternative shell support
   programs.zsh.enable = true;
 

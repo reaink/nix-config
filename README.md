@@ -85,7 +85,7 @@ nix-config/
 ├── secrets/                  # SOPS 加密密钥（NixOS）
 │   └── secrets.yaml
 │
-├── update-hashes.sh          # Claude Code 版本更新脚本
+├── update-hashes.sh          # Claude Code / Orca IDE 版本和校验值更新脚本
 │
 ├── rust-shell.nix            # Rust dev shell
 └── tauri-shell.nix           # Tauri dev shell
@@ -115,6 +115,11 @@ Tauri shell 进入后：`npm install && npm run tauri dev` 启动桌面开发，
 - **Claude Code Latest**: 跟踪 npm 上的最新版本
   - 运行 `./update-hashes.sh claude-code` 更新到最新版本
   - 详见 `overlays/README.md`
+- **Orca IDE** (`pkgs/orca-ide.nix`): 安装 Stably 的 AI 编程客户端，支持 Linux x86_64 和 Apple Silicon Mac
+  - 运行 `./update-hashes.sh orca-ide` 或 `update-orca`，自动获取 GitHub 最新稳定版和两平台的 SHA-256
+  - `update` 同时更新 flake、Claude Code 和 Orca IDE，之后执行 `rebuild` 生效
+- **KeyTao App**: flake 输入跟随上游 main，`nix flake update --flake ~/nix-config` 更新上游 CI 维护的发行版本，再执行 `rebuild`
+- **UU 远程**: macOS 通过 nix-darwin 的 `homebrew.casks` 安装官方 `uuremote`（需要先安装 Homebrew）；Linux 暂时保留现有非官方包。官方 [Linux 内测说明](https://uuyc.163.com/help/linux_test.html) 标注 Ubuntu GNOME 支持，但公开下载页尚无 Linux 安装包
 
 ### 平台隔离
 - **NixOS 特有** (`hosts/nixos/` + `home/rea/linux.nix`):

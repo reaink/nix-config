@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Update Nix overlay hashes
+# Update versions and hashes for packages outside nixpkgs
 #
 # Usage:
 #   update-hashes.sh [TARGET]
@@ -7,6 +7,7 @@
 # TARGET:
 #   all          Update everything (default)
 #   claude-code  Update Claude Code version and per-platform binary checksums
+#   orca-ide     Update Orca IDE version and per-platform binary checksums
 #
 set -euo pipefail
 
@@ -23,7 +24,7 @@ TARGET="all"
 
 for arg in "$@"; do
     case "$arg" in
-        all|claude-code) TARGET="$arg" ;;
+        all|claude-code|orca-ide) TARGET="$arg" ;;
         *) echo "Unknown argument: $arg"; exit 1 ;;
     esac
 done
@@ -77,12 +78,54 @@ update_claude_code() {
     echo "==> Claude Code updated to $latest_version."
 }
 
+update_orca_ide() {
+    local package="$SCRIPT_DIR/pkgs/orca-ide.nix"
+    echo "==> Updating Orca IDE..."
+
+    local release
+    if ! { command -v gh >/dev/null 2>&1 && release=$(gh api repos/stablyai/orca/releases/latest); }; then
+        release=$(curl -fsSL --retry 2 "https://api.github.com/repos/stablyai/orca/releases/latest")
+    fi
+
+    local latest_version
+    latest_version=$(echo "$release" | jq -er '.tag_name | select(test("^v[0-9]+\\.[0-9]+\\.[0-9]+$")) | ltrimstr("v")')
+    echo "  latest: $latest_version"
+
+    # Validate both published digests before changing the Nix expression.
+    local linux_checksum darwin_checksum
+    linux_checksum=$(echo "$release" | jq -er '.assets[] | select(.name == "orca-linux.AppImage") | .digest | select(test("^sha256:[0-9a-f]{64}$")) | ltrimstr("sha256:")')
+    darwin_checksum=$(echo "$release" | jq -er --arg name "Orca-${latest_version}-arm64-mac.zip" '.assets[] | select(.name == $name) | .digest | select(test("^sha256:[0-9a-f]{64}$")) | ltrimstr("sha256:")')
+
+    local updated_package
+    updated_package=$(sed \
+        -e "s|version = \"[^\"]*\"; # Updated by update-hashes.sh (orca-ide)|version = \"${latest_version}\"; # Updated by update-hashes.sh (orca-ide)|" \
+        -e "s|sha256 = \"[^\"]*\"; # Updated by update-hashes.sh (orca-ide x86_64-linux)|sha256 = \"${linux_checksum}\"; # Updated by update-hashes.sh (orca-ide x86_64-linux)|" \
+        -e "s|sha256 = \"[^\"]*\"; # Updated by update-hashes.sh (orca-ide aarch64-darwin)|sha256 = \"${darwin_checksum}\"; # Updated by update-hashes.sh (orca-ide aarch64-darwin)|" \
+        "$package")
+    if ! grep -qF "version = \"${latest_version}\"; # Updated by update-hashes.sh (orca-ide)" <<< "$updated_package"; then
+        echo "  Error: failed to update Orca IDE version" >&2
+        return 1
+    fi
+    for checksum in "$linux_checksum" "$darwin_checksum"; do
+        if ! grep -qF "$checksum" <<< "$updated_package"; then
+            echo "  Error: failed to update Orca IDE checksum" >&2
+            return 1
+        fi
+    done
+    printf '%s\n' "$updated_package" > "$package"
+    echo "==> Orca IDE updated to $latest_version."
+}
+
 case "$TARGET" in
     all)
         update_claude_code
+        update_orca_ide
         ;;
     claude-code)
         update_claude_code
+        ;;
+    orca-ide)
+        update_orca_ide
         ;;
 esac
 
